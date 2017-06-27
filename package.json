@@ -1,0 +1,11 @@
+{
+  "name": "moira-front",
+  "version": "0.0.1",
+  "scripts": {
+    "lint": "eslint"
+  },
+  "devDependencies": {
+    "eslint": "3.19.0",
+    "eslint-config-skbkontur-retail": "^2.1.2"
+  }
+}
