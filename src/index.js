@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { BrowserRouter } from 'react-router-dom';
 import './style.less';
-import App from './App';
+import App from './App/App';
 
 const render = Component => {
     ReactDOM.render(
@@ -20,7 +20,7 @@ const render = Component => {
 render(App);
 
 if (module.hot) {
-    module.hot.accept('./App', () => {
+    module.hot.accept('./App/App', () => {
         render(App);
     });
 }
