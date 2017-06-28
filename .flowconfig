@@ -5,6 +5,7 @@
 [include]
 
 [libs]
+interfaces/
 
 [options]
 module.name_mapper='^.*\.less+$' -> '<PROJECT_ROOT>/flow/StylesFlowStub'
