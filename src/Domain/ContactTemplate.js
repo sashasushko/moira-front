@@ -1,5 +1,4 @@
 // @flow
-
 export type ContactTemplate = {
     type: string;
     validation: string; // ??? может отсутствовать или всегда есть, пусть и пустая строка
