@@ -5,5 +5,8 @@
     },
     "files.eol": "\n",
     "flow.useNPMPackagedFlow": true,
-    "javascript.validate.enable": false
+    "javascript.validate.enable": false,
+    "prettier.tabWidth": 4,
+    "prettier.singleQuote": true,
+    "prettier.trailingComma": "es5"
 }
