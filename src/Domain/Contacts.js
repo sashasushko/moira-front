@@ -5,6 +5,6 @@ export type ConfigType = {
     api_url: string; // ??? что делать с переименованием
     contacts: UserContact[];
     paging: {
-        size: number;
+        size: number; // ??? откуда приходит надстройка
     };
 };
