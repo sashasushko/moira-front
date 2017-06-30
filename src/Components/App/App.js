@@ -12,8 +12,8 @@ const App = () => {
         <Layout>
             <Route path='/settings' component={Settings} />
             <Route path='/triggers' component={Triggers} />
-            <Route path='/trigger' component={Trigger} />
-            <Route path='/trigger/:id' component={Trigger} />
+            <Route exact path='/trigger' component={Trigger} />
+            <Route exact path='/trigger/:id' component={Trigger} />
             <Route path='/events/:id' component={Events} />
             <Route path='/patterns' component={Triggers} />
             <Route path='/tags' component={Triggers} />
