@@ -1,8 +1,10 @@
 // @flow
-import type { UserContact } from './UserContact';
 
-export type SettingsType = {
+import type { Contact } from './Contact';
+import type { Subscribtion } from './Subscribtion';
+
+export type Settings = {
     login: string;
-    contacts: UserContact[];
-    subscriptions: []; // ??? пока не понятно, что за массив
+    contacts: Array<Contact>;
+    subscriptions: Array<Subscribtion>;
 };

@@ -1,5 +1,6 @@
 // @flow
-export type UserContact = {
+
+export type Contact = {
     id: string;
     type: string;
     user: string;
