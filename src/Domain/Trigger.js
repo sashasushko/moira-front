@@ -3,16 +3,16 @@
 import type { Metrics } from './Metrics';
 import type { Schedule } from './Schedule';
 
-export type LastCheck = {
+export type LastCheck = {|
     state: string;
     timestamp: number;
     metrics: Metrics;
     event_timestamp?: number;
     score: number;
     msg: string;
-};
+|};
 
-export type Trigger = {
+export type Trigger = {|
     id: string;
     name: string;
     desc?: string;
@@ -29,12 +29,12 @@ export type Trigger = {
     timestamp: number;
     is_simple_trigger: boolean;
     sched: Schedule;
-};
+|};
 
-export type TriggerState = {
+export type TriggerState = {|
     metrics: Metrics;
     timestamp: number;
     state: string;
     score: number;
     trigger_id: string;
-};
+|};

@@ -1,5 +1,5 @@
 // @flow
 
-export type User = {
+export type User = {|
     [username: string]: string;
-};
+|};

@@ -2,8 +2,8 @@
 
 import type { Trigger } from './Trigger';
 
-export type Pattern = {
+export type Pattern = {|
     metrics: Array<string>;
     pattern: string;
     triggers: Array<Trigger>;
-};
+|};
