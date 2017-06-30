@@ -1,6 +1,6 @@
 // @flow
 
-export type Event = {
+export type Event = {|
     state: string;
     old_state: string;
     timestamp: number;
@@ -8,11 +8,11 @@ export type Event = {
     metric: string;
     msg: string;
     trigger_id: string;
-};
+|};
 
-export type Events = {
+export type Events = {|
     total: number;
     list: Array<Event>;
     page: number;
     size: number;
-};
+|};
