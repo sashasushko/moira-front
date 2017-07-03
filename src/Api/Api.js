@@ -1,34 +1,25 @@
 // @flow
 import type { Config } from '../Domain/Config';
 import type { Triggers } from '../Domain/Triggers';
+import type { Trigger } from '../Domain/Triggers';
 
 export interface IMoiraApi {
-    query(url: string, method: string, body?: string): Promise<any>;
-    getConfig(): Promise<Config>;
     trigger: {
-        page(): Promise<Triggers>;
+        page(page: number): Promise<Triggers>;
     };
 }
 
-export default class FakeMoiraApi implements IMoiraApi {
-    getConfig(): Promise<Config> {
-        return fetch('/config.json').then(response => response.json());
-    }
-
-    async query(
-        url: string,
-        method: string,
-        body: string | void
-    ): Promise<any> {
-        const config = await this.getConfig();
-        const fullUrl = config.api_url + url;
-        const params = { method, body };
-        return fetch(fullUrl, params).then(response => response.json());
-    }
-
+export default class Api implements IMoiraApi {
     trigger = {
-        page: (): Promise<Triggers> => {
-            return this.query('/triggers.json', 'GET');
+        page: (page: number): Promise<Triggers> => {
+            return fetch('/fakeApi/triggers.json', {
+                method: 'GET',
+            }).then(response => response.json());
+        },
+        get: (id: string): Promise<Trigger> => {
+            return fetch('/fakeApi/trigger-data.json', {
+                method: 'GET',
+            }).then(response => response.json());
         },
     };
 }
