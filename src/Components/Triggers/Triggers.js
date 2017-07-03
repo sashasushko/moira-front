@@ -1,19 +1,34 @@
 // @flow
 import React from 'react';
 import { Link } from 'react-router-dom';
+import type { ContextRouter } from 'react-router-dom';
 
-const Triggers = () => {
-    return (
-        <div>
-            <p>Search</p>
-            <p>Triggers list:</p>
-            <ul>
-                <li>
-                    <Link to='/events/id1'>Trigger</Link>
-                </li>
-            </ul>
-        </div>
-    );
-};
+export default class Triggers extends React.Component {
+    props: ContextRouter;
 
-export default Triggers;
+    render(): React.Element<*> {
+        return (
+            <div>
+                <p>Search</p>
+                <label>
+                    <input
+                        type='checkbox'
+                        onChange={(event: Event) => {
+                            return (
+                                event.target instanceof HTMLInputElement &&
+                                event.target.checked
+                            );
+                        }}
+                    />
+                    Only problems
+                </label>
+                <p>Triggers list:</p>
+                <ul>
+                    <li>
+                        <Link to='/events/id1'>Trigger</Link>
+                    </li>
+                </ul>
+            </div>
+        );
+    }
+}

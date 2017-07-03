@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import type { ContextRouter } from 'react-router-dom';
 
-const Events = (props: ContextRouter) => {
+export default function Events(props: ContextRouter): React.Element<*> {
     const { params } = props.match;
     const { id }: { id: string } = params;
     return (
@@ -14,6 +14,4 @@ const Events = (props: ContextRouter) => {
             </p>
         </div>
     );
-};
-
-export default Events;
+}

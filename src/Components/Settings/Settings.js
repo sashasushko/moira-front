@@ -1,12 +1,10 @@
 // @flow
 import React from 'react';
 
-const Settings = () => {
+export default function Settings(): React.Element<*> {
     return (
         <div>
             <p>Settings</p>
         </div>
     );
-};
-
-export default Settings;
+}

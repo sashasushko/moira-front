@@ -1,28 +1,28 @@
 // @flow
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import Layout from '../Layout/Layout';
-import Settings from '../Settings/Settings';
 import Triggers from '../Triggers/Triggers';
 import Trigger from '../Trigger/Trigger';
 import Events from '../Events/Events';
 import Patterns from '../Patterns/Patterns';
 import Tags from '../Tags/Tags';
+import Settings from '../Settings/Settings';
 import Notifications from '../Notifications/Notifications';
 
-const App = () => {
+export default function App(): React.Element<*> {
     return (
         <Layout>
-            <Route path='/settings' component={Settings} />
-            <Route path='/triggers' component={Triggers} />
-            <Route exact path='/trigger' component={Trigger} />
-            <Route exact path='/trigger/:id' component={Trigger} />
-            <Route path='/events/:id' component={Events} />
-            <Route path='/patterns' component={Patterns} />
-            <Route path='/tags' component={Tags} />
-            <Route path='/notifications' component={Notifications} />
+            <Switch>
+                <Route exact path='/' component={Triggers} />
+                <Route exact path='/trigger/:id?' component={Trigger} />
+                <Route exact path='/events/:id' component={Events} />
+                <Route exact path='/patterns' component={Patterns} />
+                <Route exact path='/tags' component={Tags} />
+                <Route exact path='/settings' component={Settings} />
+                <Route exact path='/notifications' component={Notifications} />
+                <Route render={() => <p>404</p>} />
+            </Switch>
         </Layout>
     );
-};
-
-export default App;
+}

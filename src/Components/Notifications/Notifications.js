@@ -1,12 +1,10 @@
 // @flow
 import React from 'react';
 
-const Notifications = () => {
+export default function Notifications(): React.Element<*> {
     return (
         <div>
             <p>Notifications</p>
         </div>
     );
-};
-
-export default Notifications;
+}

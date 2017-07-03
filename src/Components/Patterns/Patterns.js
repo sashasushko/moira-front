@@ -1,12 +1,10 @@
 // @flow
 import React from 'react';
 
-const Patterns = () => {
+export default function Patterns(): React.Element<*> {
     return (
         <div>
             <p>Patterns</p>
         </div>
     );
-};
-
-export default Patterns;
+}

@@ -3,16 +3,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 type Props = {
-    children: React$Element<any>;
+    children: React.Element<*>;
 };
 
-const Triggers = (props: Props) => {
+export default function Layout(props: Props): React.Element<*> {
     return (
         <div>
             <header>
                 <nav>
                     <ul>
-                        <li><Link to='/triggers'>Triggers</Link></li>
+                        <li><Link to='/'>Triggers</Link></li>
                         <li><Link to='/settings'>Settings</Link></li>
                     </ul>
                 </nav>
@@ -25,6 +25,4 @@ const Triggers = (props: Props) => {
             </footer>
         </div>
     );
-};
-
-export default Triggers;
+}

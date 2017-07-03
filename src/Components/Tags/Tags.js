@@ -1,12 +1,10 @@
 // @flow
 import React from 'react';
 
-const Tags = () => {
+export default function Tags(): React.Element<*> {
     return (
         <div>
             <p>Tags</p>
         </div>
     );
-};
-
-export default Tags;
+}

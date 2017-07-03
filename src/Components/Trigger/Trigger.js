@@ -2,7 +2,7 @@
 import React from 'react';
 import type { ContextRouter } from 'react-router-dom';
 
-const Trigger = (props: ContextRouter) => {
+export default function Trigger(props: ContextRouter): React.Element<*> {
     const { params } = props.match;
     const { id }: { id?: string } = params;
     return (
@@ -10,6 +10,4 @@ const Trigger = (props: ContextRouter) => {
             <p>Trigger {id}</p>
         </div>
     );
-};
-
-export default Trigger;
+}
