@@ -9,7 +9,7 @@ const Triggers = () => {
             <p>Triggers list:</p>
             <ul>
                 <li>
-                    <Link to='/trigger/id1'>Trigger</Link>
+                    <Link to='/events/id1'>Trigger</Link>
                 </li>
             </ul>
         </div>
