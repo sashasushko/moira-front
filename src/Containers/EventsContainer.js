@@ -41,9 +41,9 @@ export default class Events extends React.Component {
     async getTriggerData(): Promise<void> {
         const { id }: { id: string } = this.props.match.params;
         const { api } = this.props;
-        const trigger = await api.trigger.get(id);
-        const triggerState = await api.trigger.state(id);
-        const triggerEvents = await api.event.page(id, 0);
+        const trigger = await api.getTrigger(id);
+        const triggerState = await api.getTriggerState(id);
+        const triggerEvents = await api.getTriggerEvents(id, 0);
         this.setState({
             loading: false,
             trigger,
