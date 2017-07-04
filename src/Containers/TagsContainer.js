@@ -34,7 +34,7 @@ export default class Tags extends React.Component {
 
     async getData(): Promise<void> {
         const { api } = this.props;
-        const stats = await api.tag.list();
+        const stats = await api.getTagStats();
         this.setState({ loading: false, stats: stats.list });
     }
 

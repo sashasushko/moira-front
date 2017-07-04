@@ -43,7 +43,7 @@ export default class Trigger extends React.Component {
             return;
         }
         const { api } = this.props;
-        const trigger = await api.trigger.get(id);
+        const trigger = await api.getTrigger(id);
         this.setState({ loading: false, trigger: trigger });
         this.setState({
             loading: false,

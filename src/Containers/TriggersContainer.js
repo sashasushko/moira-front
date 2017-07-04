@@ -36,7 +36,7 @@ export default class Triggers extends React.Component {
         const { location, api } = this.props;
         const parsedPath = parsePathSearch(location.search);
         const page = typeof parsedPath.page === 'number' ? parsedPath.page : 0;
-        const triggers = await api.trigger.page(page);
+        const triggers = await api.getTriggerList(page);
         this.setState({ loading: false, triggers: triggers.list });
     }
 

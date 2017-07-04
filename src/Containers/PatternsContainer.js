@@ -34,7 +34,7 @@ export default class Patterns extends React.Component {
 
     async getData(): Promise<void> {
         const { api } = this.props;
-        const pattern = await api.pattern.list();
+        const pattern = await api.getPatternList();
         this.setState({ loading: false, pattern: pattern.list });
     }
 

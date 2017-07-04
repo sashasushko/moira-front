@@ -33,7 +33,7 @@ export default class Settings extends React.Component {
 
     async getTriggers(): Promise<void> {
         const { api } = this.props;
-        const settings = await api.settings.get();
+        const settings = await api.getSettings();
         this.setState({ loading: false, settings });
     }
 
