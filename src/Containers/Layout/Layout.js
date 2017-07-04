@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 type Props = {
-    children: React.Element<*>;
+    children?: React.Element<*>;
 };
 
 export default function Layout(props: Props): React.Element<*> {

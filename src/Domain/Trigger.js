@@ -38,3 +38,10 @@ export type TriggerState = {|
     score: number;
     trigger_id: string;
 |};
+
+export type TriggerList = {|
+    total: number;
+    page: number;
+    size: number;
+    list: Array<Trigger>;
+|};

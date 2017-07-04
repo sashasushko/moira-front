@@ -1,17 +1,20 @@
 // @flow
 import React from 'react';
-import parsePathSearch from '../../Helpers/parsePath';
 import { Link } from 'react-router-dom';
 import type { ContextRouter } from 'react-router-dom';
-import type { IMoiraApi } from '../../Api/Api';
-import type { TriggersList } from '../../Domain/TriggersList';
-import type { Trigger } from '../../Domain/Trigger';
+import type { Trigger, TriggerList } from '../../Domain/Trigger';
+import type { IMoiraApi } from '../../Api/MoiraAPI';
+import parsePathSearch from '../../Helpers/parsePathSearch';
 
 type Props = ContextRouter & { api: IMoiraApi };
 type State = {
     loading: boolean;
-    triggers: Array<Trigger>;
+    triggers: Array<Trigger> | [];
 };
+
+// Отвечает за
+// + получение списка триггеров и передачу на вывод
+// - пагинацию
 
 export default class Triggers extends React.Component {
     props: Props;
@@ -30,13 +33,16 @@ export default class Triggers extends React.Component {
     }
 
     async getTriggers(): Promise<void> {
-        const { location, api } = this.props;
+        const { location } = this.props;
         const { page }: { page: number } = parsePathSearch(location.search);
-        const triggers: TriggersList = await api.trigger.page(page || 0);
+        const triggers: TriggerList = await this.props.api.trigger.page(
+            page || 0
+        );
         this.setState({ loading: false, triggers: triggers.list });
     }
 
     renderTriggersList(): React.Element<*> {
+        // ToDo: вынести в отдельный компонент
         const { triggers } = this.state;
         const triggersList = triggers.map(trigger => (
             <li key={trigger.id}>
