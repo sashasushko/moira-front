@@ -19,7 +19,3 @@ export type TagStat = {|
     subscriptions: Array<Subscribtion>;
     triggers: Array<string>;
 |};
-
-export type TagStatList = {
-    list: Array<TagStat>;
-};
