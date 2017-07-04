@@ -1,7 +1,7 @@
 // @flow
 import type { Trigger } from '../Domain/Trigger';
 
-export type Triggers = {|
+export type TriggersList = {|
     total: number;
     page: number;
     size: number;

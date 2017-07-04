@@ -9,14 +9,32 @@ import Patterns from '../Patterns/Patterns';
 import Tags from '../Tags/Tags';
 import Settings from '../Settings/Settings';
 import Notifications from '../Notifications/Notifications';
+import type { IMoiraApi } from './Api/Api';
 
-export default function App(): React.Element<*> {
+export default function App(props: IMoiraApi): React.Element<*> {
+    const { api } = props;
+
+    function RouteWithProps({ component: Component, exact, path, ...rest }) {
+        return (
+            <Route
+                exact={exact}
+                path={path}
+                render={props => <Component {...props} {...rest} />}
+            />
+        );
+    }
+
     return (
         <Layout>
             <Switch>
-                <Route exact path='/' component={Triggers} />
+                <RouteWithProps exact path='/' component={Triggers} api={api} />
+                <RouteWithProps
+                    exact
+                    path='/events/:id'
+                    component={Events}
+                    api={api}
+                />
                 <Route exact path='/trigger/:id?' component={Trigger} />
-                <Route exact path='/events/:id' component={Events} />
                 <Route exact path='/patterns' component={Patterns} />
                 <Route exact path='/tags' component={Tags} />
                 <Route exact path='/settings' component={Settings} />

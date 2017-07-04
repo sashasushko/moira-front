@@ -3,17 +3,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { BrowserRouter } from 'react-router-dom';
-import './style.less';
+import Api from './Api/Api';
 import App from './Components/App/App';
 
 const render = Component => {
     ReactDOM.render(
         <AppContainer>
             <BrowserRouter>
-                <Component />
+                <Component api={new Api()} />
             </BrowserRouter>
         </AppContainer>,
-        document.getElementById('root'),
+        document.getElementById('root')
     );
 };
 
