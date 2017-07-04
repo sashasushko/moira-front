@@ -2,23 +2,15 @@
 import type { Events } from '../Domain/Events';
 import type { Trigger, TriggerList, TriggerState } from '../Domain/Trigger';
 import type { Settings } from '../Domain/Settings';
-import type { TagStat } from '../Domain/Tag';
-import type { Pattern } from '../Domain/Pattern';
-
-type TagStats = {
-    list: Array<TagStat>;
-};
-
-type PatternList = {
-    list: Array<Pattern>;
-};
+import type { TagStatList } from '../Domain/Tag';
+import type { PatternList } from '../Domain/Pattern';
 
 export interface IMoiraApi {
     pattern: {
         list(): Promise<PatternList>;
     };
     tag: {
-        list(): Promise<TagStats>;
+        list(): Promise<TagStatList>;
     };
     settings: {
         get(): Promise<Settings>;
@@ -43,7 +35,7 @@ export default class Api implements IMoiraApi {
         },
     };
     tag = {
-        list: (): Promise<TagStats> => {
+        list: (): Promise<TagStatList> => {
             console.log('api.tag.list');
             return fetch('/fakeApi/stats.json', {
                 method: 'GET',

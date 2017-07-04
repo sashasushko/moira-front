@@ -7,3 +7,7 @@ export type Pattern = {|
     pattern: string;
     triggers: Array<Trigger>;
 |};
+
+export type PatternList = {
+    list: Array<Pattern>;
+};
