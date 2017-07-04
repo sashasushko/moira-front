@@ -3,24 +3,24 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { BrowserRouter } from 'react-router-dom';
-import './style.less';
-import App from './Components/App/App';
+import Api from './Api/MoiraAPI';
+import App from './App';
 
 const render = Component => {
     ReactDOM.render(
         <AppContainer>
             <BrowserRouter>
-                <Component />
+                <Component api={new Api()} />
             </BrowserRouter>
         </AppContainer>,
-        document.getElementById('root'),
+        document.getElementById('root')
     );
 };
 
 render(App);
 
 if (module.hot) {
-    module.hot.accept('./Components/App/App', () => {
+    module.hot.accept('./App', () => {
         render(App);
     });
 }
