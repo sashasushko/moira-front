@@ -1,12 +1,14 @@
 // @flow
 import React from 'react';
 import type { ContextRouter } from 'react-router-dom';
+import type { Trigger as TriggerType } from './../Domain/Trigger';
+import type { IMoiraApi } from '../Api/MoiraAPI';
 
-type Props = ContextRouter;
+type Props = ContextRouter & { api: IMoiraApi };
 type State = {
     loading: boolean;
-    trigger: Trigger | {};
     newTrigger: boolean;
+    trigger: ?TriggerType;
 };
 
 // Отвечает за
@@ -23,7 +25,7 @@ export default class Trigger extends React.Component {
         this.state = {
             loading: true,
             newTrigger: false,
-            trigger: {},
+            trigger: null,
         };
     }
 
@@ -41,7 +43,7 @@ export default class Trigger extends React.Component {
             return;
         }
         const { api } = this.props;
-        const trigger: Trigger = await api.trigger.get(id);
+        const trigger = await api.trigger.get(id);
         this.setState({ loading: false, trigger: trigger });
         this.setState({
             loading: false,

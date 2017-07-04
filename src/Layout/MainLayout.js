@@ -6,7 +6,7 @@ type Props = {
     children?: React.Element<*>;
 };
 
-export default function Layout(props: Props): React.Element<*> {
+export default function MainLayout(props: Props): React.Element<*> {
     return (
         <div>
             <header>

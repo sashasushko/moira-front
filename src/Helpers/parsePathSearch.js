@@ -1,5 +1,8 @@
 // @flow
-export default function parsePathSearch(path: string): Object {
+
+export default function parsePathSearch(
+    path: string
+): { [key: string]: ?(string | number) } {
     const obj = {};
     path.slice(1).split('&').map(i => {
         const key = i.split('=')[0];

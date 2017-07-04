@@ -2,14 +2,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import type { ContextRouter } from 'react-router-dom';
-import type { Trigger, TriggerList } from '../../Domain/Trigger';
-import type { IMoiraApi } from '../../Api/MoiraAPI';
-import parsePathSearch from '../../Helpers/parsePathSearch';
+import type { Trigger } from '../Domain/Trigger';
+import type { IMoiraApi } from '../Api/MoiraAPI';
+import parsePathSearch from '../Helpers/parsePathSearch';
 
 type Props = ContextRouter & { api: IMoiraApi };
 type State = {
     loading: boolean;
-    triggers: Array<Trigger> | [];
+    triggers: ?Array<Trigger>;
 };
 
 // Отвечает за
@@ -24,7 +24,7 @@ export default class Triggers extends React.Component {
         super();
         this.state = {
             loading: true,
-            triggers: [],
+            triggers: null,
         };
     }
 
@@ -33,11 +33,10 @@ export default class Triggers extends React.Component {
     }
 
     async getTriggers(): Promise<void> {
-        const { location } = this.props;
-        const { page }: { page: number } = parsePathSearch(location.search);
-        const triggers: TriggerList = await this.props.api.trigger.page(
-            page || 0
-        );
+        const { location, api } = this.props;
+        const parsedPath = parsePathSearch(location.search);
+        const page = typeof parsedPath.page === 'number' ? parsedPath.page : 0;
+        const triggers = await api.trigger.page(page);
         this.setState({ loading: false, triggers: triggers.list });
     }
 

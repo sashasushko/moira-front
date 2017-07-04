@@ -1,19 +1,63 @@
 // @flow
 import type { Events } from '../Domain/Events';
 import type { Trigger, TriggerList, TriggerState } from '../Domain/Trigger';
+import type { Settings } from '../Domain/Settings';
+import type { TagStat } from '../Domain/Tag';
+import type { Pattern } from '../Domain/Pattern';
+
+type TagStats = {
+    list: Array<TagStat>;
+};
+
+type PatternList = {
+    list: Array<Pattern>;
+};
 
 export interface IMoiraApi {
+    pattern: {
+        list(): Promise<PatternList>;
+    };
+    tag: {
+        list(): Promise<TagStats>;
+    };
+    settings: {
+        get(): Promise<Settings>;
+    };
     event: {
-        page(page: number): Promise<Events>;
+        page(id: string, page: number): Promise<Events>;
     };
     trigger: {
-        page(page: number): Promise<TriggersList>;
+        page(page: number): Promise<TriggerList>;
         get(id: string): Promise<Trigger>;
         state(id: string): Promise<TriggerState>;
     };
 }
 
 export default class Api implements IMoiraApi {
+    pattern = {
+        list: (): Promise<PatternList> => {
+            console.log('api.pattern.list');
+            return fetch('/fakeApi/pattern.json', {
+                method: 'GET',
+            }).then(response => response.json());
+        },
+    };
+    tag = {
+        list: (): Promise<TagStats> => {
+            console.log('api.tag.list');
+            return fetch('/fakeApi/stats.json', {
+                method: 'GET',
+            }).then(response => response.json());
+        },
+    };
+    settings = {
+        get: (): Promise<Settings> => {
+            console.log('api.settings.get');
+            return fetch('/fakeApi/settings.json', {
+                method: 'GET',
+            }).then(response => response.json());
+        },
+    };
     event = {
         page: (id: string, page: number): Promise<Events> => {
             console.log('api.event.page: %s %d', id, page);

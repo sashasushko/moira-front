@@ -2,16 +2,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import type { ContextRouter } from 'react-router-dom';
-import type { Event, Events as EventsType } from '../../Domain/Events';
-import type { Trigger, TriggerState } from '../../Domain/Trigger';
-import type { IMoiraApi } from '../../Api/MoiraAPI';
+import type { Event } from '../Domain/Events';
+import type { Trigger, TriggerState } from '../Domain/Trigger';
+import type { IMoiraApi } from '../Api/MoiraAPI';
 
 type Props = ContextRouter & { api: IMoiraApi };
 type State = {
     loading: boolean;
-    trigger: Trigger | {};
-    triggerState: TriggerState | {};
-    triggerEvents: Array<Event> | [];
+    trigger: ?Trigger;
+    triggerState: ?TriggerState;
+    triggerEvents: ?Array<Event>;
 };
 
 // Отвечает за
@@ -28,9 +28,9 @@ export default class Events extends React.Component {
         super();
         this.state = {
             loading: true,
-            trigger: {},
-            triggerState: {},
-            triggerEvents: [],
+            trigger: null,
+            triggerState: null,
+            triggerEvents: null,
         };
     }
 
@@ -41,9 +41,9 @@ export default class Events extends React.Component {
     async getTriggerData(): Promise<void> {
         const { id }: { id: string } = this.props.match.params;
         const { api } = this.props;
-        const trigger: Trigger = await api.trigger.get(id);
-        const triggerState: TriggerState = await api.trigger.state(id);
-        const triggerEvents: EventsType = await api.event.page(id, 0);
+        const trigger = await api.trigger.get(id);
+        const triggerState = await api.trigger.state(id);
+        const triggerEvents = await api.event.page(id, 0);
         this.setState({
             loading: false,
             trigger,
@@ -54,7 +54,7 @@ export default class Events extends React.Component {
 
     renderTriggerInfo(): React.Element<*> {
         // ToDo: вынести в отдельный компонент
-        const { id, name } = this.state.trigger;
+        const { id, name }: $Shape<Trigger> = this.state.trigger;
         return (
             <div>
                 <h2>{name}</h2>
