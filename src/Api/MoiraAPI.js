@@ -17,19 +17,34 @@ export interface IMoiraApi {
 
 export default class Api implements IMoiraApi {
     getPatternList(): Promise<PatternList> {
+<<<<<<< HEAD
         return fetch('/fakeApi/pattern.json', {
+=======
+        const url = '/fakeApi/pattern.json';
+        return fetch(url, {
+>>>>>>> 9401c23e4454c5cfce150fd172aaae52eb6c7cea
             method: 'GET',
         }).then(response => response.json());
     }
 
     getTagStats(): Promise<TagStatList> {
+<<<<<<< HEAD
         return fetch('/fakeApi/stats.json', {
+=======
+        const url = '/fakeApi/stats.json';
+        return fetch(url, {
+>>>>>>> 9401c23e4454c5cfce150fd172aaae52eb6c7cea
             method: 'GET',
         }).then(response => response.json());
     }
 
     getSettings(): Promise<Settings> {
+<<<<<<< HEAD
         return fetch('/fakeApi/settings.json', {
+=======
+        const url = '/fakeApi/settings.json';
+        return fetch(url, {
+>>>>>>> 9401c23e4454c5cfce150fd172aaae52eb6c7cea
             method: 'GET',
         }).then(response => response.json());
     }
