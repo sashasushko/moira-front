@@ -27,6 +27,7 @@
     "webpack": "^3.0.0"
   },
   "devDependencies": {
+    "@storybook/cli": "^3.1.6",
     "eslint": "3.19.0",
     "eslint-config-skbkontur-retail": "^2.1.2",
     "html-webpack-plugin": "^2.29.0",
