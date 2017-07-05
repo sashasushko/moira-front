@@ -1,12 +1,8 @@
-// Place your settings in this file to overwrite the default settings
 {
-    "eslint.options": {
-        "configFile": "C:\\Users\\sushko\\Documents\\Work\\moira-front\\.eslintrc"
-    },
-    "files.eol": "\n",
-    "flow.useNPMPackagedFlow": true,
     "javascript.validate.enable": false,
     "prettier.tabWidth": 4,
     "prettier.singleQuote": true,
-    "prettier.trailingComma": "es5"
+    "prettier.trailingComma": "none",
+    "files.eol": "\n",
+    "prettier.eslintIntegration": true
 }
