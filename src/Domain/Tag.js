@@ -2,7 +2,7 @@
 
 import type { Subscribtion } from './Subscribtion';
 
-export type Tag = {|
+export type TagList = {|
     list: Array<string>;
     tags: {|
         [tag: string]: {|
