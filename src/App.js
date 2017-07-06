@@ -26,60 +26,19 @@ export default function App(props: Props): React.Element<*> {
         path?: string;
         strict?: boolean;
     }): React.Element<*> {
-        return (
-            <Route
-                exact={exact}
-                path={path}
-                render={props => <Component {...props} {...rest} />}
-            />
-        );
+        return <Route exact={exact} path={path} render={props => <Component {...props} {...rest} />} />;
     }
 
     return (
         <MainLayout>
             <Switch>
-                <RouteWithCustomProps
-                    exact
-                    path='/'
-                    component={Triggers}
-                    api={props.api}
-                />
-                <RouteWithCustomProps
-                    exact
-                    path='/events/:id'
-                    component={Events}
-                    api={props.api}
-                />
-                <RouteWithCustomProps
-                    exact
-                    path='/trigger/:id?'
-                    component={Trigger}
-                    api={props.api}
-                />
-                <RouteWithCustomProps
-                    exact
-                    path='/settings'
-                    component={Settings}
-                    api={props.api}
-                />
-                <RouteWithCustomProps
-                    exact
-                    path='/tags'
-                    component={Tags}
-                    api={props.api}
-                />
-                <RouteWithCustomProps
-                    exact
-                    path='/notifications'
-                    component={Notifications}
-                    api={props.api}
-                />
-                <RouteWithCustomProps
-                    exact
-                    path='/patterns'
-                    component={Patterns}
-                    api={props.api}
-                />
+                <Route exact path='/' component={Triggers} />
+                <RouteWithCustomProps exact path='/events/:id' component={Events} api={props.api} />
+                <RouteWithCustomProps exact path='/trigger/:id?' component={Trigger} api={props.api} />
+                <RouteWithCustomProps exact path='/settings' component={Settings} api={props.api} />
+                <RouteWithCustomProps exact path='/tags' component={Tags} api={props.api} />
+                <RouteWithCustomProps exact path='/notifications' component={Notifications} api={props.api} />
+                <RouteWithCustomProps exact path='/patterns' component={Patterns} api={props.api} />
                 <Route render={() => <p>404. Page not found</p>} />
             </Switch>
         </MainLayout>
