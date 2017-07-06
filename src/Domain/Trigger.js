@@ -1,12 +1,12 @@
 // @flow
 
-import type { Metrics } from './Metrics';
+import type { MetricList } from './Metric';
 import type { Schedule } from './Schedule';
 
 export type LastCheck = {|
     state: string;
     timestamp: number;
-    metrics: Metrics;
+    metrics: MetricList;
     event_timestamp?: number;
     score: number;
     msg: string;
@@ -32,7 +32,7 @@ export type Trigger = {|
 |};
 
 export type TriggerState = {|
-    metrics: Metrics;
+    metrics: MetricList;
     timestamp: number;
     state: string;
     score: number;

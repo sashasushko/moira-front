@@ -2,7 +2,7 @@
 
 export type ContactConfig = {|
     type: string;
-    validation: string; // ??? всегда есть, пусть и пустая
+    validation: string;
     title?: string;
     img?: string;
     icon?: string;
@@ -15,7 +15,6 @@ export type Config = {|
     paging: {|
         size: number;
     |};
-    // ??? что за event_history
     event_history: {|
         paging: {|
             size: number;
