@@ -1,64 +1,49 @@
 // @flow
 import React from 'react';
-import { Link } from 'react-router-dom';
 import type { ContextRouter } from 'react-router-dom';
-import type { Trigger } from '../Domain/Trigger';
 import type { IMoiraApi } from '../Api/MoiraAPI';
+import type { Trigger } from '../Domain/Trigger';
 import parsePathSearch from '../Helpers/parsePathSearch';
+import TriggerList from '../Components/TriggerList/TriggerList';
 
 type Props = ContextRouter & { api: IMoiraApi };
-type State = {
+type State = {|
     loading: boolean;
-    triggers: ?Array<Trigger>;
-};
+    total: ?number;
+    page: ?number;
+    size: ?number;
+    list: ?Array<Trigger>;
+|};
 
-// Отвечает за
-// + получение списка триггеров и передачу на вывод
-// - пагинацию
-
-export default class Triggers extends React.Component {
+export default class TriggersContainer extends React.Component {
     props: Props;
-    state: State;
-
-    constructor() {
-        super();
-        this.state = {
-            loading: true,
-            triggers: null,
-        };
-    }
+    state: State = {
+        loading: true,
+        total: null,
+        page: null,
+        size: null,
+        list: null,
+    };
 
     componentDidMount() {
-        this.getTriggers();
+        this.getData();
     }
 
-    async getTriggers(): Promise<void> {
+    async getData(): Promise<void> {
         const { location, api } = this.props;
         const parsedPath = parsePathSearch(location.search);
         const page = typeof parsedPath.page === 'number' ? parsedPath.page : 0;
-        const triggers = await api.getTriggerList(page);
-        this.setState({ loading: false, triggers: triggers.list });
-    }
-
-    renderTriggersList(): React.Element<*> {
-        // ToDo: вынести в отдельный компонент
-        const { triggers } = this.state;
-        const triggersList = triggers.map(trigger => (
-            <li key={trigger.id}>
-                <Link to={'/events/' + trigger.id}>
-                    {trigger.name}
-                </Link>
-            </li>
-        ));
-        return <ul>{triggersList}</ul>;
+        const triggerList = await api.getTriggerList(page);
+        this.setState({ loading: false, ...triggerList });
     }
 
     render(): React.Element<*> {
-        const { loading } = this.state;
+        const { loading, list } = this.state;
+        const items = list ? list : [];
         return (
             <div>
                 {loading && <p>Loading...</p>}
-                {!loading && this.renderTriggersList()}
+                <TriggerList items={items} />
             </div>
         );
     }

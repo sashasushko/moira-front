@@ -17,49 +17,49 @@ export interface IMoiraApi {
 
 export default class Api implements IMoiraApi {
     getPatternList(): Promise<PatternList> {
-        const url = '/fakeApi/pattern.json';
+        const url = '/api/pattern.json';
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
     }
 
     getTagStats(): Promise<TagStatList> {
-        const url = '/fakeApi/stats.json';
+        const url = '/api/stats.json';
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
     }
 
     getSettings(): Promise<Settings> {
-        const url = '/fakeApi/settings.json';
+        const url = '/api/settings.json';
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
     }
 
     getTriggerList(page: number): Promise<TriggerList> {
-        const url = '/fakeApi/triggers.json?page=' + page;
+        const url = '/api/triggers.json?page=' + page;
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
     }
 
     getTrigger(id: string): Promise<Trigger> {
-        const url = '/fakeApi/trigger-data.json?id=' + id;
+        const url = '/api/trigger-data.json?id=' + id;
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
     }
 
     getTriggerState(id: string): Promise<TriggerState> {
-        const url = '/fakeApi/trigger-state.json?id=' + id;
+        const url = '/api/trigger-state.json?id=' + id;
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
     }
 
     getTriggerEvents(id: string, page: number): Promise<Events> {
-        const url = '/fakeApi/trigger-state.json?id=' + id + '&page=' + page;
+        const url = '/api/trigger-state.json?id=' + id + '&page=' + page;
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
