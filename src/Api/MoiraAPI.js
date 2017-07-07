@@ -1,5 +1,5 @@
 // @flow
-import type { Events } from '../Domain/Events';
+import type { EventList } from '../Domain/Event';
 import type { Trigger, TriggerList, TriggerState } from '../Domain/Trigger';
 import type { Settings } from '../Domain/Settings';
 import type { TagStatList } from '../Domain/Tag';
@@ -12,7 +12,7 @@ export interface IMoiraApi {
     getTriggerList(page: number): Promise<TriggerList>;
     getTrigger(id: string): Promise<Trigger>;
     getTriggerState(id: string): Promise<TriggerState>;
-    getTriggerEvents(id: string, page: number): Promise<Events>;
+    getTriggerEvents(id: string, page: number): Promise<EventList>;
 }
 
 export default class Api implements IMoiraApi {
@@ -58,7 +58,7 @@ export default class Api implements IMoiraApi {
         }).then(response => response.json());
     }
 
-    getTriggerEvents(id: string, page: number): Promise<Events> {
+    getTriggerEvents(id: string, page: number): Promise<EventList> {
         const url = '/api/trigger-state.json?id=' + id + '&page=' + page;
         return fetch(url, {
             method: 'GET',
