@@ -14,6 +14,7 @@
         "babel-preset-flow": "^6.23.0",
         "babel-preset-react": "^6.24.1",
         "babel-preset-stage-0": "^6.24.1",
+        "classnames-loader": "^2.0.0",
         "css-loader": "^0.28.4",
         "file-loader": "^0.11.2",
         "flow-bin": "^0.48.0",
