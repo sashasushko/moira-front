@@ -2,11 +2,12 @@
 import React from 'react';
 import type { ContextRouter } from 'react-router-dom';
 import type { IMoiraApi } from '../Api/MoiraAPI';
+import type { withMoiraApi } from '../Api/MoiraApiInjection';
 import type { Trigger } from '../Domain/Trigger';
 import parsePathSearch from '../Helpers/parsePathSearch';
 import TriggerList from '../Components/TriggerList/TriggerList';
 
-type Props = ContextRouter & { api: IMoiraApi };
+type Props = ContextRouter & { moiraApi: IMoiraApi };
 type State = {|
     loading: boolean;
     total: ?number;
@@ -15,7 +16,7 @@ type State = {|
     list: ?Array<Trigger>;
 |};
 
-export default class TriggersContainer extends React.Component {
+class TriggersContainer extends React.Component {
     props: Props;
     state: State = {
         loading: true,
@@ -30,10 +31,10 @@ export default class TriggersContainer extends React.Component {
     }
 
     async getData(): Promise<void> {
-        const { location, api } = this.props;
+        const { location, moiraApi } = this.props;
         const parsedPath = parsePathSearch(location.search);
         const page = typeof parsedPath.page === 'number' ? parsedPath.page : 0;
-        const triggerList = await api.getTriggerList(page);
+        const triggerList = await moiraApi.getTriggerList(page);
         this.setState({ loading: false, ...triggerList });
     }
 
@@ -48,3 +49,5 @@ export default class TriggersContainer extends React.Component {
         );
     }
 }
+
+export default withMoiraApi(TriggersContainer);
