@@ -2,7 +2,7 @@
 import React from 'react';
 import type { ContextRouter } from 'react-router-dom';
 import type { IMoiraApi } from '../Api/MoiraAPI';
-import type { withMoiraApi } from '../Api/MoiraApiInjection';
+import { withMoiraApi } from '../Api/MoiraApiInjection';
 import type { Trigger } from '../Domain/Trigger';
 import parsePathSearch from '../Helpers/parsePathSearch';
 import TriggerList from '../Components/TriggerList/TriggerList';

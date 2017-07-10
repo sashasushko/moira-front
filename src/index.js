@@ -7,23 +7,6 @@ import Api from './Api/MoiraAPI';
 import App from './App';
 import { ApiProvider } from './Api/MoiraApiInjection';
 
-class ApiProvider extends React.Component {
-    static childContextTypes = {
-        moiraApi: React.PropTypes.object,
-    };
-
-    getChildContext() {
-        return {
-            moiraApi: this.props.moiraApi,
-        };
-    }
-
-    render() {
-        const { children } = this.props;
-        return children;
-    }
-}
-
 const api = new Api();
 
 const render = Component => {

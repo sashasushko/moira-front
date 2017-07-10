@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import type { IMoiraApi } from './Api/MoiraAPI';
 import MainLayout from './Layout/MainLayout';
 import TriggersContainer from './Containers/TriggersContainer';
 
