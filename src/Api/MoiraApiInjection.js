@@ -32,7 +32,7 @@ function createApiInjectionWrapper(apiKey: string) {
             };
 
             render(): React.Element<*> {
-                return <Component {...this.props} {...this.context} />;
+                return <Component {...this.props} {...{ [apiKey]: this.context[apiKey] }} />;
             }
         };
     };
