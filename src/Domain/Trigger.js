@@ -18,7 +18,7 @@ export type Trigger = {|
     desc?: string;
     expression: string;
     warn_value: number;
-    error_value: string;
+    error_value: ?number;
     last_check: LastCheck;
     targets: Array<string>;
     ttl: number;
@@ -26,7 +26,7 @@ export type Trigger = {|
     patterns: Array<string>;
     tags: Array<string>;
     throttling: number;
-    timestamp: number;
+    timestamp?: number;
     is_simple_trigger: boolean;
     sched: Schedule;
 |};
