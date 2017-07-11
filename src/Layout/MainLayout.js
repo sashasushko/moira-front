@@ -10,22 +10,15 @@ export default function MainLayout(props: Props): React.Element<*> {
     return (
         <div>
             <header>
-                <h1>Moira</h1>
+                <h1>
+                    <Link to='/'>Moira</Link>
+                </h1>
                 <nav>
                     <p>
-                        <i>Pages:</i>
-                        {' '}
-                        <Link to='/'>Triggers</Link>
-                        {' '}
-                        <Link to='/settings'>Settings</Link>
+                        <i>Pages:</i> <Link to='/'>Triggers</Link> <Link to='/settings'>Settings</Link>
                     </p>
                     <p>
-                        <i>Hidden pages:</i>
-                        {' '}
-                        <Link to='/tags'>Tags</Link>
-                        {' '}
-                        <Link to='/notifications'>Notifications</Link>
-                        {' '}
+                        <i>Hidden pages:</i> <Link to='/tags'>Tags</Link> <Link to='/notifications'>Notifications</Link>{' '}
                         <Link to='/patterns'>Patterns</Link>
                     </p>
                 </nav>
