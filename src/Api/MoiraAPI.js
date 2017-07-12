@@ -45,21 +45,21 @@ export default class Api implements IMoiraApi {
     }
 
     getTrigger(id: string): Promise<Trigger> {
-        const url = '/api/trigger-data.json?id=' + id;
+        const url = '/api/trigger.json?id=' + id;
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
     }
 
     getTriggerState(id: string): Promise<TriggerState> {
-        const url = '/api/trigger-state.json?id=' + id;
+        const url = '/api/state.json?id=' + id;
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
     }
 
     getTriggerEvents(id: string, page: number): Promise<EventList> {
-        const url = '/api/trigger-state.json?id=' + id + '&page=' + page;
+        const url = '/api/events.json?id=' + id + '&page=' + page;
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
