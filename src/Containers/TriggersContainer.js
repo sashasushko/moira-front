@@ -40,11 +40,10 @@ class TriggersContainer extends React.Component {
 
     render(): React.Element<*> {
         const { loading, list } = this.state;
-        const items = list ? list : [];
         return (
             <div>
                 {loading && <p>Loading...</p>}
-                <TriggerList items={items} />
+                {list && <TriggerList items={list} />} {/* ??? */}
             </div>
         );
     }
