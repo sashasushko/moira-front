@@ -9,7 +9,7 @@ export type LastCheck = {|
     metrics: MetricList;
     event_timestamp?: number;
     score: number;
-    msg: string;
+    msg?: string;
 |};
 
 export type Trigger = {|
@@ -19,7 +19,7 @@ export type Trigger = {|
     expression: string;
     warn_value: number;
     error_value: ?number;
-    last_check: LastCheck;
+    last_check?: LastCheck;
     targets: Array<string>;
     ttl: number;
     ttl_state: string;
