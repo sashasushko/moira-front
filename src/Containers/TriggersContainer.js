@@ -43,7 +43,7 @@ class TriggersContainer extends React.Component {
         return (
             <div>
                 {loading && <p>Loading...</p>}
-                {list && <TriggerList items={list} />} {/* ??? */}
+                {list && <TriggerList items={list} />}
             </div>
         );
     }
