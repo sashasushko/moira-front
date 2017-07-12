@@ -11,6 +11,6 @@ export type Metric = {|
 
 export type MetricState = 'OK' | 'NODATA' | 'WARNING' | 'ERROR';
 
-export type MetricList = {|
+export type MetricList = {
     [metric: string]: Metric;
-|};
+};
