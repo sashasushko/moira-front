@@ -10,7 +10,7 @@ type Props = {|
 
 export default function TriggerList(props: Props): React.Element<*> {
     return (
-        <section width='100%'>
+        <section>
             <header className={styles.header}>
                 <div className={styles.tags}>Tags</div>
                 <div className={styles.trigger}>Trigger</div>
