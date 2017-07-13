@@ -95,7 +95,7 @@ export default class TriggerListItem extends React.Component {
                     </td>
                     <td width='35%'>
                         <small>
-                            {parseTimestamp(event_timestamp)}
+                            {typeof event_timestamp === 'number' && parseTimestamp(event_timestamp)}
                         </small>
                     </td>
                     <td width='20%'>
