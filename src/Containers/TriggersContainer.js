@@ -5,25 +5,22 @@ import type { IMoiraApi } from '../Api/MoiraAPI';
 import { withMoiraApi } from '../Api/MoiraApiInjection';
 import type { Trigger } from '../Domain/Trigger';
 import parsePathSearch from '../Helpers/parsePathSearch';
+import TagSelector from '../Components/TagSelector/TagSelector';
 import TriggerList from '../Components/TriggerList/TriggerList';
 
 type Props = ContextRouter & { moiraApi: IMoiraApi };
 type State = {|
     loading: boolean;
-    total: ?number;
-    page: ?number;
-    size: ?number;
-    list: ?Array<Trigger>;
+    triggers: ?Array<Trigger>;
+    tags: ?Array<string>;
 |};
 
 class TriggersContainer extends React.Component {
     props: Props;
     state: State = {
         loading: true,
-        total: null,
-        page: null,
-        size: null,
-        list: null,
+        triggers: null,
+        tags: null,
     };
 
     componentDidMount() {
@@ -35,15 +32,31 @@ class TriggersContainer extends React.Component {
         const parsedPath = parsePathSearch(location.search);
         const page = typeof parsedPath.page === 'number' ? parsedPath.page : 0;
         const triggerList = await moiraApi.getTriggerList(page);
-        this.setState({ loading: false, ...triggerList });
+        const tagList = await moiraApi.getTagList();
+        this.setState({ loading: false, triggers: triggerList.list, tags: tagList.list });
+    }
+
+    handleSelectTag(tag: string) {
+        const { push } = this.props.history;
+        const { search } = this.props.location;
+        const { tags: parsedTags } = parsePathSearch(search);
+        const tags = typeof parsedTags === 'string' ? parsedTags.split(',') : [];
+        const separator = tags.length !== 0 ? ',' : '';
+        const tagsUrl = '?tags=' + tags.join() + separator + tag;
+        push(tagsUrl);
     }
 
     render(): React.Element<*> {
-        const { loading, list } = this.state;
+        const { loading, triggers, tags } = this.state;
+        const { search } = this.props.location;
+        const { tags: parsedTags } = parsePathSearch(search);
+        const selectedTags = typeof parsedTags === 'string' ? parsedTags.split(',') : [];
         return (
             <div>
                 {loading && <p>Loading...</p>}
-                {list && <TriggerList items={list} />}
+                {tags &&
+                    <TagSelector tags={tags} selectedTags={selectedTags} onSelect={tag => this.handleSelectTag(tag)} />}
+                {triggers && <TriggerList items={triggers} />}
             </div>
         );
     }
