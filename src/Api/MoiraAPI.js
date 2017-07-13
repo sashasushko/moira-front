@@ -2,11 +2,12 @@
 import type { EventList } from '../Domain/Event';
 import type { Trigger, TriggerList, TriggerState } from '../Domain/Trigger';
 import type { Settings } from '../Domain/Settings';
-import type { TagStatList } from '../Domain/Tag';
+import type { TagList, TagStatList } from '../Domain/Tag';
 import type { PatternList } from '../Domain/Pattern';
 
 export interface IMoiraApi {
     getPatternList(): Promise<PatternList>;
+    getTagList(): Promise<TagList>;
     getTagStats(): Promise<TagStatList>;
     getSettings(): Promise<Settings>;
     getTriggerList(page: number): Promise<TriggerList>;
@@ -18,6 +19,13 @@ export interface IMoiraApi {
 export default class Api implements IMoiraApi {
     getPatternList(): Promise<PatternList> {
         const url = '/api/pattern.json';
+        return fetch(url, {
+            method: 'GET',
+        }).then(response => response.json());
+    }
+
+    getTagList(): Promise<TagList> {
+        const url = '/api/tag.json';
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
