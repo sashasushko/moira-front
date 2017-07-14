@@ -6,10 +6,11 @@ type Props = {|
     tags: Array<string>;
     selectedTags: Array<string>;
     onSelect: (tag: string) => void;
+    onRemove: (tag: string) => void;
 |};
 
 export default function TriggerTotalState(props: Props): React.Element<*> {
-    const { tags, selectedTags, onSelect } = props;
+    const { tags, selectedTags, onSelect, onRemove } = props;
     return (
         <div>
             <select
@@ -26,7 +27,7 @@ export default function TriggerTotalState(props: Props): React.Element<*> {
                 )}
             </select>
             <div>
-                {selectedTags.map((tag, i) => <Tag key={i} title={tag} />)}
+                {selectedTags.map((tag, i) => <Tag key={i} title={tag} onRemove={() => onRemove(tag)} />)}
             </div>
             <hr />
         </div>

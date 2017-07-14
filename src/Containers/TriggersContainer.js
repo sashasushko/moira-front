@@ -37,13 +37,22 @@ class TriggersContainer extends React.Component {
     }
 
     handleSelectTag(tag: string) {
-        const { push } = this.props.history;
         const { search } = this.props.location;
         const { tags: parsedTags } = parsePathSearch(search);
+        // выделить в отдельный компонент
         const tags = typeof parsedTags === 'string' ? parsedTags.split(',') : [];
         const separator = tags.length !== 0 ? ',' : '';
         const tagsUrl = '?tags=' + tags.join() + separator + tag;
-        push(tagsUrl);
+        this.props.history.push(tagsUrl);
+    }
+
+    handleRemoveTag(tag: string) {
+        const { search } = this.props.location;
+        const { tags: parsedTags } = parsePathSearch(search);
+        const tags = typeof parsedTags === 'string' ? parsedTags.split(',') : [];
+        const filtredTags = tags.filter(item => item !== tag);
+        const tagsUrl = filtredTags.length !== 0 ? '?tags=' + filtredTags.join() : '/';
+        this.props.history.push(tagsUrl);
     }
 
     render(): React.Element<*> {
@@ -55,7 +64,12 @@ class TriggersContainer extends React.Component {
             <div>
                 {loading && <p>Loading...</p>}
                 {tags &&
-                    <TagSelector tags={tags} selectedTags={selectedTags} onSelect={tag => this.handleSelectTag(tag)} />}
+                    <TagSelector
+                        tags={tags}
+                        selectedTags={selectedTags}
+                        onSelect={tag => this.handleSelectTag(tag)}
+                        onRemove={tag => this.handleRemoveTag(tag)}
+                    />}
                 {triggers && <TriggerList items={triggers} />}
             </div>
         );
