@@ -9,28 +9,15 @@ type Props = {
 export default function MainLayout(props: Props): React.Element<*> {
     return (
         <div>
-            <header>
-                <h1>
-                    <Link to='/'>Moira</Link>
-                </h1>
-                <nav>
-                    <p>
-                        <i>Pages:</i> <Link to='/'>Triggers</Link> <Link to='/settings'>Settings</Link>
-                    </p>
-                    <p>
-                        <i>Hidden pages:</i> <Link to='/tags'>Tags</Link> <Link to='/notifications'>Notifications</Link>{' '}
-                        <Link to='/patterns'>Patterns</Link>
-                    </p>
-                </nav>
+            <header className='site-header'>
+                <Link to='/'>
+                    <img className='site-logo' src='/logo.png' alt='Moira' />
+                </Link>
             </header>
-            <hr />
             <main>
                 {props.children}
             </main>
-            <hr />
-            <footer>
-                <p>© Moira, SKB Kontur</p>
-            </footer>
+            <footer className='site-footer'>© SKB Kontur</footer>
         </div>
     );
 }
