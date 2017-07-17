@@ -1,16 +1,17 @@
 // @flow
 import React from 'react';
 import type { Trigger } from '../../Domain/Trigger';
-// import parseTimestamp from '../../Helpers/parseTimestamp';
+import parseTime from '../../Helpers/parseTime';
 
 type Props = {|
-    data?: Trigger;
+    data: ?Trigger;
 |};
 
 export default function TriggerEditForm(props: Props): React.Element<*> {
-    const { name, desc, targets = [''], error_value, warn_value, expression, ttl_state, ttl } = props.data
+    const { name, desc, targets = [''], error_value, warn_value, expression, ttl_state, ttl, sched } = props.data
         ? props.data
         : {};
+    const { endOffset, days, startOffset, tzOffset } = sched;
     return (
         <form>
             <p>
@@ -70,7 +71,7 @@ export default function TriggerEditForm(props: Props): React.Element<*> {
                 </p>
             </fieldset>
             <p>
-                <select value={ttl_state}>
+                <select value={ttl_state} onChange={() => {}}>
                     <option value='OK'>OK</option>
                     <option value='WARN'>WARN</option>
                     <option value='ERROR'>ERROR</option>
@@ -85,8 +86,21 @@ export default function TriggerEditForm(props: Props): React.Element<*> {
                 <label htmlFor='descr'>Watch time</label>
                 <br />
                 <label>
-                    {/* <input type='checkbox' /> */}
+                    <input type='checkbox' defaultChecked={days.filter(x => !x.enabled).length === 0} />
                 </label>
+                {days.map((item, i) => {
+                    const { name, enabled } = item;
+                    return (
+                        <label key={i}>
+                            <input type='checkbox' defaultValue={name} defaultChecked={enabled} />
+                            {name}
+                        </label>
+                    );
+                })}
+            </p>
+            <p>
+                from <input type='text' defaultValue={parseTime(startOffset)} /> till{' '}
+                <input type='text' defaultValue={parseTime(endOffset)} />
             </p>
             <button>Save</button>
             <button>Import</button>
