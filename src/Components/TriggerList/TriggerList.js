@@ -5,17 +5,14 @@ import TriggerListItem from '../TriggerListItem/TriggerListItem';
 import styles from './TriggerList.less';
 
 type Props = {|
-    items: Array<Trigger>;
+    triggers: Array<Trigger>;
 |};
 
 export default function TriggerList(props: Props): React.Element<*> {
+    const { triggers } = props;
     return (
-        <section>
-            <header className={styles.header}>
-                <div className={styles.tags}>Tags</div>
-                <div className={styles.trigger}>Trigger</div>
-            </header>
-            {props.items.map(item => <TriggerListItem key={item.id} item={item} />)}
-        </section>
+        <div className={styles.triggerList}>
+            {triggers.map(trigger => <TriggerListItem key={trigger.id} trigger={trigger} />)}
+        </div>
     );
 }

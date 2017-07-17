@@ -476,6 +476,4 @@ const items = [
     },
 ];
 
-storiesOf('TriggersTriggerList', module)
-    .addDecorator(StoryRouter())
-    .add('default', () => <TriggerList items={items} />);
+storiesOf('TriggerList', module).addDecorator(StoryRouter()).add('default', () => <TriggerList triggers={items} />);
