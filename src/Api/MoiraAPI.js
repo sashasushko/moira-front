@@ -1,4 +1,5 @@
 // @flow
+import type { Config } from '../Domain/Config';
 import type { EventList } from '../Domain/Event';
 import type { Trigger, TriggerList, TriggerState } from '../Domain/Trigger';
 import type { Settings } from '../Domain/Settings';
@@ -6,6 +7,7 @@ import type { TagList, TagStatList } from '../Domain/Tag';
 import type { PatternList } from '../Domain/Pattern';
 
 export interface IMoiraApi {
+    getConfig(): Promise<Config>;
     getPatternList(): Promise<PatternList>;
     getTagList(): Promise<TagList>;
     getTagStats(): Promise<TagStatList>;
@@ -17,6 +19,13 @@ export interface IMoiraApi {
 }
 
 export default class Api implements IMoiraApi {
+    getConfig(): Promise<Config> {
+        const url = '/api/config.json';
+        return fetch(url, {
+            method: 'GET',
+        }).then(response => response.json());
+    }
+
     getPatternList(): Promise<PatternList> {
         const url = '/api/pattern.json';
         return fetch(url, {
