@@ -1,42 +1,97 @@
 :local {
-    .item {
-        margin-top: 1em;
-        margin-bottom: 2em;
+    .row {
         display: flex;
-        flex-wrap: wrap;
+        align-items: flex-start;
     }
-    .tags {
-        width: 25%;
+
+    .row:not(:first-child) {
+        margin-top: 2em;
+        padding-top: 2em;
+        border-top: 1px solid #eee;
     }
-    .trigger {
-        width: 75%;
+
+    .chart {
+        width: 160px;
+
+        svg {
+            display: block;
+            margin: 0 auto;
+            width: 80px;
+            height: 80px;
+            transform: rotate(-90deg);
+        }
     }
-    .trigger > a {
-        color: inherit;
+
+    .counters {
+        display: flex;
+        justify-content: center;
+
+        span {
+            margin: 1em 1em 0;
+            font-size: 16px;
+            line-height: 20px;
+        }
+
+        [data-state="OK"] {
+            color: #090;
+        }
+
+        [data-state="NODATA"] {
+            color: #999;
+        }
+
+        [data-state="WARNING"] {
+            color: #fc0;
+        }
+
+        [data-state="ERROR"] {
+            color: #f00;
+        }
+    }
+
+    .legend {
+        display: flex;
+        font-size: 18px;
+        line-height: 25px;
+        align-items: flex-start;
+        justify-content: center;
+
+        & > * {
+            margin: 1em 1em 0;
+        }
+    }
+
+    .data {
+        padding-right: 30px;
+        padding-left: 30px;
+        width: calc(~"80% - 160px");
+        flex-grow: 1;
+        box-sizing: border-box;
+    }
+
+    .title {
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 24px;
+        line-height: 30px;
+    }
+
+    .title a {
+        color: #000;
         text-decoration: none;
     }
-    .title {
-        font-weight: bold;
+
+    .title a:hover {
+        color: #f00;
     }
-    a:hover > .title {
-        color: red;
-    }
-    .code {
-        overflow: hidden;
-        max-width: 100%;
+
+    .target {
+        margin-top: 5px;
+        word-wrap: break-word;
         color: #999;
-        white-space: nowrap;
-        text-overflow: ellipsis;
     }
-    .toggles {
-        margin-top: 0.5em;
-        margin-left: 25%;
-        width: 100%;
-    }
-    .toggles > * {
-        margin-right: 1em;
-    }
-    .metrics {
-        width: 100%;
+
+    .tags {
+        width: 20%;
     }
 }

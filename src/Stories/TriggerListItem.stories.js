@@ -64,4 +64,6 @@ const item = {
     tags: ['clusterconfig', 'KE.Infra.Cloud'],
 };
 
-storiesOf('TriggerListItem', module).addDecorator(StoryRouter()).add('default', () => <TriggerListItem item={item} />);
+storiesOf('TriggerListItem', module)
+    .addDecorator(StoryRouter())
+    .add('default', () => <TriggerListItem trigger={item} />);
