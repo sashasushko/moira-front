@@ -22,6 +22,10 @@ export const StatesColors = {
 
 export type State = $Keys<typeof States>;
 
+export function getStateColor(state: State): string {
+    return StatesColors[state];
+}
+
 // State;
 // getCaption();
 // getColor();

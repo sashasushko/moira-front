@@ -2,8 +2,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Tag from '../Tag/Tag';
-import { States, StatesColors } from '../../Domain/States';
-import type { State } from '../../Domain/States';
+import { States, StatesColors } from '../../Domain/State';
+import type { State } from '../../Domain/State';
 import type { Trigger } from '../../Domain/Trigger';
 import styles from './TriggerListItem.less';
 
