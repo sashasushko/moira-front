@@ -1,147 +1,112 @@
 // @flow
 import React from 'react';
 import { Link } from 'react-router-dom';
-import type { Trigger } from '../../Domain/Trigger';
-import type { MetricList, MetricState } from '../../Domain/Metric';
 import Tag from '../Tag/Tag';
-import parseTimestamp from '../../Helpers/parseTimestamp';
+import { States, StatesColors } from '../../Domain/States';
+import type { State } from '../../Domain/States';
+import type { Trigger } from '../../Domain/Trigger';
 import styles from './TriggerListItem.less';
 
 type Props = {|
     trigger: Trigger;
 |};
 
-type State = {|
-    showedMetrics: ?MetricState;
-|};
+export default function TriggerListItem(props: Props): React.Element<*> {
+    const { id, name, targets, tags } = props.trigger;
 
-export default class TriggerListItem extends React.Component {
-    props: Props;
-    state: State = {
-        showedMetrics: null,
-    };
+    function countMetrics(): Array<{ state: State; length: number }> {
+        const { last_check = {} } = props.trigger;
+        const { metrics } = last_check;
+        return Object.keys(States)
+            .map(state => {
+                return {
+                    state,
+                    length: Object.keys(metrics).filter(x => metrics[x].state === state).length,
+                };
+            })
+            .filter(x => x.length !== 0);
+    }
 
-    // countMetrics(items: MetricList, state: MetricState): number {
-    //     return Object.keys(items).filter(key => items[key].state === state).length;
-    // }
+    function separateMetricState(): Array<string> {
+        const notOkMetrics = countMetrics().filter(x => x.state !== States.OK).map(x => x.state);
+        return notOkMetrics.length === 0 ? [States.OK] : notOkMetrics;
+    }
 
-    // renderPatterns(): Array<React.Element<*>> {
-    //     const { patterns } = this.props.trigger;
-    //     return patterns.map((pattern, index) => {
-    //         return (
-    //             <div key={index} className={styles.code}>
-    //                 {pattern}
-    //             </div>
-    //         );
-    //     });
-    // }
+    function renderMetricState(): React.Element<*> {
+        const states = separateMetricState();
+        const [color1, color2, color3] = states;
+        switch (states.length) {
+            case 1:
+                return (
+                    <svg viewBox='-1 -1 2 2'>
+                        <circle cx='0' cy='0' r='1' fill={StatesColors[color1]} />
+                    </svg>
+                );
+            case 2:
+                return (
+                    <svg viewBox='-1 -1 2 2'>
+                        <path d='M 1 0 A 1 1 0 0 1 -1 1.2246467991473532e-16 L 0 0' fill={StatesColors[color1]} />
+                        <path
+                            d='M -1 1.2246467991473532e-16 A 1 1 0 0 1 1 -2.4492935982947064e-16 L 0 0'
+                            fill={StatesColors[color2]}
+                        />
+                    </svg>
+                );
+            case 3:
+                return (
+                    <svg viewBox='-1 -1 2 2'>
+                        <path
+                            d='M 1 0 A 1 1 0 0 1 -0.48175367410171543 0.8763066800438635 L 0 0'
+                            fill={StatesColors[color1]}
+                        />
+                        <path
+                            d='M -0.48175367410171543 0.8763066800438635 A 1 1 0 0 1 -0.48175367410171527 -0.8763066800438636 L 0 0'
+                            fill={StatesColors[color2]}
+                        />
+                        <path
+                            d='M -0.48175367410171527 -0.8763066800438636 A 1 1 0 0 1 1 -2.4492935982947064e-16 L 0 0'
+                            fill={StatesColors[color3]}
+                        />
+                    </svg>
+                );
+            default:
+                return <div />;
+        }
+    }
 
-    // renderTargets(): Array<React.Element<*>> {
-    //     const { targets } = this.props.trigger;
-    //     return targets.map((target, index) => {
-    //         return (
-    //             <div key={index} className={styles.code}>
-    //                 {target}
-    //             </div>
-    //         );
-    //     });
-    // }
-
-    // renderToggles(): React.Element<*> {
-    //     const { last_check } = this.props.trigger;
-    //     const { showedMetrics } = this.state;
-    //     const { metrics } = last_check ? last_check : {};
-    //     const okMetrics = this.countMetrics(metrics, 'OK');
-    //     const nodataMetrics = this.countMetrics(metrics, 'NODATA');
-    //     const warningMetrics = this.countMetrics(metrics, 'WARNING');
-    //     const errorMetrics = this.countMetrics(metrics, 'ERROR');
-    //     return (
-    //         <div className={styles.toggles}>
-    //             {okMetrics !== 0 &&
-    //                 <button onClick={() => this.setState({ showedMetrics: 'OK' })}>
-    //                     OK {okMetrics}
-    //                 </button>}
-    //             {nodataMetrics !== 0 &&
-    //                 <button onClick={() => this.setState({ showedMetrics: 'NODATA' })}>
-    //                     NODATA {nodataMetrics}
-    //                 </button>}
-    //             {warningMetrics !== 0 &&
-    //                 <button onClick={() => this.setState({ showedMetrics: 'WARNING' })}>
-    //                     WARNING {warningMetrics}
-    //                 </button>}
-    //             {errorMetrics !== 0 &&
-    //                 <button onClick={() => this.setState({ showedMetrics: 'WARNING' })}>
-    //                     ERROR {errorMetrics}
-    //                 </button>}
-    //             {showedMetrics && <button onClick={() => this.setState({ showedMetrics: null })}>×</button>}
-    //         </div>
-    //     );
-    // }
-
-    // renderMetrics(): React.Element<*> {
-    //     const { last_check } = this.props.trigger;
-    //     const { metrics } = last_check ? last_check : {};
-    //     const { showedMetrics } = this.state;
-    //     const metricsList = Object.keys(metrics).filter(key => metrics[key].state === showedMetrics).map((key, i) => {
-    //         const { event_timestamp, value } = metrics[key];
-    //         return (
-    //             <tr key={i}>
-    //                 <td width='45%'>
-    //                     {key}
-    //                 </td>
-    //                 <td width='35%'>
-    //                     <small>
-    //                         {typeof event_timestamp === 'number' && parseTimestamp(event_timestamp)}
-    //                     </small>
-    //                 </td>
-    //                 <td width='20%'>
-    //                     {value || (!value && '—')}
-    //                 </td>
-    //             </tr>
-    //         );
-    //     });
-    //     return (
-    //         <table className={styles.metrics}>
-    //             <thead>
-    //                 <tr>
-    //                     <td>
-    //                         <i>Metric</i>
-    //                     </td>
-    //                     <td>
-    //                         <i>Last event</i>
-    //                     </td>
-    //                     <td>
-    //                         <i>Value</i>
-    //                     </td>
-    //                 </tr>
-    //             </thead>
-    //             <tbody>
-    //                 {metricsList}
-    //             </tbody>
-    //         </table>
-    //     );
-    // }
-
-    render(): React.Element<*> {
-        const { id, name, targets } = this.props.trigger;
-        return (
-            <section className={styles.row}>
-                <div className={styles.chart}>chart</div>
-                <div className={styles.data}>
-                    <h2 className={styles.title}>
-                        <Link to={'/events/' + id}>
-                            {name}
-                        </Link>
-                    </h2>
-                    <div className={styles.targets}>
-                        {targets.map((target, i) =>
-                            <div key={i} className={styles.target}>
-                                {target}
-                            </div>
-                        )}
-                    </div>
-                </div>
-            </section>
+    function renderMetricCounters(): Array<React.Element<*>> {
+        return countMetrics().map((item, i) =>
+            <span key={i} data-state={item.state}>
+                {item.length}
+            </span>
         );
     }
+
+    return (
+        <section className={styles.row}>
+            <div className={styles.chart}>
+                {renderMetricState()}
+                <div className={styles.counters}>
+                    {renderMetricCounters()}
+                </div>
+            </div>
+            <div className={styles.data}>
+                <h2 className={styles.title}>
+                    <Link to={'/events/' + id}>
+                        {name}
+                    </Link>
+                </h2>
+                <div className={styles.targets}>
+                    {targets.map((target, i) =>
+                        <div key={i} className={styles.target}>
+                            {target}
+                        </div>
+                    )}
+                </div>
+            </div>
+            <div className={styles.tags}>
+                {tags.map((tag, i) => <Tag key={i} title={tag} />)}
+            </div>
+        </section>
+    );
 }

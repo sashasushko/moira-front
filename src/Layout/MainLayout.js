@@ -10,14 +10,18 @@ export default function MainLayout(props: Props): React.Element<*> {
     return (
         <div>
             <header className='site-header'>
-                <Link to='/'>
-                    <img className='site-logo' src='/logo.png' alt='Moira' />
-                </Link>
+                <div className='container'>
+                    <Link to='/'>
+                        <img className='site-logo' src='/logo.png' alt='Moira' />
+                    </Link>
+                </div>
             </header>
-            <main>
+            <main className='container'>
                 {props.children}
             </main>
-            <footer className='site-footer'>© SKB Kontur</footer>
+            <footer className='site-footer'>
+                <div className='container'>© SKB Kontur</div>
+            </footer>
         </div>
     );
 }

@@ -1,9 +1,9 @@
 // @flow
 
-export type MetricState = 'OK' | 'NODATA' | 'WARNING' | 'ERROR';
+import type { State } from './States';
 
 export type Metric = {|
-    state: MetricState;
+    state: State;
     timestamp: number;
     suppressed?: boolean;
     event_timestamp?: number;
