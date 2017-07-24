@@ -1,9 +1,9 @@
 // @flow
 export const States = {
-    OK: 'OK',
     NODATA: 'NODATA',
     WARNING: 'WARNING',
     ERROR: 'ERROR',
+    OK: 'OK',
 };
 
 export const StatesCaptions = {
