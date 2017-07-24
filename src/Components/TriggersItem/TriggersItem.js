@@ -3,70 +3,125 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import type { Trigger } from '../../Domain/Trigger.js';
 import StateIndicator from '../StateIndicator/StateIndicator';
+import MetricsList from '../MetricsList/MetricsList';
 import Tag from '../Tag/Tag';
+import type { MetricList } from '../../Domain/Metric';
 import type { State } from '../../Domain/State';
 import { States, getStateColor } from '../../Domain/State';
+import classNames from 'classnames/bind';
 import styles from './TriggersItem.less';
+
+const cx = classNames.bind(styles);
 
 type Props = {|
     data: Trigger;
 |};
 
-export default function TriggersItem(props: Props): React.Element<*> {
-    const { id, name, targets, tags } = props.data;
+export default class TriggersItem extends React.Component {
+    state: {
+        showMetrics: boolean;
+    } = {
+        showMetrics: false,
+    };
+    props: Props;
 
-    function countMetrics(): Array<{ state: State; length: number }> {
-        const { last_check } = props.data;
-        const { metrics } = last_check ? last_check : {};
-        return Object.keys(States)
-            .map(state => {
-                return {
-                    state,
-                    length: Object.keys(metrics).filter(x => metrics[x].state === state).length,
-                };
-            })
-            .filter(x => x.length !== 0);
+    handleShowMetrics() {
+        const { showMetrics } = this.state;
+        this.setState({ showMetrics: !showMetrics });
     }
 
-    function composeMetricState(): Array<State> {
-        const notOkMetrics = countMetrics().filter(x => x.state !== States.OK).map(x => x.state);
+    composeMetrics(): { [state: State]: Array<MetricList> } {
+        const { last_check = {} } = this.props.data;
+        const { metrics } = last_check;
+        const sorted = {};
+        Object.keys(States).map(state => {
+            const filtred = Object.keys(metrics).filter(x => metrics[x].state === state);
+            if (filtred.length !== 0) {
+                sorted[state] = filtred.map(x => {
+                    return {
+                        [x]: metrics[x],
+                    };
+                });
+            }
+        });
+        return sorted;
+    }
+
+    composeStates(): Array<State> {
+        const metrics = this.composeMetrics();
+        const notOkMetrics = Object.keys(metrics).filter(x => x !== States.OK);
         return notOkMetrics.length === 0 ? [States.OK] : notOkMetrics;
     }
 
-    // function separateMetricState(): Array<State> {
-    //     const notOkMetrics = countMetrics().filter(x => x.state !== States.OK).map(x => x.state);
-    //     return notOkMetrics.length === 0 ? [States.OK] : notOkMetrics;
-    // }
+    renderMetrics(): React.Element<*> {
+        const metrics = this.composeMetrics();
+        const initialState = Object.keys(metrics)[0];
 
-    return (
-        <div className={styles.row}>
-            <div className={styles.state}>
-                <StateIndicator state={composeMetricState()} />
-            </div>
-            <div className={styles.counters}>
-                {countMetrics().map((item, i) =>
-                    <div key={i} style={{ color: getStateColor(item.state) }}>
-                        {item.length}
-                    </div>
+        return (
+            <div className={styles.metrics}>
+                {metrics[initialState].map(metric =>
+                    Object.entries(metric).map(([name, data], i) => {
+                        const { value = '—', event_timestamp } = data;
+                        return (
+                            <div key={i} className={styles.metric}>
+                                <div className={styles.nmane}>
+                                    {name}
+                                </div>
+                                <div className={styles.timestamp}>
+                                    {event_timestamp}
+                                </div>
+                                <div className={styles.value}>
+                                    {value}
+                                </div>
+                            </div>
+                        );
+                    })
                 )}
             </div>
-            <div className={styles.data2}>
-                <div className={styles.title}>
+        );
+    }
+
+    render(): React.Element<*> {
+        const { showMetrics } = this.state;
+        const { id, name, targets, tags } = this.props.data;
+        const metrics = this.composeMetrics();
+
+        return (
+            <div className={cx({ row: true, active: showMetrics })}>
+                <div className={styles.state} onClick={() => this.handleShowMetrics()}>
+                    <div className={styles.indicator}>
+                        <StateIndicator states={this.composeStates()} />
+                    </div>
+                    <div className={styles.counters}>
+                        {Object.entries(metrics).map(([state, items], i) =>
+                            <div key={i} style={{ color: getStateColor(state) }}>
+                                {items.length}
+                            </div>
+                        )}
+                    </div>
+                </div>
+                <div className={styles.data}>
                     <Link to={'/events/' + id}>
-                        {name}
+                        <div className={styles.title}>
+                            {name}
+                        </div>
+                        <div className={cx({ targets: true, dark: showMetrics })}>
+                            {targets.map((target, i) =>
+                                <div key={i} className={styles.target}>
+                                    {target}
+                                </div>
+                            )}
+                        </div>
                     </Link>
                 </div>
-                <div className={styles.targets}>
-                    {targets.map((target, i) =>
-                        <div key={i} className={styles.target}>
-                            {target}
-                        </div>
-                    )}
+                <div className={styles.tags}>
+                    {tags.map((tag, i) => <Tag key={i} title={tag} />)}
                 </div>
+                {showMetrics &&
+                    <div className={styles.metrics}>
+                        <MetricsList data={metrics} />
+                    </div>}
             </div>
-            <div className={styles.tags2}>
-                {tags.map((tag, i) => <Tag key={i} title={tag} />)}
-            </div>
-        </div>
-    );
+        );
+    }
 }
