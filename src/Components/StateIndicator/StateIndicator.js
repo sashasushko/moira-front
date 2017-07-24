@@ -4,18 +4,18 @@ import type { State } from '../../Domain/State';
 import { getStateColor } from '../../Domain/State';
 
 type Props = {|
-    state: Array<State>;
+    states: Array<State>;
 |};
 
 export default function StateIndicator(props: Props): React.Element<*> {
     const OPTIONS = {
         size: 20,
     };
-    const { state } = props;
+    const { states } = props;
 
     function renderPath(): React.Element<*> {
-        const [state1, state2, state3] = state;
-        switch (state.length) {
+        const [state1, state2, state3] = states;
+        switch (states.length) {
             case 1:
                 return <circle cx='0' cy='0' r='1' fill={getStateColor(state1)} />;
             case 2:
