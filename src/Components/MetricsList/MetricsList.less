@@ -1,21 +1,30 @@
 :local {
-    .metric {
+    .row {
         display: flex;
+        margin-top: 3px;
         width: 100%;
     }
 
-    .nmane {
-        flex-grow: 1;
+    .header {
+        margin-top: 0;
+        color: #999;
+        font-style: italic;
     }
 
-    .timestamp {
-        flex-shrink: 0;
+    .title {
+        width: calc(~'100% - 150px - 100px - 80px');
+    }
+
+    .eventTime {
         width: 150px;
     }
 
     .value {
-        flex-shrink: 0;
         width: 100px;
+    }
+
+    .controls {
+        width: 80px;
     }
 
     .button {
