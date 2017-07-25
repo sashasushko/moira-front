@@ -12,7 +12,6 @@ import classNames from 'classnames/bind';
 import styles from './TriggersItem.less';
 
 const cx = classNames.bind(styles);
-
 type Props = {|
     data: Trigger;
 |};
@@ -53,44 +52,17 @@ export default class TriggersItem extends React.Component {
         return notOkMetrics.length === 0 ? [States.OK] : notOkMetrics;
     }
 
-    renderMetrics(): React.Element<*> {
-        const metrics = this.composeMetrics();
-        const initialState = Object.keys(metrics)[0];
-
-        return (
-            <div className={styles.metrics}>
-                {metrics[initialState].map(metric =>
-                    Object.entries(metric).map(([name, data], i) => {
-                        const { value = '—', event_timestamp } = data;
-                        return (
-                            <div key={i} className={styles.metric}>
-                                <div className={styles.nmane}>
-                                    {name}
-                                </div>
-                                <div className={styles.timestamp}>
-                                    {event_timestamp}
-                                </div>
-                                <div className={styles.value}>
-                                    {value}
-                                </div>
-                            </div>
-                        );
-                    })
-                )}
-            </div>
-        );
-    }
-
     render(): React.Element<*> {
         const { showMetrics } = this.state;
         const { id, name, targets, tags } = this.props.data;
         const metrics = this.composeMetrics();
+        const states = this.composeStates();
 
         return (
             <div className={cx({ row: true, active: showMetrics })}>
                 <div className={styles.state} onClick={() => this.handleShowMetrics()}>
                     <div className={styles.indicator}>
-                        <StateIndicator states={this.composeStates()} />
+                        <StateIndicator states={states} />
                     </div>
                     <div className={styles.counters}>
                         {Object.entries(metrics).map(([state, items], i) =>
