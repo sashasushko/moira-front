@@ -735,11 +735,8 @@ storiesOf('TriggersItem', module)
     .add('With large counters', () => <TriggersItem data={data.largeCounters} />)
     .add('Few states', () => <TriggersItem data={data.fewStates} />)
     .add('A lot targets', () => <TriggersItem data={data.lotTargets} />)
-    .add('A lot targets with dots', () => <TriggersItem data={data.lotTargets} dotsMore />)
     .add('Long target', () => <TriggersItem data={data.longTarget} />)
     .add('Short tags', () => <TriggersItem data={data.shortTags} />)
     .add('Long tags', () => <TriggersItem data={data.longTags} />)
     .add('A lot tags', () => <TriggersItem data={data.lotTags} />)
-    .add('A lot of all', () => <TriggersItem data={data.lotOfAll} />)
-    .add('Short tags and tags column', () => <TriggersItem data={data.shortTags} tagsCol />)
-    .add('A lot of all and tags column', () => <TriggersItem data={data.lotOfAll} tagsCol />);
+    .add('A lot of all', () => <TriggersItem data={data.lotOfAll} />);
