@@ -1,7 +1,10 @@
 // @flow
 import React from 'react';
+import Link from 'retail-ui/components/Link';
+import Tabs from 'retail-ui/components/Tabs';
 import type { State } from '../../Domain/State';
 import type { MetricList } from '../../Domain/Metric';
+import parseTimestamp from '../../Helpers/parseTimestamp';
 import classNames from 'classnames/bind';
 import styles from './MetricsList.less';
 
@@ -33,14 +36,17 @@ export default class MetricsList extends React.Component {
             <div>
                 {/* Табы лишь в том случае, если типов метрик больше одного */}
                 {Object.keys(data).length > 1 &&
-                    Object.keys(data).map(x =>
-                        <button
-                            key={x}
-                            className={cx({ button: true, active: x === state })}
-                            onClick={() => this.setState({ state: x })}>
-                            {x}
-                        </button>
-                    )}
+                    <Tabs
+                        value={state}
+                        onChange={(target, value) => {
+                            this.setState({ state: value });
+                        }}>
+                        {Object.keys(data).map(x =>
+                            <Tabs.Tab key={x} id={x}>
+                                {x}
+                            </Tabs.Tab>
+                        )}
+                    </Tabs>}
                 {state &&
                     <div>
                         <div className={cx({ row: true, header: true })}>
@@ -50,16 +56,22 @@ export default class MetricsList extends React.Component {
                         </div>
                         {data[state].map(metric =>
                             Object.entries(metric).map(([name, data], i) => {
+                                const { value = '—', event_timestamp } = data;
                                 return (
                                     <div key={i} className={styles.row}>
                                         <div className={styles.title}>
                                             {name}
                                         </div>
-                                        <div className={styles.eventTime}>—</div>
-                                        <div className={styles.value}>—</div>
+                                        <div className={styles.eventTime}>
+                                            {event_timestamp ? parseTimestamp(event_timestamp) : '—'}
+                                        </div>
+                                        <div className={styles.value}>
+                                            {/* ToDo: посмотреть, как в текущей версии округляют значения */}
+                                            {value}
+                                        </div>
                                         <div className={styles.controls}>
-                                            <button>Off</button>
-                                            <button>×</button>
+                                            <Link icon='Settings'>Off</Link>
+                                            <Link icon='Delete' />
                                         </div>
                                     </div>
                                 );
