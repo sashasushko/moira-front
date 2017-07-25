@@ -23,6 +23,7 @@
         "react": "^15.6.1",
         "react-dom": "^15.6.1",
         "react-router-dom": "^4.1.1",
+        "retail-ui": "^0.8.6",
         "style-loader": "^0.18.2",
         "webpack": "^3.0.0"
     },
