@@ -14,13 +14,14 @@ import styles from './TriggersItem.less';
 const cx = classNames.bind(styles);
 type Props = {|
     data: Trigger;
+    showMetrics?: boolean;
 |};
 
 export default class TriggersItem extends React.Component {
     state: {
         showMetrics: boolean;
     } = {
-        showMetrics: false,
+        showMetrics: this.props.showMetrics || false, // ToDo: как правильно?
     };
     props: Props;
 
