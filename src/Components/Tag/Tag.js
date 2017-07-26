@@ -1,10 +1,14 @@
 // @flow
 import React from 'react';
-import styles from './Tag.less';
+import Icon from 'retail-ui/components/Icon';
 import ColorHash from 'color-hash';
+import classNames from 'classnames/bind';
+import styles from './Tag.less';
 
+const cx = classNames.bind(styles);
 type Props = {|
     title: string;
+    onRemove?: () => void;
 |};
 
 type ColorTheme = {|
@@ -13,7 +17,7 @@ type ColorTheme = {|
 |};
 
 export default function Tag(props: Props): React.Element<*> {
-    const { title } = props;
+    const { title, onRemove } = props;
 
     function getColor(): ColorTheme {
         const getBgColor = new ColorHash({ lightness: 0.6, saturation: 0.25 });
@@ -25,8 +29,12 @@ export default function Tag(props: Props): React.Element<*> {
     }
 
     return (
-        <div className={styles.tag} style={getColor()}>
+        <div className={cx({ tag: true, controlled: onRemove })} style={getColor()}>
             {title}
+            {onRemove &&
+                <div className={styles.control} onClick={onRemove}>
+                    <Icon name='Delete' />
+                </div>}
         </div>
     );
 }
