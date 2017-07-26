@@ -20,7 +20,7 @@ type State = {|
 |};
 type ParsedSearch = { [key: string]: string | Array<string> };
 
-class TriggersContainer extends React.Component {
+class TriggerListContainer extends React.Component {
     props: Props;
     state: State = {
         loading: true,
@@ -69,6 +69,24 @@ class TriggersContainer extends React.Component {
             <div>
                 {/* ToDo: добавить проверку на то, что берется из УРЛа */}
                 {loading && <p>Loading...</p>}
+                {/*
+                    ToDo: привести к правильной схеме
+                    TriggerFilter
+                        TagSelector
+                            TagList
+                                Tag
+                        ProblemToggle
+                    TriggerList
+                        TriggerItem
+                            StatusIndicator
+                            StatusCounter
+                            data
+                            MetricList
+                                Tabs
+                            TagList
+                                Tag
+                    TriggerPaging
+                */}
                 {!loading &&
                     <div>
                         <div
@@ -107,4 +125,4 @@ class TriggersContainer extends React.Component {
     }
 }
 
-export default withMoiraApi(TriggersContainer);
+export default withMoiraApi(TriggerListContainer);
