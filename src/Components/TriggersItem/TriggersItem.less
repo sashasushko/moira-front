@@ -1,0 +1,119 @@
+:local {
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 15px 10px;
+
+        &.active {
+            background-color: #f6f6f6;
+        }
+    }
+
+    .state {
+        display: flex;
+        align-items: flex-start;
+        margin-right: 10px;
+        width: 70px;
+        cursor: pointer;
+    }
+
+    .indicator {
+        position: relative;
+        top: 1px;
+        width: 32px;
+    }
+
+    .counters {
+        width: 38px;
+        font-size: 12px;
+        line-height: 20px;
+    }
+
+    .data {
+        padding-right: 40px;
+        width: calc(~'100% - 80px - 240px');
+        box-sizing: border-box;
+
+        & > a {
+            &:hover {
+                text-decoration: none;
+
+                & .title {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+
+    .header {
+        display: flex;
+        align-items: baseline;
+    }
+
+    .title {
+        padding-right: 15px;
+        max-width: 66%;
+        overflow: hidden;
+        font-size: 18px;
+        line-height: 20px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        box-sizing: border-box;
+        flex-shrink: 0;
+    }
+
+    .tags {
+        display: flex;
+        align-self: flex-start;
+        align-items: flex-start;
+        width: 240px;
+        flex-wrap: wrap;
+
+        & > * {
+            margin-top: 3px;
+            margin-right: 4px;
+            margin-bottom: 1px;
+        }
+    }
+
+    .targets {
+        position: relative;
+        overflow: hidden;
+        max-height: 60px;
+        color: #999;
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background-image: linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0) 0%,
+                #fff 100%
+            );
+        }
+
+        &.dark {
+            &::after {
+                background-image: linear-gradient(
+                    to bottom,
+                    rgba(246, 246, 246, 0) 0%,
+                    #f6f6f6 100%
+                );
+            }
+        }
+    }
+
+    .target {
+        word-break: break-all;
+    }
+
+    .metrics {
+        width: 100%;
+        padding-left: 80px;
+        padding-right: 80px;
+    }
+}

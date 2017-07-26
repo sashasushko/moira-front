@@ -1,0 +1,42 @@
+:local {
+    .row {
+        display: flex;
+        margin-top: 3px;
+        width: 100%;
+    }
+
+    .header {
+        margin-top: 10px;
+        color: #999;
+        font-style: italic;
+    }
+
+    .title {
+        padding-right: 10px;
+        width: calc(~'100% - 150px - 100px - 80px');
+        box-sizing: border-box;
+    }
+
+    .eventTime {
+        padding-right: 10px;
+        width: 150px;
+        box-sizing: border-box;
+    }
+
+    .value {
+        width: 100px;
+    }
+
+    .controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 80px;
+    }
+
+    .button {
+        &.active {
+            outline: 2px solid pink;
+        }
+    }
+}

@@ -14,21 +14,21 @@ export type LastCheck = {|
 
 export type Trigger = {|
     id: string;
+    is_simple_trigger: boolean;
     name: string;
-    desc?: string;
-    expression: string;
-    warn_value: number;
-    error_value: ?number;
-    last_check?: LastCheck;
     targets: Array<string>;
+    tags: Array<string>;
+    patterns: Array<string>;
+    expression: string;
     ttl: number;
     ttl_state: string;
-    patterns: Array<string>;
-    tags: Array<string>;
     throttling: number;
-    timestamp?: number;
-    is_simple_trigger: boolean;
     sched: Schedule;
+    desc?: string;
+    warn_value: ?number;
+    error_value: ?number;
+    last_check?: LastCheck;
+    timestamp?: number;
 |};
 
 export type TriggerState = {|
