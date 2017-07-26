@@ -20,6 +20,8 @@
         "flow-bin": "^0.48.0",
         "less": "^2.7.2",
         "less-loader": "^4.0.4",
+        "lodash": "^4.17.4",
+        "query-string": "^5.0.0",
         "react": "^15.6.1",
         "react-dom": "^15.6.1",
         "react-router-dom": "^4.1.1",
