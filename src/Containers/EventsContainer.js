@@ -44,6 +44,14 @@ class EventsContainer extends React.Component {
         const { loading, trigger, triggerState, triggerEvents } = this.state;
         return (
             <div>
+                {/*
+                    ToDo: привести к правильной схеме
+                    Trigger
+                    Tabs
+                        CurrentState (мб MetricList)
+                        TotalState
+                        EventHistory
+                */}
                 {loading && <p>Loading...</p>}
                 {trigger && <TriggerInfo data={trigger} />}
                 <hr />
