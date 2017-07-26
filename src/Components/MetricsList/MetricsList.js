@@ -23,7 +23,7 @@ export default class MetricsList extends React.Component {
 
     constructor(props: Props) {
         super(props);
-        // Как вызывать одну и ту же функцию в constructor и componentWillReceiveProps
+        // ToDo: Спросить, как вызывать одну и ту же функцию в constructor и componentWillReceiveProps
         this.state = {
             state: Object.keys(this.props.data)[0],
         };

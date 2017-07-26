@@ -739,4 +739,5 @@ storiesOf('TriggersItem', module)
     .add('Short tags', () => <TriggersItem data={data.shortTags} />)
     .add('Long tags', () => <TriggersItem data={data.longTags} />)
     .add('A lot tags', () => <TriggersItem data={data.lotTags} />)
-    .add('A lot of all', () => <TriggersItem data={data.lotOfAll} />);
+    .add('A lot of all', () => <TriggersItem data={data.lotOfAll} />)
+    .add('Showed metrics list', () => <TriggersItem data={data.largeCounters} showMetrics />);
