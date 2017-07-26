@@ -1,7 +1,10 @@
 // @flow
 import React from 'react';
 import Tag from '../Tag/Tag';
+import classNames from 'classnames/bind';
+import styles from './TagSelector.less';
 
+const cx = classNames.bind(styles);
 type Props = {|
     tags: Array<string>;
     selectedTags: Array<string>;
@@ -9,11 +12,12 @@ type Props = {|
     onRemove: (tag: string) => void;
 |};
 
-export default function TriggerTotalState(props: Props): React.Element<*> {
+export default function TagSelector(props: Props): React.Element<*> {
     const { tags, selectedTags, onSelect, onRemove } = props;
     return (
-        <div>
+        <div className={cx({ wrap: true })}>
             <select
+                className={cx({ selector: true })}
                 onChange={(event: Event) =>
                     event.target instanceof HTMLSelectElement ? onSelect(event.target.value) : null}
                 value='0'>
@@ -26,10 +30,9 @@ export default function TriggerTotalState(props: Props): React.Element<*> {
                     </option>
                 )}
             </select>
-            <div>
+            <div className={cx({ selectedTags: true })}>
                 {selectedTags.map((tag, i) => <Tag key={i} title={tag} onRemove={() => onRemove(tag)} />)}
             </div>
-            <hr />
         </div>
     );
 }
