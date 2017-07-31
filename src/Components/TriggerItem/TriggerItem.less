@@ -1,7 +1,6 @@
 :local {
     .row {
         display: flex;
-        flex-wrap: wrap;
         padding: 15px 10px;
 
         &.active {
@@ -15,65 +14,40 @@
         margin-right: 10px;
         width: 70px;
         cursor: pointer;
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
     }
 
     .indicator {
-        position: relative;
-        top: 1px;
-        width: 32px;
+        width: 35px;
     }
 
     .counters {
-        width: 38px;
+        width: 35px;
         font-size: 12px;
         line-height: 20px;
     }
 
     .data {
-        padding-right: 40px;
-        width: calc(~'100% - 80px - 240px');
-        box-sizing: border-box;
-
-        & > a {
-            &:hover {
-                text-decoration: none;
-
-                & .title {
-                    text-decoration: underline;
-                }
-            }
-        }
+        display: flex;
+        flex-wrap: wrap;
+        width: calc(~'100% - 80px');
     }
 
     .header {
-        display: flex;
-        align-items: baseline;
+        padding-right: 15px;
+        width: calc(~'100% - 240px');
+        box-sizing: border-box;
     }
 
     .title {
-        padding-right: 15px;
-        max-width: 66%;
         overflow: hidden;
         font-size: 18px;
         line-height: 20px;
         text-overflow: ellipsis;
         white-space: nowrap;
-        box-sizing: border-box;
-        flex-shrink: 0;
-    }
-
-    .tags {
-        display: flex;
-        align-self: flex-start;
-        align-items: flex-start;
-        width: 240px;
-        flex-wrap: wrap;
-
-        & > * {
-            margin-top: 3px;
-            margin-right: 4px;
-            margin-bottom: 1px;
-        }
     }
 
     .targets {
@@ -111,9 +85,13 @@
         word-break: break-all;
     }
 
+    .tags {
+        width: 240px;
+    }
+
     .metrics {
-        width: 100%;
-        padding-left: 80px;
         padding-right: 80px;
+        width: 100%;
+        box-sizing: border-box;
     }
 }

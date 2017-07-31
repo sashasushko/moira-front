@@ -1,9 +1,9 @@
 // @flow
 
-import type { State } from './States';
+import type { Status } from './Status';
 
 export type Metric = {|
-    state: State;
+    state: Status;
     timestamp: number;
     suppressed?: boolean;
     event_timestamp?: number;

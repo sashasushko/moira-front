@@ -1,29 +1,29 @@
 // @flow
-export const States = {
+export const Statuses = {
     NODATA: 'NODATA',
     WARNING: 'WARNING',
     ERROR: 'ERROR',
     OK: 'OK',
 };
 
-export const StatesCaptions = {
+export const StatusesCaptions = {
     OK: 'OK',
     NODATA: 'NODATA',
     WARNING: 'WARNING',
     ERROR: 'ERROR',
 };
 
-export const StatesColors = {
+export const StatusesColors = {
     OK: '#00bfa5',
     NODATA: '#9e9e9e',
     WARNING: '#ffc107',
     ERROR: '#ff5722',
 };
 
-export type State = $Keys<typeof States>;
+export type Status = $Keys<typeof Statuses>;
 
-export function getStateColor(state: State): string {
-    return StatesColors[state];
+export function getStatusColor(status: Status): string {
+    return StatusesColors[status];
 }
 
 // State;

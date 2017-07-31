@@ -7,16 +7,15 @@ import { withMoiraApi } from '../Api/MoiraApiInjection';
 import queryString from 'query-string';
 import { concat, difference } from 'lodash';
 import Paging from 'retail-ui/components/Paging';
-import Toggle from 'retail-ui/components/Toggle';
-import Triggers from '../Components/Triggers/Triggers';
-import TagSelector from '../Components/TagSelector/TagSelector';
+import TriggerList from '../Components/TriggerList/TriggerList';
+import TriggerFilter from '../Components/TriggerFilter/TriggerFilter';
 
 type Props = ContextRouter & { moiraApi: IMoiraApi };
 type State = {|
     loading: boolean;
     triggers: ?Array<Trigger>;
     tags: ?Array<string>;
-    pages: number;
+    pages: ?number;
 |};
 type ParsedSearch = { [key: string]: string | Array<string> };
 
@@ -26,7 +25,7 @@ class TriggerListContainer extends React.Component {
         loading: true,
         triggers: null,
         tags: null,
-        pages: 1,
+        pages: null,
     };
 
     componentDidMount() {
@@ -67,58 +66,18 @@ class TriggerListContainer extends React.Component {
 
         return (
             <div>
-                {/* ToDo: добавить проверку на то, что берется из УРЛа */}
                 {loading && <p>Loading...</p>}
-                {/*
-                    ToDo: привести к правильной схеме
-                    TriggerFilter
-                        TagSelector
-                            TagList
-                                Tag
-                        ProblemToggle
-                    TriggerList
-                        TriggerItem
-                            StatusIndicator
-                            StatusCounter
-                            data
-                            MetricList
-                                Tabs
-                            TagList
-                                Tag
-                    TriggerPaging
-                */}
                 {!loading &&
                     <div>
-                        <div
-                            style={{
-                                display: 'flex',
-                                marginBottom: '20px',
-                                paddingBottom: '20px',
-                                borderBottom: '1px solid #ccc',
-                            }}>
-                            {tags &&
-                                <TagSelector
-                                    tags={tags}
-                                    selectedTags={Array.isArray(selectedTags) ? selectedTags : []}
-                                    onSelect={tag => this.handleChangeSearch({ tags: concat(selectedTags, tag) })}
-                                    onRemove={tag => this.handleChangeSearch({ tags: difference(selectedTags, [tag]) })}
-                                />}
-                            <div style={{ marginLeft: 'auto', width: '140px', flexShrink: 0 }}>
-                                <Toggle
-                                    checked={notOkMetrics === 'true'}
-                                    onChange={checked => this.handleChangeSearch({ notOkMetrics: checked })}
-                                />{' '}
-                                Only problems
-                            </div>
-                        </div>
-                        {triggers && <Triggers items={triggers} />}
-                        <div style={{ marginTop: '30px' }}>
-                            <Paging
-                                activePage={Number(page) || 1}
-                                onPageChange={page => this.handleChangeSearch({ page })}
-                                pagesCount={pages}
-                            />
-                        </div>
+                        <TriggerFilter
+                            remainedTags={Array.isArray(tags) ? difference(tags, selectedTags) : []}
+                            selectedTags={Array.isArray(selectedTags) ? selectedTags : []}
+                            notOkMetrics={notOkMetrics === 'true'}
+                            onSelect={tag => this.handleChangeSearch({ tags: concat(selectedTags, tag) })}
+                            onRemove={tag => this.handleChangeSearch({ tags: difference(selectedTags, [tag]) })}
+                            onChange={checked => this.handleChangeSearch({ notOkMetrics: checked ? 'true' : 'false' })}
+                        />
+                        {triggers && <TriggerList items={triggers} />}
                     </div>}
             </div>
         );

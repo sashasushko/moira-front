@@ -1,42 +1,45 @@
 :local {
     .row {
         display: flex;
-        margin-top: 3px;
-        width: 100%;
     }
 
     .header {
         margin-top: 10px;
+        margin-bottom: 5px;
         color: #999;
         font-style: italic;
     }
 
     .title {
+        width: 100%;
+        flex-grow: 1;
         padding-right: 10px;
-        width: calc(~'100% - 150px - 100px - 80px');
         box-sizing: border-box;
     }
 
     .eventTime {
+        flex-shrink: 0;
         padding-right: 10px;
         width: 150px;
         box-sizing: border-box;
     }
 
     .value {
+        flex-shrink: 0;
         width: 100px;
     }
 
     .controls {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        flex-shrink: 0;
         width: 80px;
     }
 
-    .button {
-        &.active {
-            outline: 2px solid pink;
-        }
+    .maintenance {
+        margin-right: 15px;
+    }
+
+    .delete {
     }
 }

@@ -2,76 +2,93 @@
 import React from 'react';
 import Link from 'retail-ui/components/Link';
 import Tabs from 'retail-ui/components/Tabs';
-import type { State } from '../../Domain/State';
-import type { MetricList } from '../../Domain/Metric';
+import { Statuses } from '../../Domain/Status';
+import type { Status } from '../../Domain/Status';
+import type { Metric, MetricList } from '../../Domain/Metric';
 import parseTimestamp from '../../Helpers/parseTimestamp';
 import classNames from 'classnames/bind';
 import styles from './MetricsList.less';
 
 const cx = classNames.bind(styles);
 type Props = {|
-    data: {
-        [state: State]: Array<MetricList>;
-    };
+    data: MetricList;
+|};
+type State = {|
+    status: ?Status;
 |};
 
-export default class MetricsList extends React.Component {
+export default class MetricListView extends React.Component {
     props: Props;
-    state: {
-        state: ?State;
-    };
+    state: State;
 
-    constructor(props: Props) {
-        super(props);
-        // ToDo: Спросить, как вызывать одну и ту же функцию в constructor и componentWillReceiveProps
+    constructor() {
+        super();
         this.state = {
-            state: Object.keys(this.props.data)[0],
+            status: null,
         };
     }
 
     render(): React.Element<*> {
         const { data } = this.props;
-        const { state } = this.state;
+        const metrics = composeMetrics();
+        const status = this.state.status || metrics[0].status;
+
+        function composeMetrics(): Array<{ status: Status; items: Array<{ name: string; data: Metric }> }> {
+            return Object.keys(Statuses)
+                .map(status => {
+                    return {
+                        status,
+                        items: Object.keys(data).filter(x => data[x].state === status).map(x => {
+                            return { name: x, data: data[x] };
+                        }),
+                    };
+                })
+                .filter(x => x.items.length !== 0);
+        }
+
         return (
             <div>
-                {/* Табы лишь в том случае, если типов метрик больше одного */}
-                {Object.keys(data).length > 1 &&
+                {metrics.length > 1 &&
                     <Tabs
-                        value={state}
+                        value={status}
                         onChange={(target, value) => {
-                            this.setState({ state: value });
+                            this.setState({ status: value });
                         }}>
-                        {Object.keys(data).map(x =>
-                            <Tabs.Tab key={x} id={x}>
-                                {x}
+                        {metrics.map(({ status }) =>
+                            <Tabs.Tab key={status} id={status}>
+                                {status}
                             </Tabs.Tab>
                         )}
                     </Tabs>}
-                {state &&
+                {status &&
                     <div>
                         <div className={cx({ row: true, header: true })}>
-                            <div className={styles.title}>Metric</div>
-                            <div className={styles.eventTime}>Last event</div>
-                            <div className={styles.value}>Value</div>
+                            <div className={cx({ title: true })}>Metric</div>
+                            <div className={cx({ eventTime: true })}>Last event</div>
+                            <div className={cx({ value: true })}>Value</div>
+                            <div className={cx({ controls: true })} />
                         </div>
-                        {data[state].map(metric =>
-                            Object.entries(metric).map(([name, data], i) => {
-                                const { value = '—', event_timestamp } = data;
+                        {metrics.filter(x => x.status === status).map(({ items }) =>
+                            items.map(({ name, data }) => {
+                                const { value, event_timestamp } = data;
                                 return (
-                                    <div key={i} className={styles.row}>
-                                        <div className={styles.title}>
+                                    <div className={cx({ row: true })}>
+                                        <div className={cx({ title: true })}>
                                             {name}
                                         </div>
-                                        <div className={styles.eventTime}>
+                                        <div className={cx({ eventTime: true })}>
                                             {event_timestamp ? parseTimestamp(event_timestamp) : '—'}
                                         </div>
-                                        <div className={styles.value}>
-                                            {/* ToDo: посмотреть, как в текущей версии округляют значения */}
-                                            {value}
+                                        <div className={cx({ value: true })}>
+                                            {value || '—'}
                                         </div>
-                                        <div className={styles.controls}>
-                                            <Link icon='Settings'>Off</Link>
-                                            <Link icon='Delete' />
+                                        <div className={cx({ controls: true })}>
+                                            <div className={cx({ maintenance: true })}>
+                                                <Link icon='Settings'>Off</Link>
+                                            </div>
+                                            <div className={cx({ delete: true })}>
+                                                <Link icon='Delete' />
+                                            </div>
                                         </div>
                                     </div>
                                 );
