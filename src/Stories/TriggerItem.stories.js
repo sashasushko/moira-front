@@ -2,7 +2,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import StoryRouter from 'storybook-router';
-import TriggersItem from '../Components/TriggersItem/TriggersItem';
+import TriggerItem from '../Components/TriggerItem/TriggerItem';
 
 const data = {
     default: {
@@ -728,16 +728,16 @@ const data = {
     },
 };
 
-storiesOf('TriggersItem', module)
+storiesOf('TriggerItem', module)
     .addDecorator(StoryRouter())
-    .add('Default', () => <TriggersItem data={data.default} />)
-    .add('Long name', () => <TriggersItem data={data.longName} />)
-    .add('With large counters', () => <TriggersItem data={data.largeCounters} />)
-    .add('Few states', () => <TriggersItem data={data.fewStates} />)
-    .add('A lot targets', () => <TriggersItem data={data.lotTargets} />)
-    .add('Long target', () => <TriggersItem data={data.longTarget} />)
-    .add('Short tags', () => <TriggersItem data={data.shortTags} />)
-    .add('Long tags', () => <TriggersItem data={data.longTags} />)
-    .add('A lot tags', () => <TriggersItem data={data.lotTags} />)
-    .add('A lot of all', () => <TriggersItem data={data.lotOfAll} />)
-    .add('Showed metrics list', () => <TriggersItem data={data.largeCounters} showMetrics />);
+    .add('Default', () => <TriggerItem data={data.default} />)
+    .add('Long name', () => <TriggerItem data={data.longName} />)
+    .add('With large counters', () => <TriggerItem data={data.largeCounters} />)
+    .add('Few states', () => <TriggerItem data={data.fewStates} />)
+    .add('A lot targets', () => <TriggerItem data={data.lotTargets} />)
+    .add('Long target', () => <TriggerItem data={data.longTarget} />)
+    .add('Short tags', () => <TriggerItem data={data.shortTags} />)
+    .add('Long tags', () => <TriggerItem data={data.longTags} />)
+    .add('A lot tags', () => <TriggerItem data={data.lotTags} />)
+    .add('A lot of all', () => <TriggerItem data={data.lotOfAll} />)
+    .add('Showed metrics list', () => <TriggerItem data={data.largeCounters} showMetrics />);
