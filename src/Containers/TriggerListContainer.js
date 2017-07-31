@@ -57,7 +57,6 @@ class TriggerListContainer extends React.Component {
             ...update,
         };
         history.push(this.handleBuildSearch(search));
-        this.getData();
     }
 
     render(): React.Element<*> {
