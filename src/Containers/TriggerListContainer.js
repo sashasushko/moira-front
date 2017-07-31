@@ -57,6 +57,7 @@ class TriggerListContainer extends React.Component {
             ...update,
         };
         history.push(this.handleBuildSearch(search));
+        this.getData();
     }
 
     render(): React.Element<*> {
@@ -78,6 +79,11 @@ class TriggerListContainer extends React.Component {
                             onChange={checked => this.handleChangeSearch({ notOkMetrics: checked ? 'true' : 'false' })}
                         />
                         {triggers && <TriggerList items={triggers} />}
+                        <Paging
+                            activePage={Number(page) || 1}
+                            pagesCount={pages}
+                            onPageChange={page => this.handleChangeSearch({ page })}
+                        />
                     </div>}
             </div>
         );
