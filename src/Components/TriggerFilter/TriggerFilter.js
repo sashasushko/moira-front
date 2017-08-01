@@ -8,7 +8,7 @@ import styles from './TriggerFilter.less';
 const cx = classNames.bind(styles);
 type Props = {|
     remainedTags: Array<string>;
-    selectedTags: Array<string>;
+    selectedTags: ?Array<string>;
     notOkMetrics: boolean;
     onSelect: (tag: string) => void;
     onRemove: (tag: string) => void;
@@ -22,7 +22,7 @@ export default function TriggerFilter(props: Props): React.Element<*> {
             <div className={cx({ tags: true })}>
                 <TagSelector
                     remainedTags={remainedTags}
-                    selectedTags={selectedTags}
+                    selectedTags={selectedTags || []}
                     onSelect={tag => onSelect(tag)}
                     onRemove={tag => onRemove(tag)}
                 />

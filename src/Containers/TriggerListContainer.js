@@ -77,7 +77,7 @@ class TriggerListContainer extends React.Component {
                             onRemove={tag => this.handleChangeSearch({ tags: difference(selectedTags, [tag]) })}
                             onChange={checked => this.handleChangeSearch({ notOkMetrics: checked ? 'true' : 'false' })}
                         />
-                        {triggers && <TriggerList items={triggers} />}
+                        <TriggerList items={triggers || []} />
                         <Paging
                             activePage={Number(page) || 1}
                             pagesCount={pages}
