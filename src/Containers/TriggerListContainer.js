@@ -29,11 +29,15 @@ class TriggerListContainer extends React.Component {
     };
 
     componentDidMount() {
-        this.getData();
+        this.getData(this.props);
     }
 
-    async getData(): Promise<void> {
-        const { location, moiraApi } = this.props;
+    componentWillReceiveProps(nextProps: Props) {
+        this.getData(nextProps);
+    }
+
+    async getData(props: Props): Promise<void> {
+        const { location, moiraApi } = props;
         const parsedPath = this.handleParseSearch(location.search);
         const page = Number(parsedPath.page) || 0;
         const triggerList = await moiraApi.getTriggerList(page);
