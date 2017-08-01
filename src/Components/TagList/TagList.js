@@ -15,13 +15,11 @@ export default function TagList(props: Props): React.Element<*> {
     return (
         <div className={cx({ list: true })}>
             {tags.map(tag => {
-                return typeof onRemove === 'function'
-                    ? <div key={tag} className={cx({ item: true })}>
-                          <Tag title={tag} onRemove={() => onRemove(tag)} />
-                      </div>
-                    : <div key={tag} className={cx({ item: true })}>
-                          <Tag title={tag} />
-                      </div>;
+                return (
+                    <div key={tag} className={cx({ item: true })}>
+                        <Tag title={tag} onRemove={onRemove && (() => onRemove(tag))} />
+                    </div>
+                );
             })}
         </div>
     );
