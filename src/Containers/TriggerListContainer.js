@@ -6,9 +6,9 @@ import type { Trigger } from '../Domain/Trigger';
 import { withMoiraApi } from '../Api/MoiraApiInjection';
 import queryString from 'query-string';
 import { concat, difference } from 'lodash';
-import Paging from 'retail-ui/components/Paging';
-import TriggerList from '../Components/TriggerList/TriggerList';
 import TriggerFilter from '../Components/TriggerFilter/TriggerFilter';
+import TriggerList from '../Components/TriggerList/TriggerList';
+import TriggerPaging from '../Components/TriggerPaging/TriggerPaging';
 
 type Props = ContextRouter & { moiraApi: IMoiraApi };
 type State = {|
@@ -17,7 +17,7 @@ type State = {|
     tags: ?Array<string>;
     pages: ?number;
 |};
-type ParsedSearch = { [key: string]: string | Array<string> };
+type ParsedSearch = { [key: string]: string | number | Array<string> };
 
 class TriggerListContainer extends React.Component {
     props: Props;
@@ -78,11 +78,13 @@ class TriggerListContainer extends React.Component {
                             onChange={checked => this.handleChangeSearch({ notOkMetrics: checked ? 'true' : 'false' })}
                         />
                         <TriggerList items={triggers || []} />
-                        <Paging
-                            activePage={Number(page) || 1}
-                            pagesCount={pages}
-                            onPageChange={page => this.handleChangeSearch({ page })}
-                        />
+                        {typeof pages === 'number' &&
+                            pages > 1 &&
+                            <TriggerPaging
+                                activePage={Number(page) || 1}
+                                pagesCount={pages}
+                                onChange={page => this.handleChangeSearch({ page })}
+                            />}
                     </div>}
             </div>
         );
