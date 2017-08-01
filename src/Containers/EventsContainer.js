@@ -1,11 +1,12 @@
 // @flow
 import React from 'react';
+import Tabs from 'retail-ui/components/Tabs';
 import type { ContextRouter } from 'react-router-dom';
 import type { IMoiraApi } from '../Api/MoiraAPI';
 import { withMoiraApi } from '../Api/MoiraApiInjection';
 import type { Trigger, TriggerState } from '../Domain/Trigger';
 import type { EventList } from '../Domain/Event';
-import TriggerInfo from '../Components/TriggerInfo/TriggerInfo';
+import TriggerView from '../Components/Trigger/Trigger';
 import TriggerCurrentState from '../Components/TriggerCurrentState/TriggerCurrentState';
 import TriggerTotalState from '../Components/TriggerTotalState/TriggerTotalState';
 import TriggerEvents from '../Components/TriggerEvents/TriggerEvents';
@@ -13,6 +14,7 @@ import TriggerEvents from '../Components/TriggerEvents/TriggerEvents';
 type Props = ContextRouter & { moiraApi: IMoiraApi };
 type State = {|
     loading: boolean;
+    activeTab: 'current' | 'total' | 'history';
     trigger: ?Trigger;
     triggerState: ?TriggerState;
     triggerEvents: ?EventList;
@@ -22,6 +24,7 @@ class EventsContainer extends React.Component {
     props: Props;
     state: State = {
         loading: true,
+        activeTab: 'current',
         trigger: null,
         triggerState: null,
         triggerEvents: null,
@@ -41,28 +44,26 @@ class EventsContainer extends React.Component {
     }
 
     render(): React.Element<*> {
-        const { loading, trigger, triggerState, triggerEvents } = this.state;
+        const { loading, activeTab, trigger, triggerState, triggerEvents } = this.state;
         return (
             <div>
-                {/*
-                    ToDo: привести к правильной схеме
-                    Trigger
-                    Tabs
-                        CurrentState (мб MetricList)
-                        TotalState
-                        EventHistory
-                */}
                 {loading && <p>Loading...</p>}
-                {trigger && <TriggerInfo data={trigger} />}
-                <hr />
-                <h4>Current state</h4>
-                {triggerState && <TriggerCurrentState data={triggerState} />}
-                <hr />
-                <h4>Total state</h4>
-                {triggerEvents && <TriggerTotalState />}
-                <hr />
-                <h4>Events history</h4>
-                {triggerEvents && <TriggerEvents data={triggerEvents} />}
+                {!loading &&
+                    <div>
+                        <TriggerView data={trigger || {}} />
+                        <Tabs
+                            value={activeTab}
+                            onChange={(targer, activeTab) => {
+                                this.setState({ activeTab });
+                            }}>
+                            <Tabs.Tab id='current'>Current state</Tabs.Tab>
+                            <Tabs.Tab id='total'>Total state</Tabs.Tab>
+                            <Tabs.Tab id='history'>Events history</Tabs.Tab>
+                        </Tabs>
+                        {activeTab === 'current' && <TriggerCurrentState data={triggerState || {}} />}
+                        {activeTab === 'total' && <TriggerTotalState />}
+                        {activeTab === 'history' && <TriggerEvents data={triggerEvents || {}} />}
+                    </div>}
             </div>
         );
     }
