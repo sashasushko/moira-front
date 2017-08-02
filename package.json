@@ -30,7 +30,7 @@
         "webpack": "^3.0.0"
     },
     "devDependencies": {
-        "@storybook/react": "^3.1.7",
+        "@storybook/react": "^3.2.3",
         "classnames": "^2.2.5",
         "color-hash": "^1.0.3",
         "eslint": "3.19.0",
@@ -38,6 +38,7 @@
         "html-webpack-plugin": "^2.29.0",
         "react-hot-loader": "next",
         "storybook-router": "^0.2.8",
+        "styled-components": "^2.1.1",
         "webpack-dev-server": "^2.5.0"
     }
 }
