@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import styled from 'styled-components';
 import type { ContextRouter } from 'react-router-dom';
 import type { IMoiraApi } from '../Api/MoiraAPI';
 import type { Trigger } from '../Domain/Trigger';
@@ -67,28 +68,49 @@ class TriggerListContainer extends React.Component {
         const { loading, triggers, tags, pages } = this.state;
         const { location } = this.props;
         const { page, notOkMetrics, tags: selectedTags } = this.handleParseSearch(location.search);
+        const WrapFilter = styled.div`
+            padding: 15px 0;
+            background-color: #f3f3f3;
+        `;
+        const WrapList = styled.div`
+            margin-top: 30px;
+            margin-bottom: 30px;
+        `;
+        const WrapPaging = styled.div`
+            margin-top: 30px;
+            margin-bottom: 40px;
+        `;
 
         return (
             <div>
                 {loading && <p>Loading...</p>}
                 {!loading &&
                     <div>
-                        <TriggerFilter
-                            remainedTags={Array.isArray(tags) ? difference(tags, selectedTags) : []}
-                            selectedTags={Array.isArray(selectedTags) ? selectedTags : []}
-                            notOkMetrics={notOkMetrics === 'true'}
-                            onSelect={tag => this.handleChangeSearch({ tags: concat(selectedTags, tag) })}
-                            onRemove={tag => this.handleChangeSearch({ tags: difference(selectedTags, [tag]) })}
-                            onChange={checked => this.handleChangeSearch({ notOkMetrics: checked ? 'true' : 'false' })}
-                        />
-                        <TriggerList items={triggers || []} />
+                        <WrapFilter>
+                            <div className='container'>
+                                <TriggerFilter
+                                    remainedTags={Array.isArray(tags) ? difference(tags, selectedTags) : []}
+                                    selectedTags={Array.isArray(selectedTags) ? selectedTags : null}
+                                    notOkMetrics={notOkMetrics === 'true'}
+                                    onSelect={tag => this.handleChangeSearch({ tags: concat(selectedTags, tag) })}
+                                    onRemove={tag => this.handleChangeSearch({ tags: difference(selectedTags, [tag]) })}
+                                    onChange={checked =>
+                                        this.handleChangeSearch({ notOkMetrics: checked ? 'true' : 'false' })}
+                                />
+                            </div>
+                        </WrapFilter>
+                        {triggers &&
+                            <WrapList className='container'>
+                                <TriggerList items={triggers} />
+                            </WrapList>}
                         {typeof pages === 'number' &&
-                            pages > 1 &&
-                            <TriggerPaging
-                                activePage={Number(page) || 1}
-                                pagesCount={pages}
-                                onChange={page => this.handleChangeSearch({ page })}
-                            />}
+                            <WrapPaging className='container'>
+                                <TriggerPaging
+                                    activePage={Number(page) || 1}
+                                    pagesCount={pages}
+                                    onChange={page => this.handleChangeSearch({ page })}
+                                />
+                            </WrapPaging>}
                     </div>}
             </div>
         );
