@@ -7,7 +7,7 @@ import styles from './TagSelector.less';
 const cx = classNames.bind(styles);
 type Props = {|
     remainedTags: Array<string>;
-    selectedTags: Array<string>;
+    selectedTags?: ?Array<string>;
     onSelect: (tag: string) => void;
     onRemove: (tag: string) => void;
 |};
@@ -29,7 +29,7 @@ export default function TagSelector(props: Props): React.Element<*> {
                     </option>
                 )}
             </select>
-            <TagList tags={selectedTags} onRemove={tag => onRemove(tag)} />
+            {selectedTags && <TagList tags={selectedTags} onRemove={tag => onRemove(tag)} />}
         </div>
     );
 }
