@@ -11,28 +11,26 @@
     }
 
     .title {
-        width: 100%;
-        flex-grow: 1;
+        overflow: hidden;
+        width: calc(~'100% - 150px - 100px - 80px');
         padding-right: 10px;
         box-sizing: border-box;
+        text-overflow: ellipsis;
     }
 
     .eventTime {
-        flex-shrink: 0;
         padding-right: 10px;
         width: 150px;
         box-sizing: border-box;
     }
 
     .value {
-        flex-shrink: 0;
         width: 100px;
     }
 
     .controls {
         display: flex;
         align-items: center;
-        flex-shrink: 0;
         width: 80px;
     }
 

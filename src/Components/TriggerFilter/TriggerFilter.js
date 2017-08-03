@@ -8,7 +8,7 @@ import styles from './TriggerFilter.less';
 const cx = classNames.bind(styles);
 type Props = {|
     remainedTags: Array<string>;
-    selectedTags: Array<string>;
+    selectedTags?: ?Array<string>;
     notOkMetrics: boolean;
     onSelect: (tag: string) => void;
     onRemove: (tag: string) => void;

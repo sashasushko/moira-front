@@ -6,7 +6,7 @@ import type { Status } from '../../Domain/Status';
 import { Statuses, getStatusColor } from '../../Domain/Status';
 import StatusIndicator from '../StatusIndicator/StatusIndicator';
 import TagList from '../TagList/TagList';
-import MetricsList from '../MetricsList/MetricsList';
+import MetricsListView from '../MetricsList/MetricsList';
 import classNames from 'classnames/bind';
 import styles from './TriggerItem.less';
 
@@ -97,7 +97,7 @@ export default class TriggerItem extends React.Component {
                     </div>
                     {showMetrics &&
                         <div className={cx({ metrics: true })}>
-                            <MetricsList data={metrics} />
+                            <MetricsListView data={metrics} />
                         </div>}
                 </div>
             </div>

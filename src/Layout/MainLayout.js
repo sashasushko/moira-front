@@ -16,7 +16,7 @@ export default function MainLayout(props: Props): React.Element<*> {
                     </Link>
                 </div>
             </header>
-            <main className='container'>
+            <main>
                 {props.children}
             </main>
             <footer className='site-footer'>

@@ -14,7 +14,7 @@ export default function TriggerList(props: Props): React.Element<*> {
     const { items } = props;
     return (
         <div className={cx({ list: true })}>
-            {items.length === 0 && 'No results'}
+            {items.length === 0 && 'Empty list'}
             {items.length !== 0 &&
                 items.map(item =>
                     <div className={cx({ item: true })} key={item.id}>

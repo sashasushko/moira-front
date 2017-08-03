@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "scripts": {
         "start": "webpack-dev-server --hot --history-api-fallback --content-base dist/ --port 9000",
-        "build": "webpack",
+        "build": "cross-env NODE_ENV=production webpack -p",
         "storybook": "start-storybook -p 9001 -c .storybook"
     },
     "dependencies": {
@@ -30,14 +30,16 @@
         "webpack": "^3.0.0"
     },
     "devDependencies": {
-        "@storybook/react": "^3.1.7",
+        "@storybook/react": "^3.2.3",
         "classnames": "^2.2.5",
         "color-hash": "^1.0.3",
+        "cross-env": "^5.0.2",
         "eslint": "3.19.0",
         "eslint-config-skbkontur-retail": "^2.1.2",
         "html-webpack-plugin": "^2.29.0",
         "react-hot-loader": "next",
         "storybook-router": "^0.2.8",
+        "styled-components": "^2.1.1",
         "webpack-dev-server": "^2.5.0"
     }
 }
