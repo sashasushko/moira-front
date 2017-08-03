@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "scripts": {
         "start": "webpack-dev-server --hot --history-api-fallback --content-base dist/ --port 9000",
-        "build": "webpack",
+        "build": "cross-env NODE_ENV=production webpack -p",
         "storybook": "start-storybook -p 9001 -c .storybook"
     },
     "dependencies": {
@@ -33,6 +33,7 @@
         "@storybook/react": "^3.2.3",
         "classnames": "^2.2.5",
         "color-hash": "^1.0.3",
+        "cross-env": "^5.0.2",
         "eslint": "3.19.0",
         "eslint-config-skbkontur-retail": "^2.1.2",
         "html-webpack-plugin": "^2.29.0",
