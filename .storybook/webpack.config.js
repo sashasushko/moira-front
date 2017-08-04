@@ -13,7 +13,7 @@ const config = {
             },
             {
                 test: /\.less$/,
-                loaders: ['style-loader', 'css-loader', 'less-loader'],
+                loaders: ['classnames-loader', 'style-loader', 'css-loader', 'less-loader'],
                 include: /src|retail\-ui/,
             },
             {
