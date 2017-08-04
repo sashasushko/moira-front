@@ -23,7 +23,7 @@ const config = {
         ],
     },
     resolve: {
-        modules: ['node_modules', 'web_modules'],
+        modules: ['node_modules', 'web_modules', 'local_modules'],
     },
 };
 
