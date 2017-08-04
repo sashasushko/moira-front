@@ -7,10 +7,8 @@ import { Statuses, getStatusColor } from '../../Domain/Status';
 import StatusIndicator from '../StatusIndicator/StatusIndicator';
 import TagList from '../TagList/TagList';
 import MetricsListView from '../MetricsList/MetricsList';
-import classNames from 'classnames/bind';
-import styles from './TriggerItem.less';
+import cn from './TriggerItem.less';
 
-const cx = classNames.bind(styles);
 type Props = {|
     data: Trigger;
     showMetrics?: boolean;
@@ -64,12 +62,12 @@ export default class TriggerItem extends React.Component {
         const { metrics } = last_check || {};
 
         return (
-            <div className={cx({ row: true, active: showMetrics })}>
-                <div className={cx({ state: true })} onClick={() => this.handleShowMetrics()}>
-                    <div className={cx({ indicator: true })}>
+            <div className={cn({ row: true, active: showMetrics })}>
+                <div className={cn({ state: true })} onClick={() => this.handleShowMetrics()}>
+                    <div className={cn({ indicator: true })}>
                         <StatusIndicator statuses={this.composeStatuses()} />
                     </div>
-                    <div className={cx({ counters: true })}>
+                    <div className={cn({ counters: true })}>
                         {this.composeCounters().map(({ status, value }) =>
                             <div key={status} style={{ color: getStatusColor(status) }}>
                                 {value}
@@ -77,26 +75,26 @@ export default class TriggerItem extends React.Component {
                         )}
                     </div>
                 </div>
-                <div className={cx({ data: true })}>
-                    <div className={cx({ header: true })}>
+                <div className={cn({ data: true })}>
+                    <div className={cn({ header: true })}>
                         <Link to={'/events/' + id}>
-                            <div className={cx({ title: true })}>
+                            <div className={cn({ title: true })}>
                                 {name}
                             </div>
-                            <div className={cx({ targets: true, dark: showMetrics })}>
+                            <div className={cn({ targets: true, dark: showMetrics })}>
                                 {targets.map((target, i) =>
-                                    <div key={i} className={cx({ target: true })}>
+                                    <div key={i} className={cn({ target: true })}>
                                         {target}
                                     </div>
                                 )}
                             </div>
                         </Link>
                     </div>
-                    <div className={cx({ tags: true })}>
+                    <div className={cn({ tags: true })}>
                         <TagList tags={tags} />
                     </div>
                     {showMetrics &&
-                        <div className={cx({ metrics: true })}>
+                        <div className={cn({ metrics: true })}>
                             <MetricsListView data={metrics} />
                         </div>}
                 </div>

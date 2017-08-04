@@ -1,23 +1,26 @@
 // @flow
 import React from 'react';
 import Tag from '../Tag/Tag';
-import classNames from 'classnames/bind';
-import styles from './TagList.less';
+import cn from './TagList.less';
 
-const cx = classNames.bind(styles);
 type Props = {|
     tags: Array<string>;
+    onClick?: (tag: string) => void;
     onRemove?: (tag: string) => void;
 |};
 
 export default function TagList(props: Props): React.Element<*> {
-    const { tags, onRemove } = props;
+    const { tags, onClick, onRemove } = props;
     return (
-        <div className={cx({ list: true })}>
+        <div className={cn({ list: true })}>
             {tags.map(tag => {
                 return (
-                    <div key={tag} className={cx({ item: true })}>
-                        <Tag title={tag} onRemove={onRemove && (() => onRemove(tag))} />
+                    <div key={tag} className={cn({ item: true })}>
+                        <Tag
+                            title={tag}
+                            onClick={onClick && (() => onClick(tag))}
+                            onRemove={onRemove && (() => onRemove(tag))}
+                        />
                     </div>
                 );
             })}

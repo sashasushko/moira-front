@@ -2,12 +2,11 @@
 import React from 'react';
 import Icon from 'retail-ui/components/Icon';
 import ColorHash from 'color-hash';
-import classNames from 'classnames/bind';
-import styles from './Tag.less';
+import cn from './Tag.less';
 
-const cx = classNames.bind(styles);
 type Props = {|
     title: string;
+    onClick?: () => void;
     onRemove?: () => void;
 |};
 
@@ -17,7 +16,7 @@ type ColorTheme = {|
 |};
 
 export default function Tag(props: Props): React.Element<*> {
-    const { title, onRemove } = props;
+    const { title, onRemove, onClick } = props;
 
     function getColor(): ColorTheme {
         const getBgColor = new ColorHash({ lightness: 0.6, saturation: 0.25 });
@@ -29,7 +28,7 @@ export default function Tag(props: Props): React.Element<*> {
     }
 
     return (
-        <div className={cx({ tag: true, controlled: onRemove })} style={getColor()}>
+        <div className={cn({ tag: true, controlled: onRemove })} style={getColor()} onClick={onClick}>
             {title}
             {onRemove &&
                 <div className={styles.control} onClick={onRemove}>

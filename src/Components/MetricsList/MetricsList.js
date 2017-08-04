@@ -6,10 +6,8 @@ import { Statuses } from '../../Domain/Status';
 import type { Status } from '../../Domain/Status';
 import type { Metric, MetricList } from '../../Domain/Metric';
 import parseTimestamp from '../../Helpers/parseTimestamp';
-import classNames from 'classnames/bind';
-import styles from './MetricsList.less';
+import cn from './MetricsList.less';
 
-const cx = classNames.bind(styles);
 type Props = {|
     data: MetricList;
 |};
@@ -62,31 +60,31 @@ export default class MetricListView extends React.Component {
                     </Tabs>}
                 {status &&
                     <div>
-                        <div className={cx({ row: true, header: true })}>
-                            <div className={cx({ title: true })}>Metric</div>
-                            <div className={cx({ eventTime: true })}>Last event</div>
-                            <div className={cx({ value: true })}>Value</div>
-                            <div className={cx({ controls: true })} />
+                        <div className={cn({ row: true, header: true })}>
+                            <div className={cn({ title: true })}>Metric</div>
+                            <div className={cn({ eventTime: true })}>Last event</div>
+                            <div className={cn({ value: true })}>Value</div>
+                            <div className={cn({ controls: true })} />
                         </div>
                         {metrics.filter(x => x.status === status).map(({ items }) =>
                             items.map(({ name, data }) => {
                                 const { value, event_timestamp } = data;
                                 return (
-                                    <div className={cx({ row: true })}>
-                                        <div className={cx({ title: true })}>
+                                    <div className={cn({ row: true })}>
+                                        <div className={cn({ title: true })}>
                                             {name}
                                         </div>
-                                        <div className={cx({ eventTime: true })}>
+                                        <div className={cn({ eventTime: true })}>
                                             {event_timestamp ? parseTimestamp(event_timestamp) : '—'}
                                         </div>
-                                        <div className={cx({ value: true })}>
+                                        <div className={cn({ value: true })}>
                                             {value || '—'}
                                         </div>
-                                        <div className={cx({ controls: true })}>
-                                            <div className={cx({ maintenance: true })}>
+                                        <div className={cn({ controls: true })}>
+                                            <div className={cn({ maintenance: true })}>
                                                 <Link icon='Settings'>Off</Link>
                                             </div>
-                                            <div className={cx({ delete: true })}>
+                                            <div className={cn({ delete: true })}>
                                                 <Link icon='Delete' />
                                             </div>
                                         </div>
