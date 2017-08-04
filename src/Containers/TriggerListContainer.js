@@ -6,8 +6,10 @@ import type { IMoiraApi } from '../Api/MoiraAPI';
 import type { Trigger } from '../Domain/Trigger';
 import { withMoiraApi } from '../Api/MoiraApiInjection';
 import queryString from 'query-string';
-import { concat, difference } from 'lodash';
+import { concat, difference, flatten } from 'lodash';
+import Toggle from 'retail-ui/components/Toggle';
 import TriggerFilter from '../Components/TriggerFilter/TriggerFilter';
+import TagSelector from '../Components/TagSelector/TagSelector';
 import TriggerList from '../Components/TriggerList/TriggerList';
 import TriggerPaging from '../Components/TriggerPaging/TriggerPaging';
 
@@ -17,6 +19,7 @@ type State = {|
     triggers: ?Array<Trigger>;
     tags: ?Array<string>;
     pages: ?number;
+    subscribedTags: ?Array<string>;
 |};
 type ParsedSearch = { [key: string]: string | number | Array<string> };
 
@@ -27,6 +30,7 @@ class TriggerListContainer extends React.Component {
         triggers: null,
         tags: null,
         pages: null,
+        subscribedTags: null,
     };
 
     componentDidMount() {
@@ -43,8 +47,16 @@ class TriggerListContainer extends React.Component {
         const page = Number(parsedPath.page) || 0;
         const triggerList = await moiraApi.getTriggerList(page);
         const tagList = await moiraApi.getTagList();
+        const settings = await moiraApi.getSettings();
         const pages = Math.ceil(triggerList.total / triggerList.size);
-        this.setState({ loading: false, triggers: triggerList.list, tags: tagList.list, pages });
+        const subscribedTags = flatten(settings.subscriptions.map(x => x.tags));
+        this.setState({
+            loading: false,
+            triggers: triggerList.list,
+            tags: tagList.list,
+            subscribedTags,
+            pages,
+        });
     }
 
     handleParseSearch(search: string): ParsedSearch {
@@ -65,13 +77,9 @@ class TriggerListContainer extends React.Component {
     }
 
     render(): React.Element<*> {
-        const { loading, triggers, tags, pages } = this.state;
+        const { loading, triggers, tags, pages, subscribedTags } = this.state;
         const { location } = this.props;
         const { page, notOkMetrics, tags: selectedTags } = this.handleParseSearch(location.search);
-        const WrapFilter = styled.div`
-            padding: 15px 0;
-            background-color: #f3f3f3;
-        `;
         const WrapList = styled.div`
             margin-top: 30px;
             margin-bottom: 30px;
@@ -86,19 +94,23 @@ class TriggerListContainer extends React.Component {
                 {loading && <p>Loading...</p>}
                 {!loading &&
                     <div>
-                        <WrapFilter>
-                            <div className='container'>
-                                <TriggerFilter
-                                    remainedTags={Array.isArray(tags) ? difference(tags, selectedTags) : []}
+                        {tags &&
+                            <TriggerFilter>
+                                <TagSelector
                                     selectedTags={Array.isArray(selectedTags) ? selectedTags : null}
-                                    notOkMetrics={notOkMetrics === 'true'}
+                                    subscribedTags={
+                                        Array.isArray(subscribedTags) ? difference(subscribedTags, selectedTags) : null
+                                    }
+                                    remainedTags={difference(tags, concat(selectedTags, subscribedTags))}
                                     onSelect={tag => this.handleChangeSearch({ tags: concat(selectedTags, tag) })}
                                     onRemove={tag => this.handleChangeSearch({ tags: difference(selectedTags, [tag]) })}
-                                    onChange={checked =>
-                                        this.handleChangeSearch({ notOkMetrics: checked ? 'true' : 'false' })}
                                 />
-                            </div>
-                        </WrapFilter>
+                            </TriggerFilter>}
+                        {/* ToDo: <Toggle
+                            checked={notOkMetrics === 'true'}
+                            onChange={checked => this.handleChangeSearch({ notOkMetrics: checked ? 'true' : 'false' })}
+                        />{' '}
+                        Only problems */}
                         {triggers &&
                             <WrapList className='container'>
                                 <TriggerList items={triggers} />

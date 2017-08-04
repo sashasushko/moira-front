@@ -8,7 +8,7 @@ type Props = {|
 
 export default function TriggerFilter(props: Props): React.Element<*> {
     return (
-        <div className={cn({ filter: true })}>
+        <div className={cn('filter')}>
             <div className={cn({ container: true })}>
                 {props.children}
             </div>

@@ -8,4 +8,8 @@ storiesOf('Tag', module)
     .add('Default', () => <Tag title='abonentsErrors' />)
     .add('Long title', () => <Tag title='dmitry:ReplicaClusterError.ReplicaClusterWarn' />)
     .add('Short title', () => <Tag title='test' />)
-    .add('With remove', () => <Tag title='abonentsErrors' onRemove={action('onRemove')} />);
+    .add('With onClick', () => <Tag title='abonentsErrors' onClick={action('onClick')} />)
+    .add('With onRemove', () => <Tag title='ReplicaClusterWarn' onRemove={action('onRemove')} />)
+    .add('With onClick and onRemove', () =>
+        <Tag title='ReplicaClusterError' onClick={action('onClick')} onRemove={action('onRemove')} />
+    );
