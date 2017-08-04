@@ -3,27 +3,20 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import TriggerFilter from '../Components/TriggerFilter/TriggerFilter';
+import TagSelector from '../Components/TagSelector/TagSelector';
 
-const remainedTags = ['abonentsErrors', 'dmitry:ReplicaClusterError.ReplicaClusterWarn', 'build'];
-const selectedTags = ['test', 'dev'];
+const remainedTags = ['EDI.ESLogging', 'dmitry:ReplicaClusterError.ReplicaClusterWarn', 'KE.Infra'];
+const selectedTags = ['sprinter', 'BillyStudy'];
+const subscribedTags = ['test__'];
 
-storiesOf('TriggerFilter', module)
-    .add('Default', () =>
-        <TriggerFilter remainedTags={remainedTags} onSelect={action('onSelect')} onRemove={action('onRemove')} />
-    )
-    .add('With selected tags', () =>
-        <TriggerFilter
+storiesOf('TriggerFilter', module).add('Default', () =>
+    <TriggerFilter>
+        <TagSelector
             remainedTags={remainedTags}
+            subscribedTags={subscribedTags}
             selectedTags={selectedTags}
             onSelect={action('onSelect')}
             onRemove={action('onRemove')}
         />
-    )
-    .add('With checked "Only problems"', () =>
-        <TriggerFilter
-            remainedTags={remainedTags}
-            onSelect={action('onSelect')}
-            onRemove={action('onRemove')}
-            notOkMetrics
-        />
-    );
+    </TriggerFilter>
+);

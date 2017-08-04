@@ -5,10 +5,8 @@ import Button from 'retail-ui/components/Button';
 import { Link } from 'react-router-dom';
 import type { Trigger } from '../../Domain/Trigger';
 import Tag from '../Tag/Tag';
-import classNames from 'classnames/bind';
-import styles from './TriggerInfo.less';
+import cn from './TriggerInfo.less';
 
-const cx = classNames.bind(styles);
 type Props = {|
     data: Trigger;
 |};
@@ -17,17 +15,17 @@ export default function TriggerInfo(props: Props): React.Element<*> {
     const { id, name, targets, desc, expression, warn_value, error_value, ttl_state, ttl, sched, tags } = props.data;
     return (
         <section>
-            <header className={cx({ header: true })}>
-                <h2 className={cx({ title: true })}>
+            <header className={cn({ header: true })}>
+                <h2 className={cn({ title: true })}>
                     {name}
                 </h2>
-                <div className={cx({ controls: true })}>
-                    <div className={cx({ control: true })}>
+                <div className={cn({ controls: true })}>
+                    <div className={cn({ control: true })}>
                         <Link to={'/trigger/' + id}>
                             <Icon name='Edit' /> Edit
                         </Link>
                     </div>
-                    <div className={cx({ control: true })}>
+                    <div className={cn({ control: true })}>
                         <Button use='link' icon='Export'>
                             Export
                         </Button>
@@ -35,7 +33,7 @@ export default function TriggerInfo(props: Props): React.Element<*> {
                 </div>
             </header>
 
-            <dl className={cx({ info: true })}>
+            <dl className={cn({ info: true })}>
                 <dt>Target</dt>
                 <dd>
                     {targets.map((target, i) =>

@@ -1,15 +1,14 @@
+@import '~styles/variables.less';
+@import '~styles/mixins.less';
+
 :local {
     .filter {
-        display: flex;
-        align-items: flex-start;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        background-color: #f3f3f3;
     }
 
-    .tags {
-        flex-grow: 1;
-    }
-
-    .toggle {
-        margin-left: auto;
-        flex-shrink: 0;
+    .container {
+        .container();
     }
 }

@@ -3,23 +3,30 @@
         overflow: hidden;
         display: inline-block;
         max-width: 100%;
-        padding: 0 5px;
         height: 20px;
         border-radius: 2px;
-        box-sizing: border-box;
         background-color: #eee;
         color: #666;
         text-overflow: ellipsis;
         white-space: nowrap;
         vertical-align: top;
 
-        &.controlled {
+        &.removeable {
             position: relative;
-            padding-right: 25px;
+            padding-right: 20px;
         }
     }
 
-    .control {
+    .title {
+        padding-right: 5px;
+        padding-left: 5px;
+
+        &.clickable {
+            cursor: pointer;
+        }
+    }
+
+    .remove {
         position: absolute;
         top: 0;
         right: 0;

@@ -36,7 +36,7 @@ const config = {
         ],
     },
     resolve: {
-        modules: ['node_modules'],
+        modules: ['node_modules', 'local_modules'],
     },
     plugins: [
         new HtmlWebpackPlugin({
