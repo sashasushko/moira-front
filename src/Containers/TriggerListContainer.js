@@ -1,15 +1,13 @@
 // @flow
 import React from 'react';
-import styled from 'styled-components';
 import type { ContextRouter } from 'react-router-dom';
 import type { IMoiraApi } from '../Api/MoiraAPI';
 import type { Trigger } from '../Domain/Trigger';
 import { withMoiraApi } from '../Api/MoiraApiInjection';
 import queryString from 'query-string';
 import { concat, difference, flatten } from 'lodash';
-import Toggle from 'retail-ui/components/Toggle';
+// import Toggle from 'retail-ui/components/Toggle';
 import TriggerFilter from '../Components/TriggerFilter/TriggerFilter';
-import TagSelector from '../Components/TagSelector/TagSelector';
 import TriggerList from '../Components/TriggerList/TriggerList';
 import TriggerPaging from '../Components/TriggerPaging/TriggerPaging';
 
@@ -21,7 +19,6 @@ type State = {|
     pages: ?number;
     subscribedTags: ?Array<string>;
 |};
-type ParsedSearch = { [key: string]: string | number | Array<string> };
 
 class TriggerListContainer extends React.Component {
     props: Props;
@@ -59,15 +56,15 @@ class TriggerListContainer extends React.Component {
         });
     }
 
-    handleParseSearch(search: string): ParsedSearch {
+    handleParseSearch(search: string): { [key: string]: string | Array<string> } {
         return queryString.parse(search, { arrayFormat: 'index' });
     }
 
-    handleBuildSearch(search: ParsedSearch): string {
+    handleBuildSearch(search: { [key: string]: number | string | Array<number | string> }): string {
         return '?' + queryString.stringify(search, { arrayFormat: 'index', encode: true });
     }
 
-    handleChangeSearch(update: ParsedSearch) {
+    handleChangeSearch(update: { [key: string]: number | string | Array<number | string> }) {
         const { location, history } = this.props;
         const search = {
             ...this.handleParseSearch(location.search),
@@ -77,52 +74,30 @@ class TriggerListContainer extends React.Component {
     }
 
     render(): React.Element<*> {
-        const { loading, triggers, tags, pages, subscribedTags } = this.state;
+        const { loading, triggers, tags: allTags, pages, subscribedTags } = this.state;
         const { location } = this.props;
-        const { page, notOkMetrics, tags: selectedTags } = this.handleParseSearch(location.search);
-        const WrapList = styled.div`
-            margin-top: 30px;
-            margin-bottom: 30px;
-        `;
-        const WrapPaging = styled.div`
-            margin-top: 30px;
-            margin-bottom: 40px;
-        `;
+        const { page, tags: selectedTags } = this.handleParseSearch(location.search);
 
         return (
             <div>
                 {loading && <p>Loading...</p>}
                 {!loading &&
                     <div>
-                        {tags &&
-                            <TriggerFilter>
-                                <TagSelector
-                                    selectedTags={Array.isArray(selectedTags) ? selectedTags : null}
-                                    subscribedTags={
-                                        Array.isArray(subscribedTags) ? difference(subscribedTags, selectedTags) : null
-                                    }
-                                    remainedTags={difference(tags, concat(selectedTags, subscribedTags))}
-                                    onSelect={tag => this.handleChangeSearch({ tags: concat(selectedTags, tag) })}
-                                    onRemove={tag => this.handleChangeSearch({ tags: difference(selectedTags, [tag]) })}
-                                />
-                            </TriggerFilter>}
-                        {/* ToDo: <Toggle
-                            checked={notOkMetrics === 'true'}
-                            onChange={checked => this.handleChangeSearch({ notOkMetrics: checked ? 'true' : 'false' })}
-                        />{' '}
-                        Only problems */}
-                        {triggers &&
-                            <WrapList className='container'>
-                                <TriggerList items={triggers} />
-                            </WrapList>}
+                        <TriggerFilter
+                            selectedTags={Array.isArray(selectedTags) ? selectedTags : []}
+                            subscribedTags={difference(subscribedTags, selectedTags)}
+                            remainedTags={difference(allTags, concat(selectedTags, subscribedTags))}
+                            onSelect={tag => this.handleChangeSearch({ tags: concat(selectedTags, tag) })}
+                            onRemove={tag => this.handleChangeSearch({ tags: difference(selectedTags, [tag]) })}
+                        />
+                        {triggers && <TriggerList items={triggers} />}
                         {typeof pages === 'number' &&
-                            <WrapPaging className='container'>
-                                <TriggerPaging
-                                    activePage={Number(page) || 1}
-                                    pagesCount={pages}
-                                    onChange={page => this.handleChangeSearch({ page })}
-                                />
-                            </WrapPaging>}
+                            pages > 1 &&
+                            <TriggerPaging
+                                activePage={Number(page) || 1}
+                                pagesCount={pages}
+                                onChange={page => this.handleChangeSearch({ page })}
+                            />}
                     </div>}
             </div>
         );
