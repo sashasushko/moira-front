@@ -10,20 +10,34 @@ type Props = {|
     onSelect: (tag: string) => void;
     onRemove: (tag: string) => void;
 |};
+type State = {
+    query: string;
+};
 
-export default function TriggerFilter(props: Props): React.Element<*> {
-    const { selectedTags, subscribedTags, remainedTags, onSelect, onRemove } = props;
-    return (
-        <div className={cn('filter')}>
-            <div className={cn('container')}>
-                <TagSelector
-                    selectedTags={selectedTags}
-                    subscribedTags={subscribedTags}
-                    remainedTags={remainedTags}
-                    onSelect={tag => onSelect(tag)}
-                    onRemove={tag => onRemove(tag)}
-                />
+export default class TriggerFilter extends React.Component {
+    props: Props;
+    state: State = { query: '' };
+    handleFilter(tags: Array<string>): Array<string> {
+        const { query } = this.state;
+        return tags.filter(x => x.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    }
+    render(): React.Element<*> {
+        const { selectedTags, subscribedTags, remainedTags, onSelect, onRemove } = this.props;
+        const { query } = this.state;
+        return (
+            <div className={cn('filter')}>
+                <div className={cn('container')}>
+                    <TagSelector
+                        selectedTags={selectedTags}
+                        subscribedTags={this.handleFilter(subscribedTags)}
+                        remainedTags={this.handleFilter(remainedTags)}
+                        value={query}
+                        onInput={query => this.setState({ query })}
+                        onSelect={tag => onSelect(tag)}
+                        onRemove={tag => onRemove(tag)}
+                    />
+                </div>
             </div>
-        </div>
-    );
+        );
+    }
 }

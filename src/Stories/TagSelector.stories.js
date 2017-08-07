@@ -13,6 +13,8 @@ storiesOf('TagSelector', module).add('Default', () =>
         remainedTags={remainedTags}
         subscribedTags={subscribedTags}
         selectedTags={selectedTags}
+        value={''}
+        onInput={action('onInput')}
         onSelect={action('onSelect')}
         onRemove={action('onRemove')}
     />
