@@ -1,6 +1,11 @@
+@import '~styles/variables.less';
+@import '~styles/mixins.less';
+
 :local {
     .list {
-        margin-bottom: 20px;
+        .container();
+        margin-top: 30px;
+        margin-bottom: 30px;
     }
 
     .item:not(:first-child) {
