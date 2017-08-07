@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import styled from 'styled-components';
 import Tabs from 'retail-ui/components/Tabs';
 import type { ContextRouter } from 'react-router-dom';
 import type { IMoiraApi } from '../Api/MoiraAPI';
@@ -15,7 +14,7 @@ import TriggerEvents from '../Components/TriggerEvents/TriggerEvents';
 type Props = ContextRouter & { moiraApi: IMoiraApi };
 type State = {|
     loading: boolean;
-    activeTab: 'current' | 'total' | 'history';
+    activeTab: 'current' | 'history';
     trigger: ?Trigger;
     triggerState: ?TriggerState;
     triggerEvents: ?EventList;
@@ -46,10 +45,6 @@ class EventsContainer extends React.Component {
 
     render(): React.Element<*> {
         const { loading, activeTab, trigger, triggerState, triggerEvents } = this.state;
-        const WrapTabs = styled.div`
-            margin-top: 20px;
-            margin-bottom: 50px;
-        `;
 
         return (
             <div>
@@ -57,22 +52,19 @@ class EventsContainer extends React.Component {
                 {!loading &&
                     <div>
                         {trigger && <TriggerInfo data={trigger} />}
-                        <WrapTabs>
-                            <div className='container'>
-                                <Tabs
-                                    value={activeTab}
-                                    onChange={(targer, activeTab) => {
-                                        this.setState({ activeTab });
-                                    }}>
-                                    <Tabs.Tab id='current'>Current state</Tabs.Tab>
-                                    <Tabs.Tab id='total'>Total state</Tabs.Tab>
-                                    <Tabs.Tab id='history'>Events history</Tabs.Tab>
-                                </Tabs>
-                                {activeTab === 'current' && <TriggerCurrentState data={triggerState || {}} />}
-                                {activeTab === 'total' && <TriggerTotalState />}
-                                {activeTab === 'history' && <TriggerEvents data={triggerEvents || {}} />}
-                            </div>
-                        </WrapTabs>
+                        {/* ToDo */}
+                        <div className='container'>
+                            <Tabs
+                                value={activeTab}
+                                onChange={(targer, activeTab) => {
+                                    this.setState({ activeTab });
+                                }}>
+                                <Tabs.Tab id='current'>Current state</Tabs.Tab>
+                                <Tabs.Tab id='history'>Events history</Tabs.Tab>
+                            </Tabs>
+                            {activeTab === 'current' && <TriggerCurrentState data={triggerState || {}} />}
+                            {activeTab === 'history' && <TriggerEvents data={triggerEvents || {}} />}
+                        </div>
                     </div>}
             </div>
         );
