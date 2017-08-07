@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import Paging from 'retail-ui/components/Paging';
-import classNames from 'classnames/bind';
 import cn from './TriggerPaging.less';
 
 type Props = {|
@@ -13,7 +12,7 @@ type Props = {|
 export default function TriggerPaging(props: Props): React.Element<*> {
     const { activePage, pagesCount, onChange } = props;
     return (
-        <div className={cn({ paging: true })}>
+        <div className={cn('paging')}>
             <Paging activePage={activePage} pagesCount={pagesCount} onPageChange={page => onChange(page)} />
         </div>
     );
