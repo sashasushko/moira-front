@@ -46,10 +46,6 @@ class EventsContainer extends React.Component {
 
     render(): React.Element<*> {
         const { loading, activeTab, trigger, triggerState, triggerEvents } = this.state;
-        const WrapTrigger = styled.div`
-            padding: 30px 0 40px;
-            background-color: #f3f3f3;
-        `;
         const WrapTabs = styled.div`
             margin-top: 20px;
             margin-bottom: 50px;
@@ -60,12 +56,7 @@ class EventsContainer extends React.Component {
                 {loading && <p>Loading...</p>}
                 {!loading &&
                     <div>
-                        {trigger &&
-                            <WrapTrigger>
-                                <div className='container'>
-                                    <TriggerInfo data={trigger} />
-                                </div>
-                            </WrapTrigger>}
+                        {trigger && <TriggerInfo data={trigger} />}
                         <WrapTabs>
                             <div className='container'>
                                 <Tabs
