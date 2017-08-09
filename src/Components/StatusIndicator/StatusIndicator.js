@@ -7,7 +7,7 @@ type Props = {|
     statuses: Array<Status>;
 |};
 
-export default function StatusIndicator(props: Props): React.Element<*> {
+export default function StatusIndicator(props: Props): React.Element<any> {
     const OPTIONS = {
         size: 20,
     };
