@@ -1,5 +1,4 @@
 // @flow
-
 import type { Subscribtion } from './Subscribtion';
 
 export type TagList = {|
