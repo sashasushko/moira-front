@@ -7,13 +7,13 @@ type Props = {|
     statuses: Array<Status>;
 |};
 
-export default function StatusIndicator(props: Props): React.Element<any> {
+export default function StatusIndicator(props: Props): React.Element<*> {
     const OPTIONS = {
         size: 20,
     };
     const { statuses } = props;
 
-    function renderPath(): React.Element<*> {
+    function renderPath(): React.Element<any> {
         const [status1, status2, status3] = statuses;
         switch (statuses.length) {
             case 1:
