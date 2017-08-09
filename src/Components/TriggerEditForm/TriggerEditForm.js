@@ -8,9 +8,17 @@ type Props = {|
 |};
 
 export default function TriggerEditForm(props: Props): React.Element<*> {
-    const { name, desc, targets = [''], error_value, warn_value, expression, ttl_state, ttl, sched } = props.data
-        ? props.data
-        : {};
+    const {
+        name,
+        desc,
+        targets = [''],
+        error_value: errorValue,
+        warn_value: warnValue,
+        expression,
+        ttl_state: ttlState,
+        ttl,
+        sched,
+    } = props.data ? props.data : {};
     return (
         <form>
             <p>
@@ -54,11 +62,11 @@ export default function TriggerEditForm(props: Props): React.Element<*> {
                 </p>
                 <p>
                     WARNING <label htmlFor='target1warningIf'>if T1</label>{' '}
-                    <input id='target1warningIf' type='text' defaultValue={warn_value} />
+                    <input id='target1warningIf' type='text' defaultValue={warnValue} />
                 </p>
                 <p>
                     ERROR <label htmlFor='target1errorIf'>if T1</label>{' '}
-                    <input id='target1errorIf' type='text' defaultValue={error_value} />
+                    <input id='target1errorIf' type='text' defaultValue={errorValue} />
                 </p>
             </fieldset>
             <fieldset>
@@ -70,7 +78,7 @@ export default function TriggerEditForm(props: Props): React.Element<*> {
                 </p>
             </fieldset>
             <p>
-                <select value={ttl_state} onChange={() => {}}>
+                <select value={ttlState} onChange={() => {}}>
                     <option value='OK'>OK</option>
                     <option value='WARN'>WARN</option>
                     <option value='ERROR'>ERROR</option>

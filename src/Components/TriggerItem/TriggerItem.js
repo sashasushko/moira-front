@@ -34,8 +34,8 @@ export default class TriggerItem extends React.Component {
     }
 
     composeStatuses(): Array<Status> {
-        const { last_check } = this.props.data;
-        const { metrics } = last_check || {};
+        const { last_check: lastCheck } = this.props.data;
+        const { metrics } = lastCheck || {};
         const statuses = Object.keys(Statuses).filter(
             x => Object.keys(metrics).filter(y => metrics[y].state === x).length > 0
         );
@@ -44,8 +44,8 @@ export default class TriggerItem extends React.Component {
     }
 
     composeCounters(): Array<{ status: Status; value: number }> {
-        const { last_check } = this.props.data;
-        const { metrics } = last_check || {};
+        const { last_check: lastCheck } = this.props.data;
+        const { metrics } = lastCheck || {};
         return Object.keys(Statuses)
             .map(x => {
                 return {
@@ -57,9 +57,9 @@ export default class TriggerItem extends React.Component {
     }
 
     render(): React.Element<*> {
-        const { id, name, targets, tags, last_check } = this.props.data;
+        const { id, name, targets, tags, last_check: lastCheck } = this.props.data;
         const { showMetrics } = this.state;
-        const { metrics } = last_check || {};
+        const { metrics } = lastCheck || {};
 
         return (
             <div className={cn({ row: true, active: showMetrics })}>

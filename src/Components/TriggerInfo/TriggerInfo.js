@@ -12,7 +12,19 @@ type Props = {|
 |};
 
 export default function TriggerInfo(props: Props): React.Element<*> {
-    const { id, name, targets, desc, expression, warn_value, error_value, ttl_state, ttl, sched, tags } = props.data;
+    const {
+        id,
+        name,
+        targets,
+        desc,
+        expression,
+        error_value: errorValue,
+        warn_value: warnValue,
+        ttl_state: ttlState,
+        ttl,
+        sched,
+        tags,
+    } = props.data;
     return (
         <section className={cn('info')}>
             <div className={cn('container')}>
@@ -49,8 +61,7 @@ export default function TriggerInfo(props: Props): React.Element<*> {
                     {!expression && <dt>Value</dt>}
                     {!expression &&
                         <dd>
-                            Warning: {warn_value}, Error: {error_value}, Set {ttl_state} if has no value for {ttl}{' '}
-                            seconds
+                            Warning: {warnValue}, Error: {errorValue}, Set {ttlState} if has no value for {ttl} seconds
                         </dd>}
                     {expression && <dt>Expression</dt>}
                     {expression &&
