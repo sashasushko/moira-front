@@ -4,7 +4,8 @@
     "scripts": {
         "start": "webpack-dev-server --hot --history-api-fallback --content-base dist/ --port 9000",
         "build": "cross-env NODE_ENV=production webpack -p",
-        "storybook": "start-storybook -p 9001 -c .storybook"
+        "storybook": "start-storybook -p 9001 -c .storybook",
+        "lint": "eslint src"
     },
     "dependencies": {
         "babel-core": "^6.25.0",
