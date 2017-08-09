@@ -77,13 +77,15 @@ declare module 'react-router-dom' {
   }
 
   declare export type Match = {
-    params: Object,
+    params: { [key: string]: ?string },
     isExact: boolean,
     path: string,
     url: string,
   }
 
-  declare export type ContextRouter = RouterHistory & {
+  declare export type ContextRouter = {
+    history: RouterHistory,
+    location: Location,
     match: Match,
   }
 
