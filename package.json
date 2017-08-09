@@ -5,7 +5,11 @@
         "start": "webpack-dev-server --hot --history-api-fallback --content-base dist/ --port 9000",
         "build": "cross-env NODE_ENV=production webpack -p",
         "storybook": "start-storybook -p 9001 -c .storybook",
-        "lint": "eslint src"
+        "lint": "eslint src",
+        "flow": "flow",
+        "flow.status": "flow status",
+        "flow.check": "flow check",
+        "flow.coverage.html": "flow-coverage-report -i \"src/**/*.js\" -t html"
     },
     "dependencies": {
         "babel-core": "^6.25.0",
@@ -37,6 +41,7 @@
         "cross-env": "^5.0.2",
         "eslint": "3.19.0",
         "eslint-config-skbkontur-retail": "^2.1.2",
+        "flow-coverage-report": "^0.3.0",
         "html-webpack-plugin": "^2.29.0",
         "react-hot-loader": "next",
         "storybook-router": "^0.2.8",
