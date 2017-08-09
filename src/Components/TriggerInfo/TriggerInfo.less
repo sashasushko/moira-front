@@ -1,4 +1,17 @@
+@import '~styles/variables.less';
+@import '~styles/mixins.less';
+
 :local {
+    .info {
+        padding-top: 20px;
+        padding-bottom: 30px;
+        background-color: #f3f3f3;
+    }
+
+    .container {
+        .container();
+    }
+
     .header {
         display: flex;
         align-items: center;
@@ -24,7 +37,7 @@
         margin-left: 10px;
     }
 
-    .info {
+    .data {
         display: flex;
         flex-wrap: wrap;
         margin-top: 10px;
