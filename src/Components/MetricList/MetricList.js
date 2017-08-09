@@ -6,13 +6,13 @@ import { Statuses } from '../../Domain/Status';
 import type { Status } from '../../Domain/Status';
 import type { Metric, MetricList } from '../../Domain/Metric';
 import parseTimestamp from '../../Helpers/parseTimestamp';
-import cn from './MetricsList.less';
+import cn from './MetricList.less';
 
 type Props = {|
     data: MetricList;
 |};
 type State = {|
-    status: ?Status;
+    status: ?string; /* ToDo: как побороть Флоу стринг и shape */
 |};
 
 export default class MetricListView extends React.Component {
