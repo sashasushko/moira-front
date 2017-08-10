@@ -11,10 +11,9 @@ import cn from './TriggerItem.less';
 
 type Props = {|
     data: Trigger;
-    showMetrics?: boolean;
 |};
 type State = {|
-    showMetrics: ?boolean;
+    showMetrics: boolean;
 |};
 
 export default class TriggerItem extends React.Component {
