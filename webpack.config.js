@@ -31,7 +31,7 @@ const config = {
             {
                 test: /\.(png|woff|woff2|eot)$/,
                 loader: 'file-loader',
-                include: /retail\-ui/,
+                include: /src|retail\-ui/,
             },
         ],
     },

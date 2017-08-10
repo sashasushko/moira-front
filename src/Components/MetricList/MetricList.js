@@ -6,13 +6,14 @@ import { Statuses } from '../../Domain/Status';
 import type { Status } from '../../Domain/Status';
 import type { Metric, MetricList } from '../../Domain/Metric';
 import parseTimestamp from '../../Helpers/parseTimestamp';
-import cn from './MetricsList.less';
+import cn from './MetricList.less';
 
+const Tab = Tabs.Tab;
 type Props = {|
     data: MetricList;
 |};
 type State = {|
-    status: ?Status;
+    status: ?string;
 |};
 
 export default class MetricListView extends React.Component {
@@ -53,9 +54,9 @@ export default class MetricListView extends React.Component {
                             this.setState({ status: value });
                         }}>
                         {metrics.map(({ status }) =>
-                            <Tabs.Tab key={status} id={status}>
+                            <Tab key={status} id={status}>
                                 {status}
-                            </Tabs.Tab>
+                            </Tab>
                         )}
                     </Tabs>}
                 {status &&
@@ -68,14 +69,14 @@ export default class MetricListView extends React.Component {
                         </div>
                         {metrics.filter(x => x.status === status).map(({ items }) =>
                             items.map(({ name, data }) => {
-                                const { value, event_timestamp } = data;
+                                const { value, event_timestamp: eventTimestamp } = data;
                                 return (
                                     <div className={cn({ row: true })}>
                                         <div className={cn({ title: true })}>
                                             {name}
                                         </div>
                                         <div className={cn({ eventTime: true })}>
-                                            {event_timestamp ? parseTimestamp(event_timestamp) : '—'}
+                                            {eventTimestamp ? parseTimestamp(eventTimestamp) : '—'}
                                         </div>
                                         <div className={cn({ value: true })}>
                                             {value || '—'}

@@ -20,7 +20,7 @@ export default function TriggerCurrentState(props: Props): React.Element<*> {
                 <div className={styles.time}>Event time</div>
             </header>
             {Object.keys(metrics).map((key, index) => {
-                const { state, value, event_timestamp } = metrics[key];
+                const { state, value, event_timestamp: eventTimestamp } = metrics[key];
                 return (
                     <div key={index} className={styles.row}>
                         <div className={styles.state}>
@@ -34,7 +34,7 @@ export default function TriggerCurrentState(props: Props): React.Element<*> {
                         </div>
                         <div className={styles.time}>
                             <small>
-                                {typeof event_timestamp === 'number' && parseTimestamp(event_timestamp)}
+                                {typeof eventTimestamp === 'number' && parseTimestamp(eventTimestamp)}
                             </small>
                         </div>
                     </div>

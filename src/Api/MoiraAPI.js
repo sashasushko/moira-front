@@ -15,7 +15,7 @@ export interface IMoiraApi {
     getTriggerList(page: number): Promise<TriggerList>;
     getTrigger(id: string): Promise<Trigger>;
     getTriggerState(id: string): Promise<TriggerState>;
-    getTriggerEvents(id: string, page: number): Promise<EventList>;
+    getTriggerEvents(id: string): Promise<EventList>;
 }
 
 export default class Api implements IMoiraApi {
@@ -75,8 +75,8 @@ export default class Api implements IMoiraApi {
         }).then(response => response.json());
     }
 
-    getTriggerEvents(id: string, page: number): Promise<EventList> {
-        const url = '/api/events.json?id=' + id + '&page=' + page;
+    getTriggerEvents(id: string): Promise<EventList> {
+        const url = '/api/events.json?id=' + id;
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());

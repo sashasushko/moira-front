@@ -10,10 +10,11 @@ import TriggerInfo from '../Components/TriggerInfo/TriggerInfo';
 import TriggerCurrentState from '../Components/TriggerCurrentState/TriggerCurrentState';
 import TriggerEvents from '../Components/TriggerEvents/TriggerEvents';
 
+const Tab = Tabs.Tab;
 type Props = ContextRouter & { moiraApi: IMoiraApi };
 type State = {|
     loading: boolean;
-    activeTab: 'current' | 'history';
+    activeTab: string;
     trigger: ?Trigger;
     triggerState: ?TriggerState;
     triggerEvents: ?EventList;
@@ -34,11 +35,14 @@ class EventsContainer extends React.Component {
     }
 
     async getData(): Promise<void> {
-        const { moiraApi } = this.props;
-        const { id }: { id: string } = this.props.match.params;
+        const { moiraApi, match } = this.props;
+        const { id } = match.params;
+        if (typeof id !== 'string') {
+            return;
+        }
         const trigger = await moiraApi.getTrigger(id);
         const triggerState = await moiraApi.getTriggerState(id);
-        const triggerEvents = await moiraApi.getTriggerEvents(id, 0); // 0 - номер страницы, который нужно заменить после
+        const triggerEvents = await moiraApi.getTriggerEvents(id);
         this.setState({ loading: false, trigger, triggerState, triggerEvents });
     }
 
@@ -51,18 +55,17 @@ class EventsContainer extends React.Component {
                 {!loading &&
                     <div>
                         {trigger && <TriggerInfo data={trigger} />}
-                        {/* ToDo */}
                         <div className='container'>
                             <Tabs
                                 value={activeTab}
                                 onChange={(targer, activeTab) => {
                                     this.setState({ activeTab });
                                 }}>
-                                <Tabs.Tab id='current'>Current state</Tabs.Tab>
-                                <Tabs.Tab id='history'>Events history</Tabs.Tab>
+                                <Tab id='current'>Current state</Tab>
+                                <Tab id='history'>Events history</Tab>
                             </Tabs>
-                            {activeTab === 'current' && <TriggerCurrentState data={triggerState || {}} />}
-                            {activeTab === 'history' && <TriggerEvents data={triggerEvents || {}} />}
+                            {activeTab === 'current' && triggerState && <TriggerCurrentState data={triggerState} />}
+                            {activeTab === 'history' && triggerEvents && <TriggerEvents data={triggerEvents} />}
                         </div>
                     </div>}
             </div>

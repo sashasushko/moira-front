@@ -6,6 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Api from './Api/MoiraAPI';
 import App from './App';
 import { ApiProvider } from './Api/MoiraApiInjection';
+import './style.less';
 
 const api = new Api();
 

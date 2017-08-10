@@ -12,12 +12,12 @@ export default function TriggerEvents(props: Props): React.Element<*> {
     return (
         <div>
             {list.filter(item => item.state !== item.old_state).map((data, i) => {
-                const { metric, old_state, state, timestamp } = data;
+                const { metric, old_state: oldState, state, timestamp } = data;
                 return (
                     <p key={i}>
                         <i>{metric}</i>
                         <br />
-                        {old_state} → {state}
+                        {oldState} → {state}
                         <br />
                         <small>{typeof timestamp === 'number' && parseTimestamp(timestamp)}</small>
                     </p>

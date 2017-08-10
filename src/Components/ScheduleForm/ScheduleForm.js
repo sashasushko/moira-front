@@ -8,7 +8,7 @@ type Props = {|
 |};
 
 export default function ScheduleForm(props: Props): React.Element<*> {
-    const { endOffset, days, startOffset, tzOffset } = props.data;
+    const { endOffset, days, startOffset } = props.data;
     return (
         <div>
             <label htmlFor='descr'>Schedule</label>

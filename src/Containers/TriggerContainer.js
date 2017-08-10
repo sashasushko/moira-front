@@ -24,13 +24,13 @@ class TriggerContainer extends React.Component {
     }
 
     async getData(): Promise<void> {
-        const { moiraApi } = this.props;
-        const { id }: { id: string } = this.props.match.params;
-        if (id) {
-            const trigger = await moiraApi.getTrigger(id);
-            this.setState({ trigger });
+        const { moiraApi, match } = this.props;
+        const { id } = match.params;
+        if (typeof id !== 'string') {
+            return;
         }
-        this.setState({ loading: false });
+        const trigger = await moiraApi.getTrigger(id);
+        this.setState({ loading: false, trigger });
     }
 
     render(): React.Element<*> {

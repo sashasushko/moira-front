@@ -220,10 +220,10 @@ const stories = [
                         state: 'WARNING',
                     },
                 },
+                timestamp: 1499418145,
+                state: 'OK',
+                score: 14000,
             },
-            timestamp: 1499418145,
-            state: 'OK',
-            score: 14000,
         },
     },
     {

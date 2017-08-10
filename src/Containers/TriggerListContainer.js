@@ -6,7 +6,6 @@ import type { Trigger } from '../Domain/Trigger';
 import { withMoiraApi } from '../Api/MoiraApiInjection';
 import queryString from 'query-string';
 import { concat, difference, flatten } from 'lodash';
-// import Toggle from 'retail-ui/components/Toggle';
 import TriggerFilter from '../Components/TriggerFilter/TriggerFilter';
 import TriggerList from '../Components/TriggerList/TriggerList';
 import TriggerPaging from '../Components/TriggerPaging/TriggerPaging';
@@ -40,9 +39,8 @@ class TriggerListContainer extends React.Component {
 
     async getData(props: Props): Promise<void> {
         const { location, moiraApi } = props;
-        const parsedPath = this.handleParseSearch(location.search);
-        const page = Number(parsedPath.page) || 0;
-        const triggerList = await moiraApi.getTriggerList(page);
+        const { page } = this.parseSearch(location.search);
+        const triggerList = await moiraApi.getTriggerList((Number(page) || 1) - 1);
         const tagList = await moiraApi.getTagList();
         const settings = await moiraApi.getSettings();
         const pages = Math.ceil(triggerList.total / triggerList.size);
@@ -56,27 +54,28 @@ class TriggerListContainer extends React.Component {
         });
     }
 
-    handleParseSearch(search: string): { [key: string]: string | Array<string> } {
+    parseSearch(search: string): { [key: string]: string | Array<string> } {
         return queryString.parse(search, { arrayFormat: 'index' });
     }
 
-    handleBuildSearch(search: { [key: string]: number | string | Array<number | string> }): string {
+    buildSearch(search: { [key: string]: string | number | Array<string> }): string {
         return '?' + queryString.stringify(search, { arrayFormat: 'index', encode: true });
     }
 
-    handleChangeSearch(update: { [key: string]: number | string | Array<number | string> }) {
+    changeSearch(update: { [key: string]: string | number | Array<string> }) {
         const { location, history } = this.props;
         const search = {
-            ...this.handleParseSearch(location.search),
+            ...this.parseSearch(location.search),
             ...update,
         };
-        history.push(this.handleBuildSearch(search));
+        history.push(this.buildSearch(search));
     }
 
     render(): React.Element<*> {
-        const { loading, triggers, tags: allTags, pages, subscribedTags } = this.state;
+        const { loading, triggers, tags: allTags = [], pages, subscribedTags = [] } = this.state;
         const { location } = this.props;
-        const { page, tags: selectedTags } = this.handleParseSearch(location.search);
+        const { page, tags: parsedSelectedTags } = this.parseSearch(location.search);
+        const selectedTags = Array.isArray(parsedSelectedTags) ? parsedSelectedTags : [];
 
         return (
             <div>
@@ -84,19 +83,19 @@ class TriggerListContainer extends React.Component {
                 {!loading &&
                     <div>
                         <TriggerFilter
-                            selectedTags={Array.isArray(selectedTags) ? selectedTags : []}
+                            selectedTags={selectedTags}
                             subscribedTags={difference(subscribedTags, selectedTags)}
                             remainedTags={difference(allTags, concat(selectedTags, subscribedTags))}
-                            onSelect={tag => this.handleChangeSearch({ tags: concat(selectedTags, tag) })}
-                            onRemove={tag => this.handleChangeSearch({ tags: difference(selectedTags, [tag]) })}
+                            onSelect={tag => this.changeSearch({ tags: concat(selectedTags, tag) })}
+                            onRemove={tag => this.changeSearch({ tags: difference(selectedTags, [tag]) })}
                         />
                         {triggers && <TriggerList items={triggers} />}
                         {typeof pages === 'number' &&
                             pages > 1 &&
                             <TriggerPaging
                                 activePage={Number(page) || 1}
-                                pagesCount={pages}
-                                onChange={page => this.handleChangeSearch({ page })}
+                                pageCount={pages}
+                                onChange={page => this.changeSearch({ page })}
                             />}
                     </div>}
             </div>
