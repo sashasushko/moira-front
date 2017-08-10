@@ -27,7 +27,11 @@ export default function TagSelector(props: Props): React.Element<*> {
                     className={cn('search-input')}
                     placeholder='Type or select tags to filter'
                     value={value}
-                    onChange={event => onInput(event.target.value)}
+                    onChange={(event: Event) => {
+                        if (event.target instanceof HTMLInputElement) {
+                            onInput(event.target.value);
+                        }
+                    }}
                 />
             </div>
             {subscribedTags.length !== 0 &&

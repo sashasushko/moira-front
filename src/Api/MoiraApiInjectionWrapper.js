@@ -9,7 +9,7 @@ type WithApiWrapper = <P, S>(
 ) => ClassComponent<void, P, S>;
 
 export default function createApiInjectionWrapper(apiKey: string): WithApiWrapper {
-    const result: any = (Component: *) => {
+    return (Component: *) => {
         return class Wrapper extends React.Component {
             static contextTypes = {
                 [apiKey]: PropTypes.object,
@@ -20,5 +20,4 @@ export default function createApiInjectionWrapper(apiKey: string): WithApiWrappe
             }
         };
     };
-    return result;
 }

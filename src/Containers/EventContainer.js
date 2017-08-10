@@ -10,6 +10,7 @@ import TriggerInfo from '../Components/TriggerInfo/TriggerInfo';
 import TriggerCurrentState from '../Components/TriggerCurrentState/TriggerCurrentState';
 import TriggerEvents from '../Components/TriggerEvents/TriggerEvents';
 
+const Tab = Tabs.Tab;
 type Props = ContextRouter & { moiraApi: IMoiraApi };
 type State = {|
     loading: boolean;
@@ -60,8 +61,8 @@ class EventsContainer extends React.Component {
                                 onChange={(targer, activeTab) => {
                                     this.setState({ activeTab });
                                 }}>
-                                <Tabs.Tab id='current'>Current state</Tabs.Tab>
-                                <Tabs.Tab id='history'>Events history</Tabs.Tab>
+                                <Tab id='current'>Current state</Tab>
+                                <Tab id='history'>Events history</Tab>
                             </Tabs>
                             {activeTab === 'current' && triggerState && <TriggerCurrentState data={triggerState} />}
                             {activeTab === 'history' && triggerEvents && <TriggerEvents data={triggerEvents} />}

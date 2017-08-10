@@ -8,11 +8,12 @@ import type { Metric, MetricList } from '../../Domain/Metric';
 import parseTimestamp from '../../Helpers/parseTimestamp';
 import cn from './MetricList.less';
 
+const Tab = Tabs.Tab;
 type Props = {|
     data: MetricList;
 |};
 type State = {|
-    status: ?string; /* ToDo: как побороть Флоу стринг и shape */
+    status: ?string;
 |};
 
 export default class MetricListView extends React.Component {
@@ -53,9 +54,9 @@ export default class MetricListView extends React.Component {
                             this.setState({ status: value });
                         }}>
                         {metrics.map(({ status }) =>
-                            <Tabs.Tab key={status} id={status}>
+                            <Tab key={status} id={status}>
                                 {status}
-                            </Tabs.Tab>
+                            </Tab>
                         )}
                     </Tabs>}
                 {status &&
