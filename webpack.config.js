@@ -25,8 +25,13 @@ const config = {
             },
             {
                 test: /\.less$/,
-                loaders: ['classnames-loader', 'style-loader', 'css-loader', 'less-loader'],
-                include: /src|retail\-ui/,
+                loaders: ['classnames-loader', 'style-loader', 'css-loader?modules', 'less-loader'],
+                include: /src/,
+            },
+            {
+                test: /\.less$/,
+                loaders: ['style-loader', 'css-loader', 'less-loader'],
+                include: /retail\-ui/,
             },
             {
                 test: /\.(png|woff|woff2|eot)$/,

@@ -12,10 +12,10 @@ type Props = {|
 export default function TagList(props: Props): React.Element<*> {
     const { tags, onClick, onRemove } = props;
     return (
-        <div className={cn({ list: true })}>
+        <div className={cn('list')}>
             {tags.map(tag => {
                 return (
-                    <div key={tag} className={cn({ item: true })}>
+                    <div key={tag} className={cn('item')}>
                         <Tag
                             title={tag}
                             onClick={onClick && (() => onClick(tag))}

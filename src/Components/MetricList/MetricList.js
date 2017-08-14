@@ -61,31 +61,31 @@ export default class MetricListView extends React.Component {
                     </Tabs>}
                 {status &&
                     <div>
-                        <div className={cn({ row: true, header: true })}>
-                            <div className={cn({ title: true })}>Metric</div>
-                            <div className={cn({ eventTime: true })}>Last event</div>
-                            <div className={cn({ value: true })}>Value</div>
-                            <div className={cn({ controls: true })} />
+                        <div className={cn('row', 'header')}>
+                            <div className={cn('title')}>Metric</div>
+                            <div className={cn('event-time')}>Last event</div>
+                            <div className={cn('value')}>Value</div>
+                            <div className={cn('controls')} />
                         </div>
                         {metrics.filter(x => x.status === status).map(({ items }) =>
                             items.map(({ name, data }) => {
                                 const { value, event_timestamp: eventTimestamp } = data;
                                 return (
-                                    <div className={cn({ row: true })}>
-                                        <div className={cn({ title: true })}>
+                                    <div className={cn('row')}>
+                                        <div className={cn('title')}>
                                             {name}
                                         </div>
-                                        <div className={cn({ eventTime: true })}>
+                                        <div className={cn('event-time')}>
                                             {eventTimestamp ? parseTimestamp(eventTimestamp) : '—'}
                                         </div>
-                                        <div className={cn({ value: true })}>
+                                        <div className={cn('value')}>
                                             {value || '—'}
                                         </div>
-                                        <div className={cn({ controls: true })}>
-                                            <div className={cn({ maintenance: true })}>
+                                        <div className={cn('controls')}>
+                                            <div className={cn('maintenance')}>
                                                 <Link icon='Settings'>Off</Link>
                                             </div>
-                                            <div className={cn({ delete: true })}>
+                                            <div>
                                                 <Link icon='Delete' />
                                             </div>
                                         </div>
