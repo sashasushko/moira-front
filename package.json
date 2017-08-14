@@ -9,7 +9,7 @@
         "flow": "flow",
         "flow.status": "flow status",
         "flow.check": "flow check",
-        "flow.coverage.html": "flow-coverage-report -i \"src/**/*.js\" -t html"
+        "flow.coverage.html": "flow stop && flow-coverage-report -i \"src/**/*.js\" -t html"
     },
     "dependencies": {
         "babel-core": "^6.25.0",
