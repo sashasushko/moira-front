@@ -3,7 +3,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import MainLayout from './Layout/MainLayout';
 import TriggerListContainer from './Containers/TriggerListContainer';
-import TriggerContainer from './Containers/EventContainer';
+import TriggerContainer from './Containers/TriggerContainer';
 import TriggerEditContainer from './Containers/TriggerEditContainer';
 import SettingsContainer from './Containers/SettingsContainer';
 
