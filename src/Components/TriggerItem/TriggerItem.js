@@ -76,7 +76,7 @@ export default class TriggerItem extends React.Component {
                 </div>
                 <div className={cn('data')}>
                     <div className={cn('header')}>
-                        <Link to={'/events/' + id}>
+                        <Link className={cn('link')} to={'/events/' + id}>
                             <div className={cn('title')}>
                                 {name}
                             </div>
