@@ -5,8 +5,7 @@
     график в Total state
     список в истории событий
     компонент вывода расписания
-Убрать подчеркивание у стилей
-Скруглить значения в MetricList
+Скруглить значения в MetricList — https://github.com/moira-alert/web/blob/master/static/app/models/value.ts
 Сохранение выбранного в localstorage
 Выпадающий список maintenance
 Отедлить запрос тегов и триггеров в TriggerList для постраничной загрузки

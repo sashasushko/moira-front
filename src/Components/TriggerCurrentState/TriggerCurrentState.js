@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import type { TriggerState } from '../../Domain/Trigger';
-import styles from './TriggerCurrentState.less';
+import cn from './TriggerCurrentState.less';
 import parseTimestamp from '../../Helpers/parseTimestamp';
 
 type Props = {|
@@ -13,26 +13,26 @@ export default function TriggerCurrentState(props: Props): React.Element<*> {
 
     return (
         <section width='100%'>
-            <header className={styles.header}>
-                <div className={styles.state}>Sate</div>
-                <div className={styles.metric}>Metric</div>
-                <div className={styles.value}>Value</div>
-                <div className={styles.time}>Event time</div>
+            <header className={cn('header')}>
+                <div className={cn('state')}>Sate</div>
+                <div className={cn('metric')}>Metric</div>
+                <div className={cn('value')}>Value</div>
+                <div className={cn('time')}>Event time</div>
             </header>
             {Object.keys(metrics).map((key, index) => {
                 const { state, value, event_timestamp: eventTimestamp } = metrics[key];
                 return (
-                    <div key={index} className={styles.row}>
-                        <div className={styles.state}>
+                    <div key={index} className={cn('row')}>
+                        <div className={cn('state')}>
                             {state}
                         </div>
-                        <div className={styles.metric}>
+                        <div className={cn('metric')}>
                             {key}
                         </div>
-                        <div className={styles.value}>
+                        <div className={cn('value')}>
                             {value || (!value && '—')}
                         </div>
-                        <div className={styles.time}>
+                        <div className={cn('time')}>
                             <small>
                                 {typeof eventTimestamp === 'number' && parseTimestamp(eventTimestamp)}
                             </small>
