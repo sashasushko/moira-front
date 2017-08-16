@@ -127,7 +127,7 @@ const stories = [
                     },
                     'sumSeries(KE-cloud.Notifications.*.M4ailSender.PfrReport.Alive)': {
                         timestamp: 1499416938,
-                        state: 'WARNING',
+                        state: 'WARN',
                     },
                     'sumSeries(KE-cloud.Notificati21ons.*.MailSender.BankNotification.Alive)': {
                         timestamp: 1499416938,
@@ -143,81 +143,81 @@ const stories = [
                     },
                     'sumSeries(KE-cloud7.Notifications.*.MailSender.MrApplication.Alive)': {
                         timestamp: 1499416938,
-                        state: 'WARNING',
+                        state: 'WARN',
                     },
                     'sumSeries(KE-2cloud.Notifications.*.MailSender.PfrIos.Alive)': {
                         timestamp: 1499416938,
-                        state: 'WARNING',
+                        state: 'WARN',
                     },
                     'sumSeries(KE-cloud.Notificatio4ns.*.MailSender.MrIon.Alive)': {
                         timestamp: 1499416938,
-                        state: 'WARNING',
+                        state: 'WARN',
                     },
                     'sumSeries(KE-cloud.Notific4ations.*.MailSender.BankNotification.Alive)': {
                         timestamp: 1499416938,
-                        state: 'WARNING',
+                        state: 'WARN',
                         suppressed: false,
                         event_timestamp: 1499331679,
                     },
                     'sumSeries(6KE-cloud.Notifications.*.M4ailSender.PfrReport.Alive)': {
                         timestamp: 1499416938,
-                        state: 'WARNING',
+                        state: 'WARN',
                     },
                     'sumSeries(KE-cloud7.Notifications.*.Mail6Sender.MrApplication.Alive)': {
                         timestamp: 1499416938,
-                        state: 'WARNING',
+                        state: 'WARN',
                     },
                     'sumSeries(KE-2cloud.Notification6s.*.MailSender.PfrIos.Alive)': {
                         timestamp: 1499416938,
-                        state: 'WARNING',
+                        state: 'WARN',
                     },
                     'sumSeries(KE-c6loud.Notificatio4ns.*.MailSender.MrIon.Alive)': {
                         timestamp: 1499416938,
-                        state: 'WARNING',
+                        state: 'WARN',
                     },
                     'sumSeries(KE-cloud6.Notific4ations.*.MailSender.BankNotification.Alive)': {
                         timestamp: 1499416938,
-                        state: 'WARNING',
+                        state: 'WARN',
                         suppressed: false,
                         event_timestamp: 1499331679,
                     },
                     'sumSeries(KE-clou3d.Notifications.*.M4ailSender.PfrReport.Alive)': {
                         timestamp: 1499416938,
-                        state: 'WARNING',
+                        state: 'WARN',
                     },
                     'sumSeries(KE-cloud7.Notifications.*.MailSender.MrAp3plication.Alive)': {
                         timestamp: 1499416938,
-                        state: 'WARNING',
+                        state: 'WARN',
                     },
                     'sumSeries(KE-2cloud.3Notifications.*.MailSender.PfrIos.Alive)': {
                         timestamp: 1499416938,
-                        state: 'WARNING',
+                        state: 'WARN',
                     },
                     'sumSeries(KE-cloud.Notificatio4ns.*.Mail3Sender.MrIon.Alive)': {
                         timestamp: 1499416938,
-                        state: 'WARNING',
+                        state: 'WARN',
                     },
                     'sumSeries(KE-cloud.Notific4at3ions.*.MailSender.BankNotification.Alive)': {
                         timestamp: 1499416938,
-                        state: 'WARNING',
+                        state: 'WARN',
                         suppressed: false,
                         event_timestamp: 1499331679,
                     },
                     'sumSeries(6KE-cloud.Not3ifications.*.M4ailSender.PfrReport.Al3ive)': {
                         timestamp: 1499416938,
-                        state: 'WARNING',
+                        state: 'WARN',
                     },
                     'sumSeries(K3E-cloud7.Notifications.*.Mail6Sender.MrApplication.Alive)': {
                         timestamp: 1499416938,
-                        state: 'WARNING',
+                        state: 'WARN',
                     },
                     'sumSeries(KE-2cloud.Notification6s.*.MailSender.PfrIos.Aliv3e)': {
                         timestamp: 1499416938,
-                        state: 'WARNING',
+                        state: 'WARN',
                     },
                     'sumSeries(KE-c6loud.Notificat3io4ns.*.MailSender.MrIon.Alive)': {
                         timestamp: 1499416938,
-                        state: 'WARNING',
+                        state: 'WARN',
                     },
                 },
                 timestamp: 1499418145,
@@ -242,7 +242,7 @@ const stories = [
                     },
                     'sumSeries(KE-cloud.Notifications.*.MailSender.PfrIos.Alive)': {
                         timestamp: 1499416938,
-                        state: 'WARNING',
+                        state: 'WARN',
                     },
                     'sumSeries(KE-cloud.Notifications.*.MailSender.MrIon.Alive)': {
                         timestamp: 1499416938,

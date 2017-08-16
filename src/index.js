@@ -4,11 +4,12 @@ import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { BrowserRouter } from 'react-router-dom';
 import Api from './Api/MoiraAPI';
+import ApiFake from './Api/MoiraAPIFake';
 import App from './App';
 import { ApiProvider } from './Api/MoiraApiInjection';
 import './style.less';
 
-const api = new Api();
+const api = process.env.API_MODE === 'fake' ? new ApiFake() : new Api();
 
 const render = Component => {
     ReactDOM.render(

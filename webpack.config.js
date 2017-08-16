@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 
 const config = {
     entry: ['babel-polyfill', 'react-hot-loader/patch', './src/index.js'],
@@ -38,6 +39,11 @@ const config = {
                 loader: 'file-loader',
                 include: /src|retail\-ui/,
             },
+            {
+                test: /\.json$/,
+                loader: 'json-loader',
+                include: /src/,
+            },
         ],
     },
     resolve: {
@@ -51,6 +57,10 @@ const config = {
             minify: {
                 collapseWhitespace: true,
             },
+        }),
+        new webpack.EnvironmentPlugin({
+            NODE_ENV: 'development',
+            API_MODE: null,
         }),
     ],
 };
