@@ -6,6 +6,11 @@ import type { Settings } from '../Domain/Settings';
 import type { TagList, TagStatList } from '../Domain/Tag';
 import type { PatternList } from '../Domain/Pattern';
 
+function sleep<T>(response: T): Promise<T> {
+    const time = Math.floor(Math.random() * (2.5 - 0.5) + 0.5) * 1000;
+    return new Promise(resolve => setTimeout(() => resolve(response), time));
+}
+
 export default class ApiFake implements IMoiraApi {
     getPatternList(): Promise<PatternList> {
         const url = '/api/pattern';
@@ -14,8 +19,8 @@ export default class ApiFake implements IMoiraApi {
         }).then(response => response.json());
     }
 
-    getTagList(): Promise<TagList> {
-        return FakeTag;
+    async getTagList(): Promise<TagList> {
+        return await sleep(FakeTag);
     }
 
     getTagStats(): Promise<TagStatList> {
@@ -25,12 +30,12 @@ export default class ApiFake implements IMoiraApi {
         }).then(response => response.json());
     }
 
-    getSettings(): Promise<Settings> {
-        return FakeSettings;
+    async getSettings(): Promise<Settings> {
+        return await sleep(FakeSettings);
     }
 
-    getTriggerList(page: number): Promise<TriggerList> {
-        return FakeTriggers;
+    async getTriggerList(page: number): Promise<TriggerList> {
+        return await sleep(FakeTriggers);
     }
 
     getTrigger(id: string): Promise<Trigger> {
