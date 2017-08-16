@@ -43,6 +43,7 @@
         "eslint-config-skbkontur-retail": "^2.1.2",
         "flow-coverage-report": "^0.3.0",
         "html-webpack-plugin": "^2.29.0",
+        "json-loader": "^0.5.7",
         "react-hot-loader": "next",
         "storybook-router": "^0.2.8",
         "styled-components": "^2.1.1",

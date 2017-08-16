@@ -39,6 +39,11 @@ const config = {
                 loader: 'file-loader',
                 include: /src|retail\-ui/,
             },
+            {
+                test: /\.json$/,
+                loader: 'json-loader',
+                include: /src/,
+            },
         ],
     },
     resolve: {
