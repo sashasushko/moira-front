@@ -3,11 +3,6 @@ import type { Subscribtion } from './Subscribtion';
 
 export type TagList = {|
     list: Array<string>;
-    tags: {|
-        [tag: string]: {|
-            maintenance?: boolean | number;
-        |};
-    |};
 |};
 
 export type TagStat = {|
