@@ -1,4 +1,5 @@
 // @flow
+import type { Config } from '../Domain/Config';
 import type { EventList } from '../Domain/Event';
 import type { Trigger, TriggerList, TriggerState } from '../Domain/Trigger';
 import type { Settings } from '../Domain/Settings';
@@ -16,60 +17,64 @@ export interface IMoiraApi {
     getTriggerEvents(id: string): Promise<EventList>;
 }
 
-const server = 'http://vm-moira-all1:4445/';
-
 export default class Api implements IMoiraApi {
+    config: Config;
+
+    constructor(config: Config) {
+        this.config = config;
+    }
+
     getPatternList(): Promise<PatternList> {
-        const url = `${server}api/pattern`;
+        const url = `${this.config.apiUrl}/pattern`;
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
     }
 
     getTagList(): Promise<TagList> {
-        const url = `${server}api/tag`;
+        const url = `${this.config.apiUrl}/tag`;
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
     }
 
     getTagStats(): Promise<TagStatList> {
-        const url = `${server}api/stats`;
+        const url = `${this.config.apiUrl}/stats`;
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
     }
 
     getSettings(): Promise<Settings> {
-        const url = `${server}api/user/settings`;
+        const url = `${this.config.apiUrl}/user/settings`;
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
     }
 
     getTriggerList(page: number): Promise<TriggerList> {
-        const url = `${server}api/trigger/page?p=${page}&size=20`;
+        const url = `${this.config.apiUrl}/trigger/page?p=${page}&size=${this.config.paging.triggerList}`;
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
     }
 
     getTrigger(id: string): Promise<Trigger> {
-        const url = `${server}api/trigger/${id}`;
+        const url = `${this.config.apiUrl}/trigger/${id}`;
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
     }
 
     getTriggerState(id: string): Promise<TriggerState> {
-        const url = `${server}api/trigger/${id}/state`;
+        const url = `${this.config.apiUrl}/trigger/${id}/state`;
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
     }
 
     getTriggerEvents(id: string): Promise<EventList> {
-        const url = `${server}api/event/${id}?p=0&size=100`;
+        const url = `${this.config.apiUrl}/event/${id}?p=0&size=${this.config.paging.eventHistory}`;
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
