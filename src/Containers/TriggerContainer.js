@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import Loader from 'retail-ui/components/Loader';
 import Tabs from 'retail-ui/components/Tabs';
 import type { ContextRouter } from 'react-router-dom';
 import type { IMoiraApi } from '../Api/MoiraAPI';
@@ -50,8 +51,7 @@ class TriggerContainer extends React.Component {
         const { loading, activeTab, trigger, triggerState, triggerEvents } = this.state;
 
         return (
-            <div>
-                {loading && <p>Loading...</p>}
+            <Loader className='full-height' active={loading}>
                 {!loading &&
                     <div>
                         {trigger && <TriggerInfo data={trigger} />}
@@ -68,7 +68,7 @@ class TriggerContainer extends React.Component {
                             {activeTab === 'history' && triggerEvents && <TriggerEvents data={triggerEvents} />}
                         </div>
                     </div>}
-            </div>
+            </Loader>
         );
     }
 }

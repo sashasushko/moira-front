@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import Loader from 'retail-ui/components/Loader';
 import type { ContextRouter } from 'react-router-dom';
 import type { IMoiraApi } from '../Api/MoiraAPI';
 import type { Trigger } from '../Domain/Trigger';
@@ -78,8 +79,7 @@ class TriggerListContainer extends React.Component {
         const selectedTags = Array.isArray(parsedSelectedTags) ? parsedSelectedTags : [];
 
         return (
-            <div>
-                {loading && <p>Loading...</p>}
+            <Loader className='full-height' active={loading}>
                 {!loading &&
                     <div>
                         <TriggerFilter
@@ -98,7 +98,7 @@ class TriggerListContainer extends React.Component {
                                 onChange={page => this.changeSearch({ page })}
                             />}
                     </div>}
-            </div>
+            </Loader>
         );
     }
 }
