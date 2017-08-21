@@ -1,6 +1,7 @@
 {
     "name": "moira-front",
     "version": "0.0.1",
+    "license": "MIT",
     "scripts": {
         "start": "cross-env NODE_ENV=development webpack-dev-server --hot --history-api-fallback --content-base dist/ --port 9000",
         "build": "cross-env NODE_ENV=production webpack -p",
@@ -9,7 +10,7 @@
         "flow": "flow",
         "flow.status": "flow status",
         "flow.check": "flow check",
-        "flow.coverage.html": "flow stop && flow-coverage-report -i \"src/**/*.js\" -t html"
+        "flow.coverage.html": "flow-coverage-report -i \"src/**/*.js\" -t html"
     },
     "dependencies": {
         "react": "^15.6.1",
