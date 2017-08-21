@@ -10,7 +10,7 @@ type Props = {
 
 export default function MainLayout(props: Props): React.Element<*> {
     return (
-        <div>
+        <div className={cn('site')}>
             <header className={cn('site-header')}>
                 <div className={cn('container')}>
                     <Link to='/'>
@@ -18,7 +18,7 @@ export default function MainLayout(props: Props): React.Element<*> {
                     </Link>
                 </div>
             </header>
-            <main>
+            <main className={cn('site-content')}>
                 {props.children}
             </main>
             <footer className={cn('site-footer')}>
