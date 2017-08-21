@@ -20,28 +20,28 @@ const server = 'http://vm-moira-all1:4445/';
 
 export default class Api implements IMoiraApi {
     getPatternList(): Promise<PatternList> {
-        const url = server + 'api/pattern';
+        const url = `${server}api/pattern`;
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
     }
 
     getTagList(): Promise<TagList> {
-        const url = server + 'api/tag';
+        const url = `${server}api/tag`;
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
     }
 
     getTagStats(): Promise<TagStatList> {
-        const url = server + 'api/stats';
+        const url = `${server}api/stats`;
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
     }
 
     getSettings(): Promise<Settings> {
-        const url = server + 'api/user/settings';
+        const url = `${server}api/user/settings`;
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
