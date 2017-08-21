@@ -19,7 +19,6 @@ class SettingsContainer extends React.Component {
     props: Props;
     state: State = {
         loading: true,
-        config: null,
         settings: null,
     };
 
@@ -29,20 +28,18 @@ class SettingsContainer extends React.Component {
 
     async getData(): Promise<void> {
         const { moiraApi } = this.props;
-        const config = await moiraApi.getConfig();
         const settings = await moiraApi.getSettings();
-        this.setState({ loading: false, config, settings });
+        this.setState({ loading: false, settings });
     }
 
     render(): React.Element<*> {
-        const { loading, config, settings } = this.state;
+        const { loading, settings } = this.state;
         return (
             <div>
                 {loading && <p>Loading...</p>}
                 {!loading &&
-                    config &&
                     settings &&
-                    <SettingsContacts contactsConfig={config.contacts} userContacts={settings.contacts} />}
+                    <SettingsContacts userContacts={settings.contacts} />}
                 <hr />
                 {!loading && settings && <UserSubscribtions subscriptions={settings.subscriptions} />}
             </div>
