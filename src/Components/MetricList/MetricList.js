@@ -6,6 +6,7 @@ import { Statuses } from '../../Domain/Status';
 import type { Status } from '../../Domain/Status';
 import type { Metric, MetricList } from '../../Domain/Metric';
 import parseTimestamp from '../../Helpers/parseTimestamp';
+import roundValue from '../../Helpers/roundValue';
 import cn from './MetricList.less';
 
 const Tab = Tabs.Tab;
@@ -79,7 +80,7 @@ export default class MetricListView extends React.Component {
                                             {eventTimestamp ? parseTimestamp(eventTimestamp) : '—'}
                                         </div>
                                         <div className={cn('value')}>
-                                            {value || '—'}
+                                            {roundValue(value)}
                                         </div>
                                         <div className={cn('controls')}>
                                             <div className={cn('maintenance')}>
