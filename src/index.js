@@ -7,9 +7,10 @@ import Api from './Api/MoiraAPI';
 import ApiFake from './Api/MoiraAPIFake';
 import App from './App';
 import { ApiProvider } from './Api/MoiraApiInjection';
+import config from './config';
 import './style.less';
 
-const api = process.env.API_MODE === 'fake' ? new ApiFake() : new Api();
+const api = process.env.API_MODE === 'fake' ? new ApiFake(config) : new Api(config);
 
 const render = Component => {
     ReactDOM.render(
