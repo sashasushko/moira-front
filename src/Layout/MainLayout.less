@@ -1,32 +1,33 @@
 @import '~styles/variables.less';
 @import '~styles/mixins.less';
 
-.site {
+.wrap {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
-.site-header {
+.header {
+    padding-top: 14px;
     flex-shrink: 0;
     height: 60px;
     background-color: #00bfa5;
     color: #fff;
+    box-sizing: border-box;
 }
 
-.site-logo {
-    margin-top: 14px;
+.logo {
     width: 105px;
     height: 32px;
     vertical-align: middle;
 }
 
-.site-content {
+.content {
     flex-grow: 1;
     height: 100%;
 }
 
-.site-footer {
+.footer {
     flex-shrink: 0;
     padding-top: 40px;
     padding-bottom: 40px;
@@ -36,4 +37,10 @@
 
 .container {
     .container();
+    display: flex;
+    align-items: baseline;
+}
+
+.settings {
+    margin-left: auto;
 }
