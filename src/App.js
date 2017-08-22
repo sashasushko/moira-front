@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Layout from './Components/Layout/Layout';
+import { Layout } from './Components/Layout/Layout';
 import TriggerListContainer from './Containers/TriggerListContainer';
 import TriggerContainer from './Containers/TriggerContainer';
 import TriggerEditContainer from './Containers/TriggerEditContainer';

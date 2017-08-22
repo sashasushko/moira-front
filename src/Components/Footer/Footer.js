@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import Container from '../Container/Container';
 import cn from './Footer.less';
 type Props = {|
     className?: string;
@@ -7,7 +8,7 @@ type Props = {|
 export default function Footer(props: Props): React.Element<*> {
     return (
         <footer className={cn('footer', props.className)}>
-            <div className={cn('container')}>© SKB Kontur</div>
+            <Container>© SKB Kontur</Container>
         </footer>
     );
 }
