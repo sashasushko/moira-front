@@ -1,17 +1,15 @@
 // @flow
 import React from 'react';
+import Loader from 'retail-ui/components/Loader';
 import type { ContextRouter } from 'react-router-dom';
 import type { IMoiraApi } from '../Api/MoiraAPI';
-import type { Config } from '../Domain/Config';
 import type { Settings } from '../Domain/Settings';
 import { withMoiraApi } from '../Api/MoiraApiInjection';
-import SettingsContacts from '../Components/SettingsContacts/SettingsContacts';
-import UserSubscribtions from '../Components/UserSubscribtions/UserSubscribtions';
+import { Container } from '../Components/Layout/Layout';
 
 type Props = ContextRouter & { moiraApi: IMoiraApi };
 type State = {|
     loading: boolean;
-    config: ?Config;
     settings: ?Settings;
 |};
 
@@ -35,14 +33,14 @@ class SettingsContainer extends React.Component {
     render(): React.Element<*> {
         const { loading, settings } = this.state;
         return (
-            <div>
-                {loading && <p>Loading...</p>}
+            <Loader active={loading}>
                 {!loading &&
-                    settings &&
-                    <SettingsContacts userContacts={settings.contacts} />}
-                <hr />
-                {!loading && settings && <UserSubscribtions subscriptions={settings.subscriptions} />}
-            </div>
+                    <div style={{ marginTop: '20px', marginBottom: '20px' }}>
+                        <Container>
+                            <pre>{JSON.stringify(settings, null, 2)}</pre>
+                        </Container>
+                    </div>}
+            </Loader>
         );
     }
 }
