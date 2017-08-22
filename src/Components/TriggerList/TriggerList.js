@@ -13,7 +13,7 @@ export default function TriggerList(props: Props): React.Element<*> {
     return (
         <div className={cn('list')}>
             {items.length === 0
-                ? 'No results'
+                ? (<div className={cn('no-result')}>No results :-(</div>)
                 : items.map(item =>
                       <div className={cn('item')} key={item.id}>
                           <TriggerItem data={item} />
