@@ -39,7 +39,10 @@ export default class TriggerListItem extends React.Component {
             x => Object.keys(metrics).filter(y => metrics[y].state === x).length > 0
         );
         const notOkStatuses = statuses.filter(x => x !== Statuses.OK);
-        return notOkStatuses.length === 0 ? statuses : notOkStatuses;
+        if (notOkStatuses.length === 0) {
+            return statuses.length === 0 ? [Statuses.OK] : statuses;
+        }
+        return notOkStatuses;
     }
 
     composeCounters(): Array<{ status: Status; value: number }> {
@@ -59,19 +62,24 @@ export default class TriggerListItem extends React.Component {
         const { id, name, targets, tags, last_check: lastCheck } = this.props.data;
         const { showMetrics } = this.state;
         const { metrics } = lastCheck || {};
+        const isMetrics = Object.keys(metrics).length !== 0;
 
         return (
             <div className={cn({ row: true, active: showMetrics })}>
-                <div className={cn('state')} onClick={() => this.handleShowMetrics()}>
+                <div
+                    className={cn('state', { 'is-metrics': isMetrics })}
+                    onClick={isMetrics && (() => this.handleShowMetrics())}>
                     <div className={cn('indicator')}>
                         <StatusIndicator statuses={this.composeStatuses()} />
                     </div>
                     <div className={cn('counters')}>
-                        {this.composeCounters().map(({ status, value }) =>
-                            <div key={status} style={{ color: getStatusColor(status) }}>
-                                {value}
-                            </div>
-                        )}
+                        {isMetrics
+                            ? this.composeCounters().map(({ status, value }) =>
+                                  <div key={status} style={{ color: getStatusColor(status) }}>
+                                      {value}
+                                  </div>
+                              )
+                            : <div className={cn('na-counter')}>N/A</div>}
                     </div>
                 </div>
                 <div className={cn('data')}>
