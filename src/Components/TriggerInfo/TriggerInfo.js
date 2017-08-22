@@ -32,9 +32,9 @@ export default function TriggerInfo(props: Props): React.Element<*> {
                     <h2 className={cn('title')}>
                         {name}
                     </h2>
-                    <div className={cn('controls')}>
+                    {/* <div className={cn('controls')}>
                         <div className={cn('control')}>
-                            <Link to={'/trigger/' + id}>
+                            <Link to={'/trigger/' + id + '/edit'}>
                                 <Icon name='Edit' /> Edit
                             </Link>
                         </div>
@@ -43,7 +43,7 @@ export default function TriggerInfo(props: Props): React.Element<*> {
                                 Export
                             </Button>
                         </div>
-                    </div>
+                    </div> */}
                 </header>
                 <dl className={cn('data')}>
                     <dt>Target</dt>
