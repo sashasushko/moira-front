@@ -1,5 +1,7 @@
 // @flow
 import React from 'react';
+import Loader from 'retail-ui/components/Loader';
+import Paging from 'retail-ui/components/Paging';
 import type { ContextRouter } from 'react-router-dom';
 import type { IMoiraApi } from '../Api/MoiraAPI';
 import type { Trigger } from '../Domain/Trigger';
@@ -8,7 +10,7 @@ import queryString from 'query-string';
 import { concat, difference, flatten } from 'lodash';
 import TriggerFilter from '../Components/TriggerFilter/TriggerFilter';
 import TriggerList from '../Components/TriggerList/TriggerList';
-import TriggerPaging from '../Components/TriggerPaging/TriggerPaging';
+import { Container, ColumnStack, StackItem } from '../Components/Layout/Layout';
 
 type Props = ContextRouter & { moiraApi: IMoiraApi };
 type State = {|
@@ -78,8 +80,7 @@ class TriggerListContainer extends React.Component {
         const selectedTags = Array.isArray(parsedSelectedTags) ? parsedSelectedTags : [];
 
         return (
-            <div>
-                {loading && <p>Loading...</p>}
+            <Loader active={loading}>
                 {!loading &&
                     <div>
                         <TriggerFilter
@@ -89,16 +90,25 @@ class TriggerListContainer extends React.Component {
                             onSelect={tag => this.changeSearch({ tags: concat(selectedTags, tag) })}
                             onRemove={tag => this.changeSearch({ tags: difference(selectedTags, [tag]) })}
                         />
-                        {triggers && <TriggerList items={triggers} />}
-                        {typeof pages === 'number' &&
-                            pages > 1 &&
-                            <TriggerPaging
-                                activePage={Number(page) || 1}
-                                pageCount={pages}
-                                onChange={page => this.changeSearch({ page })}
-                            />}
+                        <Container>
+                            <ColumnStack gap={5} marginTop={30} marginBottom={40}>
+                                {Array.isArray(triggers) &&
+                                    <StackItem>
+                                        <TriggerList items={triggers} />
+                                    </StackItem>}
+                                {typeof pages === 'number' &&
+                                    pages > 1 &&
+                                    <StackItem>
+                                        <Paging
+                                            activePage={Number(page) || 1}
+                                            pagesCount={pages}
+                                            onPageChange={page => this.changeSearch({ page })}
+                                        />
+                                    </StackItem>}
+                            </ColumnStack>
+                        </Container>
                     </div>}
-            </div>
+            </Loader>
         );
     }
 }

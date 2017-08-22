@@ -16,9 +16,7 @@ import FakeTriggerState from './ApiFakeData/state.json';
 import FakeTriggerEvents from './ApiFakeData/events.json';
 
 function sleep<T>(response: T): Promise<T> {
-    // const time = Math.floor(Math.random() * (2.5 - 0.5) + 0.5) * 1000;
-    const time = 0;
-    return new Promise(resolve => setTimeout(() => resolve(response), time));
+    return new Promise(resolve => setTimeout(() => resolve(response), 500));
 }
 
 export default class ApiFake implements IMoiraApi {
@@ -39,22 +37,26 @@ export default class ApiFake implements IMoiraApi {
     }
 
     async getTriggerList(page: number): Promise<TriggerList> {
-        console.log(`fake api attr, page=${page}`);
+        const options = {};
+        options.page = page;
         return await sleep(FakeTriggers);
     }
 
     async getTrigger(id: string): Promise<Trigger> {
-        console.log(`fake api attr, id=${id}`);
+        const options = {};
+        options.page = id;
         return await sleep(FakeTrigger);
     }
 
     async getTriggerState(id: string): Promise<TriggerState> {
-        console.log(`fake api attr, id=${id}`);
+        const options = {};
+        options.page = id;
         return await sleep(FakeTriggerState);
     }
 
     async getTriggerEvents(id: string): Promise<EventList> {
-        console.log(`fake api attr, id=${id}`);
+        const options = {};
+        options.page = id;
         return await sleep(FakeTriggerEvents);
     }
 }

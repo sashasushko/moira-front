@@ -10,11 +10,15 @@
     display: flex;
     align-items: flex-start;
     margin-right: 13px;
-    padding: 15px 0 15px 10px;
+    padding: 15px 0 15px 7px;
     width: 77px;
-    cursor: pointer;
+    box-sizing: border-box;
+    
+    &.is-metrics {
+        cursor: pointer;
+    }
 
-    &:hover {
+    &.is-metrics:hover {
         background-color: rgba(0, 0, 0, 0.05);
     }
 }
@@ -29,11 +33,15 @@
     line-height: 20px;
 }
 
+.na-counter {
+    color: #666666;
+}
+
 .data {
     display: flex;
     flex-wrap: wrap;
     width: calc(~'100% - 90px');
-    padding: 15px 10px 15px 0;
+    padding-right: 10px;
     box-sizing: border-box;
 }
 
@@ -44,13 +52,17 @@
 }
 
 .link {
-    text-decoration: none;
+    display: block;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    text-decoration: none !important;
 }
 
 .title {
     overflow: hidden;
+    margin-top: -4px;
     font-size: 18px;
-    line-height: 20px;
+    line-height: 24px;
     text-overflow: ellipsis;
     white-space: nowrap;
     color: #3072c4;
@@ -96,11 +108,14 @@
 }
 
 .tags {
+    padding-top: 15px;
+    padding-bottom: 15px;
     width: 240px;
 }
 
 .metrics {
     padding-right: 80px;
+    padding-bottom: 15px;
     width: 100%;
     box-sizing: border-box;
 }

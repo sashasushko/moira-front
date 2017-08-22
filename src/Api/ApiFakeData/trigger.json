@@ -15,7 +15,10 @@
         "tzOffset": -300
     },
     "name": "KE_SYSTEM_KAMCHATKA_HDD",
-    "tags": ["KE.System-kamchatka"],
+    "tags": [
+        "KE.System-kamchatka",
+        "PortalRequisitesSystem"
+    ],
     "throttling": 0,
     "ttl_state": "NODATA",
     "id": "e8304401-718e-4a73-8d13-e9abe4c91d69",

@@ -4,7 +4,7 @@ import Icon from 'retail-ui/components/Icon';
 import Button from 'retail-ui/components/Button';
 import { Link } from 'react-router-dom';
 import type { Trigger } from '../../Domain/Trigger';
-import Tag from '../Tag/Tag';
+import TagList from '../TagList/TagList';
 import cn from './TriggerInfo.less';
 
 type Props = {|
@@ -32,9 +32,9 @@ export default function TriggerInfo(props: Props): React.Element<*> {
                     <h2 className={cn('title')}>
                         {name}
                     </h2>
-                    <div className={cn('controls')}>
+                    {/* <div className={cn('controls')}>
                         <div className={cn('control')}>
-                            <Link to={'/trigger/' + id}>
+                            <Link to={'/trigger/' + id + '/edit'}>
                                 <Icon name='Edit' /> Edit
                             </Link>
                         </div>
@@ -43,7 +43,7 @@ export default function TriggerInfo(props: Props): React.Element<*> {
                                 Export
                             </Button>
                         </div>
-                    </div>
+                    </div> */}
                 </header>
                 <dl className={cn('data')}>
                     <dt>Target</dt>
@@ -79,7 +79,7 @@ export default function TriggerInfo(props: Props): React.Element<*> {
                     </dd>
                     <dt>Tags</dt>
                     <dd>
-                        {tags.map((tag, i) => <Tag key={i} title={tag} />)}
+                        <TagList tags={tags} />
                     </dd>
                 </dl>
             </div>

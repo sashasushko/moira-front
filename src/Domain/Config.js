@@ -10,14 +10,10 @@ export type ContactConfig = {|
 |};
 
 export type Config = {|
-    api_url: string;
+    apiUrl: string;
     contacts: Array<ContactConfig>;
     paging: {|
-        size: number;
-    |};
-    event_history: {|
-        paging: {|
-            size: number;
-        |};
+        triggerList: number;
+        eventHistory: number;
     |};
 |};

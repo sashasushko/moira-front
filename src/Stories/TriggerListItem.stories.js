@@ -2,7 +2,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import StoryRouter from 'storybook-router';
-import TriggerItem from '../Components/TriggerItem/TriggerItem';
+import TriggerListItem from '../Components/TriggerListItem/TriggerListItem';
 
 const sourceData = {
     id: '3e93211b-7fec-4c70-b5e1-abb36d6a4a1d',
@@ -332,8 +332,8 @@ const stories = [
     },
 ];
 
-const story = storiesOf('TriggerItem', module).addDecorator(StoryRouter());
+const story = storiesOf('TriggerListItem', module).addDecorator(StoryRouter());
 
 stories.forEach(({ title, data }) => {
-    story.add(title, () => <TriggerItem data={data} />);
+    story.add(title, () => <TriggerListItem data={data} />);
 });
