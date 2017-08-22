@@ -26,18 +26,16 @@ export default class TriggerFilter extends React.Component {
         const { query } = this.state;
         return (
             <div className={cn('filter')}>
-                <div className={cn('container')}>
-                    <TagSelector
-                        selectedTags={selectedTags}
-                        subscribedTags={this.handleFilter(subscribedTags)}
-                        remainedTags={this.handleFilter(remainedTags)}
-                        value={query}
-                        onInput={query => this.setState({ query })}
-                        onSelect={tag => onSelect(tag)}
-                        onRemove={tag => onRemove(tag)}
-                    />
-                </div>
+                <div className={cn('container')}>...</div>
             </div>
         );
     }
 }
+
+// selectedTags={selectedTags}
+// subscribedTags={this.handleFilter(subscribedTags)}
+// remainedTags={this.handleFilter(remainedTags)}
+// value={query}
+// onInput={query => this.setState({ query })}
+// onSelect={tag => onSelect(tag)}
+// onRemove={tag => onRemove(tag)}

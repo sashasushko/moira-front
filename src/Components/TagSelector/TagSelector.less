@@ -1,20 +1,29 @@
+@import '~styles/variables.less';
+@import '~styles/mixins.less';
+
 .input-area {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    padding: 4px 8px;
+    align-items: top;
+    padding: 3px 8px;
     width: 100%;
     min-height: 32px;
     border: 1px solid #d9d9d9;
     border-top-color: #b2b2b2;
     background-color: #fff;
     box-sizing: border-box;
-    -webkit-appearance: none;
 }
 
-.search-input {
+.tag-wrap {
+    flex-shrink: 0;
+    margin-top: 2px;
+    margin-right: 4px;
+    margin-bottom: 2px;
+}
+
+.input {
     padding: 0;
-    min-width: 200px;
+    min-width: 50px;
     flex-grow: 1;
     border: none;
     outline: none;
@@ -22,16 +31,18 @@
     box-sizing: border-box;
     font-family: inherit;
     font-size: 14px;
-    line-height: 22px;
+    line-height: 24px;
+    -webkit-appearance: none;
 }
 
-.tags-group {
-    margin-top: 10px;
+.group {
+    margin-top: 15px;
 }
 
 .title {
+    display: block;
     margin-top: 0;
-    margin-bottom: 7px;
+    margin-bottom: 5px;
     font-weight: normal;
     font-size: 12px;
     line-height: 15px;

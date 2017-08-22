@@ -5,17 +5,26 @@ import { action } from '@storybook/addon-actions';
 import TagSelector from '../Components/TagSelector/TagSelector';
 
 const remainedTags = ['abonentsErrors', 'dmitry:ReplicaClusterError.ReplicaClusterWarn', 'build'];
-const selectedTags = ['test', 'dev'];
+const selectedTags = ['abonentsErrors', 'dev.test.hdd'];
 const subscribedTags = ['test__'];
 
-storiesOf('TagSelector', module).add('Default', () =>
-    <TagSelector
-        remainedTags={remainedTags}
-        subscribedTags={subscribedTags}
-        selectedTags={selectedTags}
-        value={''}
-        onInput={action('onInput')}
-        onSelect={action('onSelect')}
-        onRemove={action('onRemove')}
-    />
-);
+storiesOf('TagSelector', module)
+    .add('Default', () => <TagSelector onSelect={action('onSelect')} onRemove={action('onRemove')} />)
+    .add('With remained tags', () =>
+        <TagSelector remainedTags={remainedTags} onSelect={action('onSelect')} onRemove={action('onRemove')} />
+    )
+    .add('With selected tags', () =>
+        <TagSelector selectedTags={selectedTags} onSelect={action('onSelect')} onRemove={action('onRemove')} />
+    )
+    .add('With subscribed tags', () =>
+        <TagSelector subscribedTags={subscribedTags} onSelect={action('onSelect')} onRemove={action('onRemove')} />
+    )
+    .add('With all', () =>
+        <TagSelector
+            subscribedTags={subscribedTags}
+            selectedTags={subscribedTags}
+            remainedTags={remainedTags}
+            onSelect={action('onSelect')}
+            onRemove={action('onRemove')}
+        />
+    );
