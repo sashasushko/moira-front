@@ -1,0 +1,35 @@
+@import '~styles/variables.less';
+@import '~styles/mixins.less';
+
+.header {
+    height: 60px;
+    background-color: #00bfa5;
+    color: #fff;
+    box-sizing: border-box;
+
+    a {
+        color: inherit;
+    }
+}
+
+.container {
+    .container();
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.logo-link {
+    text-decoration: none;
+}
+
+.logo-img {
+    width: 105px;
+    height: 32px;
+    vertical-align: middle;
+}
+
+.gapped-link {
+    margin-left: auto;
+    margin-right: 20px;
+}
