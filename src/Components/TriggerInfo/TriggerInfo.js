@@ -4,7 +4,7 @@ import Icon from 'retail-ui/components/Icon';
 import Button from 'retail-ui/components/Button';
 import { Link } from 'react-router-dom';
 import type { Trigger } from '../../Domain/Trigger';
-import Tag from '../Tag/Tag';
+import TagList from '../TagList/TagList';
 import cn from './TriggerInfo.less';
 
 type Props = {|
@@ -79,7 +79,7 @@ export default function TriggerInfo(props: Props): React.Element<*> {
                     </dd>
                     <dt>Tags</dt>
                     <dd>
-                        {tags.map((tag, i) => <Tag key={i} title={tag} />)}
+                        <TagList tags={tags} />
                     </dd>
                 </dl>
             </div>
