@@ -11834,7 +11834,10 @@
             "name": "PortalReqs normalizedthroughput",
             "ttl_state": "NODATA",
             "throttling": 0,
-            "tags": ["PortalRequisitesSystem"],
+            "tags": [
+                "PortalRequisitesSystem",
+                "System"
+            ],
             "id": "3ca998c1-17c0-4101-af3d-ee3019202e8b",
             "patterns": [
                 "sys-msk.virtualization.vms.sofs*.VD*.vm-portalreqs*.*.normalizedthroughput"
