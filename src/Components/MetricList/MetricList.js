@@ -12,6 +12,7 @@ import cn from './MetricList.less';
 const Tab = Tabs.Tab;
 type Props = {|
     data: MetricList;
+    onRemove: (metric: string) => void;
 |};
 type State = {|
     status: ?string;
@@ -29,7 +30,7 @@ export default class MetricListView extends React.Component {
     }
 
     render(): React.Element<*> {
-        const { data } = this.props;
+        const { data, onRemove } = this.props;
         const metrics = composeMetrics();
         const status = this.state.status || metrics[0].status;
 
@@ -87,7 +88,7 @@ export default class MetricListView extends React.Component {
                                                 <Link icon='Settings'>Off</Link>
                                             </div>
                                             <div>
-                                                <Link icon='Delete' />
+                                                <Link icon='Delete' onClick={() => onRemove(name)} />
                                             </div>
                                         </div>
                                     </div>

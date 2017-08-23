@@ -6,17 +6,18 @@ import cn from './TriggerList.less';
 
 type Props = {|
     items: Array<Trigger>;
+    onRemove: (triggerId: string, metric: string) => void;
 |};
 
 export default function TriggerList(props: Props): React.Element<*> {
-    const { items } = props;
+    const { items, onRemove } = props;
     return (
-        <div >
+        <div>
             {items.length === 0
-                ? (<div className={cn('no-result')}>No results :-(</div>)
+                ? <div className={cn('no-result')}>No results :-(</div>
                 : items.map(item =>
                       <div className={cn('item')} key={item.id}>
-                          <TriggerListItem data={item} />
+                          <TriggerListItem data={item} onRemove={metric => onRemove(item.id, metric)} />
                       </div>
                   )}
         </div>

@@ -27,7 +27,7 @@ export default class TagSelector extends React.Component {
     props: Props;
     state: State = {
         value: '',
-        isFocused: false,
+        isFocused: true,
     };
 
     filterTags(tags: Array<string>): Array<string> {
@@ -78,8 +78,6 @@ export default class TagSelector extends React.Component {
                     <input
                         className={cn('input')}
                         value={value}
-                        onFocus={() => this.setState({ isFocused: true })}
-                        onBlur={() => this.setState({ isFocused: false })}
                         onKeyDown={(event: Event) =>
                             event.target instanceof HTMLInputElement
                                 ? this.handleKeyDown(event.key, event.target.selectionStart, event.target.value)

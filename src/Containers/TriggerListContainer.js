@@ -56,6 +56,29 @@ class TriggerListContainer extends React.Component {
         });
     }
 
+    async removeTriggerMetric(triggerId: string, metric: string): Promise<void> {
+        const { moiraApi } = this.props;
+        this.setState({ loading: true });
+        const status = await moiraApi.removeTriggerMetric(triggerId, metric);
+        if (status === 200) {
+            this.getData(this.props);
+        }
+    }
+
+    async setTriggerMetricMainTenance(triggerId: string, metric: string): Promise<void> {
+        const { moiraApi } = this.props;
+        // this.setState({ loading: true });
+        // var data = {};
+        // data[scope.check.metric] = time;
+        // if (time > 0) {
+        //     data[scope.check.metric] = moment.utc().add(time, "minutes").unix();
+        // }
+        // const status = await moiraApi.removeTriggerMetric(triggerId, metric);
+        // if (status === 200) {
+        //     this.getData(this.props);
+        // }
+    }
+
     parseSearch(search: string): { [key: string]: string | Array<string> } {
         return queryString.parse(search, { arrayFormat: 'index' });
     }
@@ -103,7 +126,11 @@ class TriggerListContainer extends React.Component {
                             <ColumnStack gap={5} marginTop={30} marginBottom={40}>
                                 {Array.isArray(triggers) &&
                                     <StackItem>
-                                        <TriggerList items={triggers} />
+                                        <TriggerList
+                                            items={triggers}
+                                            onRemove={(triggerId, metric) =>
+                                                this.removeTriggerMetric(triggerId, metric)}
+                                        />
                                     </StackItem>}
                                 {typeof pages === 'number' &&
                                     pages > 1 &&
