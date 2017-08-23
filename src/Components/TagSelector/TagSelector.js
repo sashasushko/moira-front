@@ -17,9 +17,8 @@ type State = {|
 |};
 
 /*
-    По нажатию на Enter выбор первого из списка
-    По нажатию Backspace удаление текста или последнего выбранного тега. Второе при условии, что каретка в начале поля ввода
     По нажатию ArrowLeft последовательный фокус на выбранном теге
+    По нажатию Backspace или Delete при фокусе на теге его удаление
     По нажатию ArrowDown последовательный фокус на теге из подписок и общего списка
  */
 
@@ -54,7 +53,6 @@ export default class TagSelector extends React.Component {
             case 'Enter':
                 if (filtredTags.length !== 0) {
                     onSelect(filtredTags[0]);
-                    this.setState({ value: '' });
                 }
                 break;
             default:
@@ -88,13 +86,13 @@ export default class TagSelector extends React.Component {
                                 : null}
                     />
                 </div>
-                {subscribedTags !== 0 &&
+                {subscribedTags.length !== 0 &&
                     value.length === 0 &&
                     <div className={cn('group')}>
                         <b className={cn('title')}>Subscribtions</b>
-                        <TagList tags={subscribedTags} />
+                        <TagList tags={subscribedTags} onClick={tag => onSelect(tag)} />
                     </div>}
-                {remainedTags !== 0 &&
+                {remainedTags.length !== 0 &&
                     value.length === 0 &&
                     <div className={cn('group')}>
                         <b className={cn('title')}>All tags</b>
@@ -102,7 +100,9 @@ export default class TagSelector extends React.Component {
                     </div>}
                 {value.length !== 0 &&
                     <div className={cn('group')}>
-                        <b className={cn('title')}>Search results</b>
+                        <b className={cn('title')}>
+                            Search results {filtredTags.length}
+                        </b>
                         <TagList tags={filtredTags} onClick={tag => onSelect(tag)} />
                     </div>}
             </div>
