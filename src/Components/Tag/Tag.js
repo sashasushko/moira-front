@@ -6,6 +6,7 @@ import cn from './Tag.less';
 
 type Props = {|
     title: string;
+    focus?: boolean;
     onClick?: () => void;
     onRemove?: () => void;
 |};
@@ -25,10 +26,10 @@ function getColor(title: string): ColorTheme {
 }
 
 export default function Tag(props: Props): React.Element<*> {
-    const { title, onRemove, onClick } = props;
+    const { title, focus, onRemove, onClick } = props;
 
     return (
-        <div className={cn({ tag: true, removeable: onRemove })} style={getColor(title)}>
+        <div className={cn({ tag: true, removeable: onRemove, focused: focus })} style={getColor(title)}>
             {onClick
                 ? <div onClick={onClick} className={cn('title', 'clickable')}>
                       {title}

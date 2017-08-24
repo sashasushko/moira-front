@@ -12,4 +12,7 @@ storiesOf('Tag', module)
     .add('With onRemove', () => <Tag title='ReplicaClusterWarn' onRemove={action('onRemove')} />)
     .add('With onClick and onRemove', () =>
         <Tag title='ReplicaClusterError' onClick={action('onClick')} onRemove={action('onRemove')} />
+    )
+    .add('Focused', () =>
+        <Tag title='ReplicaClusterError' focus onClick={action('onClick')} onRemove={action('onRemove')} />
     );

@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
-import Icon from 'retail-ui/components/Icon';
 import { Link } from 'react-router-dom';
+import RouterLinkWithIcon from '../RouterLink/RouterLink';
 import Container from '../Container/Container';
 import cn from './Header.less';
 import logo from '../../logo.png';
@@ -15,11 +15,9 @@ export default function Header(props: Props): React.Element<*> {
                 <Link to='/' className={cn('logo-link')}>
                     <img className={cn('logo-img')} src={logo} alt='Moira' />
                 </Link>
-                <Link to='//moira.readthedocs.org/' className={cn('gapped-link')}>
-                    <Icon name='help' />
-                    {' '}
+                <RouterLinkWithIcon to='//moira.readthedocs.org/' className={cn('gapped-link')} icon='help'>
                     Help
-                </Link>
+                </RouterLinkWithIcon>
             </Container>
         </header>
     );

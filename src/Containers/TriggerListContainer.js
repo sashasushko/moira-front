@@ -8,7 +8,7 @@ import type { Trigger } from '../Domain/Trigger';
 import { withMoiraApi } from '../Api/MoiraApiInjection';
 import queryString from 'query-string';
 import { concat, difference, flatten } from 'lodash';
-import TriggerFilter from '../Components/TriggerFilter/TriggerFilter';
+import TagSelector from '../Components/TagSelector/TagSelector';
 import TriggerList from '../Components/TriggerList/TriggerList';
 import { Container, ColumnStack, StackItem } from '../Components/Layout/Layout';
 
@@ -56,6 +56,29 @@ class TriggerListContainer extends React.Component {
         });
     }
 
+    async removeTriggerMetric(triggerId: string, metric: string): Promise<void> {
+        const { moiraApi } = this.props;
+        this.setState({ loading: true });
+        const status = await moiraApi.removeTriggerMetric(triggerId, metric);
+        if (status === 200) {
+            this.getData(this.props);
+        }
+    }
+
+    async setTriggerMetricMainTenance(triggerId: string, metric: string): Promise<void> {
+        const { moiraApi } = this.props;
+        // this.setState({ loading: true });
+        // var data = {};
+        // data[scope.check.metric] = time;
+        // if (time > 0) {
+        //     data[scope.check.metric] = moment.utc().add(time, "minutes").unix();
+        // }
+        // const status = await moiraApi.removeTriggerMetric(triggerId, metric);
+        // if (status === 200) {
+        //     this.getData(this.props);
+        // }
+    }
+
     parseSearch(search: string): { [key: string]: string | Array<string> } {
         return queryString.parse(search, { arrayFormat: 'index' });
     }
@@ -83,18 +106,31 @@ class TriggerListContainer extends React.Component {
             <Loader active={loading}>
                 {!loading &&
                     <div>
-                        <TriggerFilter
-                            selectedTags={selectedTags}
-                            subscribedTags={difference(subscribedTags, selectedTags)}
-                            remainedTags={difference(allTags, concat(selectedTags, subscribedTags))}
-                            onSelect={tag => this.changeSearch({ tags: concat(selectedTags, tag) })}
-                            onRemove={tag => this.changeSearch({ tags: difference(selectedTags, [tag]) })}
-                        />
+                        <div
+                            style={{
+                                paddingTop: '20px',
+                                paddingBottom: '20px',
+                                backgroundColor: '#f3f3f3',
+                            }}>
+                            <Container>
+                                <TagSelector
+                                    selectedTags={selectedTags}
+                                    subscribedTags={difference(subscribedTags, selectedTags)}
+                                    remainedTags={difference(allTags, concat(selectedTags, subscribedTags))}
+                                    onSelect={tag => this.changeSearch({ tags: concat(selectedTags, tag) })}
+                                    onRemove={tag => this.changeSearch({ tags: difference(selectedTags, [tag]) })}
+                                />
+                            </Container>
+                        </div>
                         <Container>
                             <ColumnStack gap={5} marginTop={30} marginBottom={40}>
                                 {Array.isArray(triggers) &&
                                     <StackItem>
-                                        <TriggerList items={triggers} />
+                                        <TriggerList
+                                            items={triggers}
+                                            onRemove={(triggerId, metric) =>
+                                                this.removeTriggerMetric(triggerId, metric)}
+                                        />
                                     </StackItem>}
                                 {typeof pages === 'number' &&
                                     pages > 1 &&
