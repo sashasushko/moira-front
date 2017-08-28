@@ -6,7 +6,7 @@ export const Maintenances = {
     threeHours: 'threeHours',
     sixHours: 'sixHours',
     oneDay: 'oneDay',
-    oneWeek: 'oneDay',
+    oneWeek: 'oneWeek',
 };
 
 export const MaintenanceTimes = {
