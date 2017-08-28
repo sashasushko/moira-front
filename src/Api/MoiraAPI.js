@@ -68,12 +68,12 @@ export default class Api implements IMoiraApi {
         }).then(response => response.json());
     }
 
-    setTriggerMetricMainTenance(triggerId: string, data: { [metric: string]: number }): Promise<void> {
+    setTriggerMetricMaintenance(triggerId: string, data: { [metric: string]: number }): Promise<void> {
         const url = `${this.config.apiUrl}/trigger/${triggerId}/maintenance`;
         return fetch(url, {
             method: 'PUT',
             body: JSON.stringify(data),
-        }).then(response => console.log(response));
+        }).then(response => response.status);
     }
 
     removeTriggerMetric(triggerId: string, metric: string): Promise<number> {
