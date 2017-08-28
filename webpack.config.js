@@ -60,7 +60,7 @@ const config = {
         }),
         new webpack.EnvironmentPlugin({
             NODE_ENV: 'development',
-            API_MODE: 'fake',
+            API_MODE: 'real',
         }),
     ],
 };

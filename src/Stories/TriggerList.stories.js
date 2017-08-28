@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { storiesOf } from '@storybook/react';
+import { action } from '@storybook/addon-actions';
 import StoryRouter from 'storybook-router';
 import TriggerList from '../Components/TriggerList/TriggerList';
 
@@ -3325,5 +3326,5 @@ const data = [
 
 storiesOf('TriggerList', module)
     .addDecorator(StoryRouter())
-    .add('Default', () => <TriggerList items={data} />)
+    .add('Default', () => <TriggerList items={data} onRemove={action('onRemove')} />)
     .add('Empty', () => <TriggerList items={[]} />);
