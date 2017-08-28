@@ -65,8 +65,8 @@ class TriggerListContainer extends React.Component {
         }
     }
 
-    async setTriggerMetricMainTenance(triggerId: string, metric: string): Promise<void> {
-        const { moiraApi } = this.props;
+    setTriggerMetricMainTenance() {
+        // const { moiraApi } = this.props;
         // this.setState({ loading: true });
         // var data = {};
         // data[scope.check.metric] = time;
@@ -128,8 +128,7 @@ class TriggerListContainer extends React.Component {
                                     <StackItem>
                                         <TriggerList
                                             items={triggers}
-                                            onRemove={(triggerId, metric) =>
-                                                this.removeTriggerMetric(triggerId, metric)}
+                                            onRemove={(triggerId, metric) => console.log(triggerId, metric)}
                                         />
                                     </StackItem>}
                                 {typeof pages === 'number' &&

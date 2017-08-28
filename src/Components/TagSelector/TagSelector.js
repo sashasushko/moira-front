@@ -1,33 +1,29 @@
 // @flow
-import React from 'react';
+import * as React from 'react';
 import { concat } from 'lodash';
 import TagList from '../TagList/TagList';
 import Tag from '../Tag/Tag';
 import cn from './TagSelector.less';
 
 type Props = {|
-    subscribedTags?: Array<string>;
-    remainedTags?: Array<string>;
-    selectedTags?: Array<string>;
+    subscribedTags: Array<string>;
+    remainedTags: Array<string>;
+    selectedTags: Array<string>;
     onSelect: (tag: string) => void;
     onRemove: (tag: string) => void;
 |};
 type State = {|
     value: string;
+    focusedIndex: number;
     isFocused: boolean;
 |};
-
-/*
-    По нажатию ArrowLeft последовательный фокус на выбранном теге
-    По нажатию Backspace или Delete при фокусе на теге его удаление
-    По нажатию ArrowDown последовательный фокус на теге из подписок и общего списка
- */
 
 export default class TagSelector extends React.Component {
     props: Props;
     state: State = {
         value: '',
-        isFocused: true,
+        focusedIndex: 0,
+        isFocused: false,
     };
 
     filterTags(tags: Array<string>): Array<string> {
@@ -35,44 +31,63 @@ export default class TagSelector extends React.Component {
         return tags.filter(x => x.toLowerCase().indexOf(value.toLowerCase()) !== -1);
     }
 
-    handleKeyDown(key: string, caretPosition: number, value: string) {
-        const { subscribedTags = [], remainedTags = [], selectedTags = [], onSelect, onRemove } = this.props;
+    selectTag(tag: string) {
+        this.props.onSelect(tag);
+        this.setState({ value: '', focusedIndex: 0 });
+    }
+
+    removeTag(tag: string) {
+        this.props.onRemove(tag);
+    }
+
+    handleKeyDown(key: string, caretPosition: number) {
+        const { value, focusedIndex, isFocused } = this.state;
+        const { selectedTags, subscribedTags, remainedTags } = this.props;
         const filtredTags = this.filterTags(concat(subscribedTags, remainedTags));
-        switch (key) {
-            case 'Delete':
-                break;
-            case 'Backspace':
-                if (caretPosition === 0 && selectedTags.length !== 0) {
-                    onRemove(selectedTags[selectedTags.length - 1]);
-                }
-                break;
-            case 'ArrowLeft':
-                break;
-            case 'ArrowRight':
-                break;
-            case 'ArrowDown':
-                break;
-            case 'Enter':
-                if (filtredTags.length !== 0) {
-                    onSelect(filtredTags[0]);
-                }
-                break;
-            default:
-                break;
+        if (isFocused) {
+            switch (key) {
+                case 'Delete':
+                    break;
+                case 'Backspace':
+                    if (caretPosition === 0 && selectedTags.length !== 0) {
+                        this.removeTag(selectedTags[selectedTags.length - 1]);
+                    }
+                    break;
+                case 'ArrowDown':
+                    if (value.length !== 0) {
+                        this.setState(({ focusedIndex }) => {
+                            const newIndex = focusedIndex < filtredTags.length ? focusedIndex + 1 : 0;
+                            return {
+                                focusedIndex: newIndex,
+                            };
+                        });
+                    }
+                    break;
+                case 'Enter':
+                    if (focusedIndex !== 0 && value.length !== 0) {
+                        this.selectTag(filtredTags[focusedIndex - 1]);
+                    }
+                    if (focusedIndex === 0 && value.length !== 0) {
+                        this.selectTag(filtredTags[filtredTags.length - 1]);
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
     render(): React.Element<*> {
-        const { subscribedTags = [], remainedTags = [], selectedTags = [], onSelect, onRemove } = this.props;
-        const { value, isFocused } = this.state;
+        const { selectedTags, subscribedTags, remainedTags } = this.props;
+        const { value, focusedIndex, isFocused } = this.state;
         const filtredTags = this.filterTags(concat(subscribedTags, remainedTags));
         return (
             <div>
-                <div className={cn('input-area')}>
+                <div className={cn('input-area', { focused: isFocused })}>
                     {selectedTags.length !== 0 &&
                         selectedTags.map((tag, i) =>
                             <span className={cn('tag-wrap')} key={i}>
-                                <Tag title={tag} onRemove={() => onRemove(tag)} />
+                                <Tag title={tag} onRemove={() => this.removeTag(tag)} />
                             </span>
                         )}
                     <input
@@ -80,35 +95,39 @@ export default class TagSelector extends React.Component {
                         value={value}
                         onKeyDown={(event: Event) =>
                             event.target instanceof HTMLInputElement
-                                ? this.handleKeyDown(event.key, event.target.selectionStart, event.target.value)
+                                ? this.handleKeyDown(event.key, event.target.selectionStart)
                                 : null}
                         onChange={(event: Event) =>
                             event.target instanceof HTMLInputElement
-                                ? this.setState({ value: event.target.value })
+                                ? this.setState({ value: event.target.value, focusedIndex: 0 })
                                 : null}
+                        onFocus={() => this.setState({ isFocused: true })}
+                        onBlur={() => this.setState({ isFocused: false })}
                     />
                 </div>
-                {isFocused &&
-                    <div>
-                        {subscribedTags.length !== 0 &&
-                            value.length === 0 &&
-                            <div className={cn('group')}>
-                                <b className={cn('title')}>Subscribtions</b>
-                                <TagList tags={subscribedTags} onClick={tag => onSelect(tag)} />
-                            </div>}
-                        {remainedTags.length !== 0 &&
-                            value.length === 0 &&
-                            <div className={cn('group')}>
-                                <b className={cn('title')}>All tags</b>
-                                <TagList tags={remainedTags} onClick={tag => onSelect(tag)} />
-                            </div>}
-                        {value.length !== 0 &&
-                            <div className={cn('group')}>
-                                <b className={cn('title')}>
-                                    Search results {filtredTags.length}
-                                </b>
-                                <TagList tags={filtredTags} onClick={tag => onSelect(tag)} />
-                            </div>}
+                {subscribedTags.length !== 0 &&
+                    value.length === 0 &&
+                    <div className={cn('group')}>
+                        <b className={cn('title')}>Subscribtions</b>
+                        <TagList tags={subscribedTags} onClick={tag => this.selectTag(tag)} />
+                    </div>}
+                {remainedTags.length !== 0 &&
+                    value.length === 0 &&
+                    <div className={cn('group')}>
+                        <b className={cn('title')}>All tags</b>
+                        <TagList tags={remainedTags} onClick={tag => this.selectTag(tag)} />
+                    </div>}
+                {value.length !== 0 &&
+                    <div className={cn('group')}>
+                        <b className={cn('title')}>Search results</b>
+                        {filtredTags.map((tag, i) =>
+                            <Tag
+                                key={i}
+                                focus={i === focusedIndex - 1}
+                                title={tag}
+                                onClick={() => this.selectTag(tag)}
+                            />
+                        )}
                     </div>}
             </div>
         );
