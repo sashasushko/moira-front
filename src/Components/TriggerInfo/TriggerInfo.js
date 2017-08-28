@@ -1,8 +1,7 @@
 // @flow
 import React from 'react';
-import Icon from 'retail-ui/components/Icon';
 import Button from 'retail-ui/components/Button';
-import { Link } from 'react-router-dom';
+import RouterLinkWithIcon from '../RouterLink/RouterLink';
 import type { Trigger } from '../../Domain/Trigger';
 import TagList from '../TagList/TagList';
 import cn from './TriggerInfo.less';
@@ -32,18 +31,18 @@ export default function TriggerInfo(props: Props): React.Element<*> {
                     <h2 className={cn('title')}>
                         {name}
                     </h2>
-                    {/* <div className={cn('controls')}>
+                    <div className={cn('controls')}>
                         <div className={cn('control')}>
-                            <Link to={'/trigger/' + id + '/edit'}>
-                                <Icon name='Edit' /> Edit
-                            </Link>
+                            <RouterLinkWithIcon to={'/trigger/' + id + '/edit'} icon='Edit'>
+                                Edit
+                            </RouterLinkWithIcon>
                         </div>
                         <div className={cn('control')}>
                             <Button use='link' icon='Export'>
                                 Export
                             </Button>
                         </div>
-                    </div> */}
+                    </div>
                 </header>
                 <dl className={cn('data')}>
                     <dt>Target</dt>

@@ -13,7 +13,6 @@ type Props = {|
 
 export default function TriggerList(props: Props): React.Element<*> {
     const { items, onChange, onRemove } = props;
-    console.log(items);
     return (
         <div>
             {items.length === 0
