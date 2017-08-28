@@ -44,8 +44,11 @@ class TriggerListContainer extends React.Component {
 
     async getData(props: Props): Promise<void> {
         const { location, moiraApi } = props;
-        const { page } = this.parseSearch(location.search);
-        const triggerList = await moiraApi.getTriggerList((Number(page) || 1) - 1);
+        const { page, tags } = this.parseSearch(location.search);
+        const triggerList = await moiraApi.getTriggerList(
+            (Number(page) || 1) - 1,
+            queryString.stringify({ tags: tags }, { arrayFormat: 'index', encode: true })
+        );
         const tagList = await moiraApi.getTagList();
         const settings = await moiraApi.getSettings();
         const pages = Math.ceil(triggerList.total / triggerList.size);
@@ -130,16 +133,14 @@ class TriggerListContainer extends React.Component {
                         </div>
                         <Container>
                             <ColumnStack gap={5} marginTop={30} marginBottom={40}>
-                                {Array.isArray(triggers) &&
-                                    <StackItem>
-                                        <TriggerList
-                                            items={triggers}
-                                            onChange={(triggerId, maintenance, metric) =>
-                                                this.setTriggerMetricMaintenance(triggerId, maintenance, metric)}
-                                            onRemove={(triggerId, metric) =>
-                                                this.removeTriggerMetric(triggerId, metric)}
-                                        />
-                                    </StackItem>}
+                                <StackItem>
+                                    <TriggerList
+                                        items={Array.isArray(triggers) ? triggers : []}
+                                        onChange={(triggerId, maintenance, metric) =>
+                                            this.setTriggerMetricMaintenance(triggerId, maintenance, metric)}
+                                        onRemove={(triggerId, metric) => this.removeTriggerMetric(triggerId, metric)}
+                                    />
+                                </StackItem>
                                 {typeof pages === 'number' &&
                                     pages > 1 &&
                                     <StackItem>

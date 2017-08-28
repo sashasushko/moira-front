@@ -13,7 +13,7 @@ export interface IMoiraApi {
     getSettings(): Promise<Settings>;
     getTriggerList(page: number): Promise<TriggerList>;
     getTrigger(id: string): Promise<Trigger>;
-    setTriggerMetricMainTenance(triggerId: string, data: { [metric: string]: number }): Promise<void>;
+    setTriggerMetricMaintenance(triggerId: string, data: { [metric: string]: number }): Promise<number>;
     removeTriggerMetric(triggerId: string, metric: string): Promise<number>;
     getTriggerState(id: string): Promise<TriggerState>;
     getTriggerEvents(id: string): Promise<EventList>;
@@ -54,8 +54,8 @@ export default class Api implements IMoiraApi {
         }).then(response => response.json());
     }
 
-    getTriggerList(page: number): Promise<TriggerList> {
-        const url = `${this.config.apiUrl}/trigger/page?p=${page}&size=${this.config.paging.triggerList}`;
+    getTriggerList(page: number, tags: string): Promise<TriggerList> {
+        const url = `${this.config.apiUrl}/trigger/page?p=${page}&size=${this.config.paging.triggerList}&${tags}`;
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
@@ -68,7 +68,7 @@ export default class Api implements IMoiraApi {
         }).then(response => response.json());
     }
 
-    setTriggerMetricMaintenance(triggerId: string, data: { [metric: string]: number }): Promise<void> {
+    setTriggerMetricMaintenance(triggerId: string, data: { [metric: string]: number }): Promise<number> {
         const url = `${this.config.apiUrl}/trigger/${triggerId}/maintenance`;
         return fetch(url, {
             method: 'PUT',
