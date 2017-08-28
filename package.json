@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "license": "MIT",
     "scripts": {
-        "start": "cross-env NODE_ENV=development webpack-dev-server --hot --history-api-fallback --content-base dist/ --port 9000 --host 10.33.62.138",
+        "start": "cross-env NODE_ENV=development webpack-dev-server --hot --history-api-fallback --content-base dist/ --port 9000",
         "build": "cross-env NODE_ENV=production webpack -p",
         "storybook": "start-storybook -p 9001 -c .storybook",
         "lint": "eslint src",
