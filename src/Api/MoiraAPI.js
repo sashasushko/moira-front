@@ -11,7 +11,7 @@ export interface IMoiraApi {
     getTagList(): Promise<TagList>;
     getTagStats(): Promise<TagStatList>;
     getSettings(): Promise<Settings>;
-    getTriggerList(page: number): Promise<TriggerList>;
+    getTriggerList(page: number, tags: string): Promise<TriggerList>;
     getTrigger(id: string): Promise<Trigger>;
     setTriggerMetricMaintenance(triggerId: string, data: { [metric: string]: number }): Promise<number>;
     removeTriggerMetric(triggerId: string, metric: string): Promise<number>;

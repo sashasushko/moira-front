@@ -55,12 +55,8 @@ export default class TagSelector extends React.Component {
                     break;
                 case 'ArrowDown':
                     if (value.length !== 0) {
-                        this.setState(({ focusedIndex }) => {
-                            const newIndex = focusedIndex < filtredTags.length ? focusedIndex + 1 : 0;
-                            return {
-                                focusedIndex: newIndex,
-                            };
-                        });
+                        const newIndex = focusedIndex < filtredTags.length ? focusedIndex + 1 : 0;
+                        this.setState({ focusedIndex: newIndex });
                     }
                     break;
                 case 'Enter':
