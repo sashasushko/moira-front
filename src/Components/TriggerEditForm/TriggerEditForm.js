@@ -46,7 +46,7 @@ export default function TriggerEditForm(props: Props): React.Element<*> {
                     );
                 })}
             <p>
-                <button>Add target</button>
+                <button type='button'>Add target</button>
             </p>
             <fieldset disabled={targets.length > 1}>
                 <legend>Simple mode</legend>
