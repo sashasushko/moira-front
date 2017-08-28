@@ -4,6 +4,7 @@ import Button from 'retail-ui/components/Button';
 import RouterLinkWithIcon from '../RouterLink/RouterLink';
 import type { Trigger } from '../../Domain/Trigger';
 import TagList from '../TagList/TagList';
+import getJSONContent from '../../Helpers/getJSONContent';
 import cn from './TriggerInfo.less';
 
 type Props = {|
@@ -38,9 +39,17 @@ export default function TriggerInfo(props: Props): React.Element<*> {
                             </RouterLinkWithIcon>
                         </div>
                         <div className={cn('control')}>
-                            <Button use='link' icon='Export'>
-                                Export
-                            </Button>
+                            <a
+                                href=''
+                                onClick={(event: Event) =>
+                                    event.currentTarget instanceof HTMLAnchorElement
+                                        ? (event.currentTarget.href = getJSONContent(props.data))
+                                        : null}
+                                download={`trigger-${id}.json`}>
+                                <Button use='link' icon='Export'>
+                                    Export
+                                </Button>
+                            </a>
                         </div>
                     </div>
                 </header>
