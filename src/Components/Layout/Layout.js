@@ -1,66 +1,61 @@
 // @flow
 import React from 'react';
-import Header from '../Header/Header';
-import Footer from '../Footer/Footer';
+import Loader from 'retail-ui/components/Loader';
 import cn from './Layout.less';
-
-type LayoutProps = {
-    children?: React.Element<*>;
-};
-export function Layout(props: LayoutProps): React.Element<*> {
-    return (
-        <div className={cn('layout')}>
-            <Header className={cn('header')} />
-            <main className={cn('content')}>
-                {props.children}
-            </main>
-            <Footer className={cn('footer')} />
-        </div>
-    );
-}
-
-type ContainerProps = {
-    className?: string;
-    children?: React.Element<*>;
-};
-export function Container(props: ContainerProps): React.Element<*> {
-    return (
-        <div className={cn('container', props.className)}>
-            {props.children}
-        </div>
-    );
-}
-
-type ColumnStackProps = {|
-    className?: string;
-    children?: React.Element<*>;
-    gap?: number;
-    marginTop?: number;
-    marginBottom?: number;
+type Props = {|
+    children: any;
+    loading?: boolean;
 |};
-export function ColumnStack(props: ColumnStackProps): React.Element<*> {
-    const {
-        children,
-        className = '',
-        gap = 0,
-        marginTop,
-        marginBottom,
-    } = props;
-    return (
-        <div className={cn('column-stack', 'gap-' + gap.toString(), className)} style={{ marginTop, marginBottom }}>
-            {children}
-        </div>
-    );
-}
+type GreyPlateProps = {|
+    children: any;
+|};
+type ContentProps = {|
+    children: any;
+|};
+type PagingProps = {|
+    children: any;
+|};
+export default class Layout extends React.Component {
+    props: Props;
 
-type StackItemProps = {
-    className?: string;
-    children?: React.Element<*>;
-};
-export function StackItem(props: StackItemProps): React.Element<*> {
-    return (
-        <div className={cn('stack-item', props.className)}>
-            {props.children}
-        </div>
-    );
+    static GreyPlate = function GreyPlate({ children }: GreyPlateProps): React.Element<*> {
+        return (
+            <div className={cn('grey-plate')}>
+                <div className={cn('container')}>
+                    {children}
+                </div>
+            </div>
+        );
+    };
+
+    static Content = function Content({ children }: ContentProps): React.Element<*> {
+        return (
+            <div className={cn('content')}>
+                <div className={cn('container')}>
+                    {children}
+                </div>
+            </div>
+        );
+    };
+
+    static Paging = function Paging({ children }: PagingProps): React.Element<*> {
+        return (
+            <div className={cn('paging')}>
+                <div className={cn('container')}>
+                    {children}
+                </div>
+            </div>
+        );
+    };
+
+    render(): React.Element<*> {
+        const { loading = false, children } = this.props;
+        return (
+            <main className={cn('layout')}>
+                <Loader className={cn('loading')} active={loading}>
+                    {children}
+                </Loader>
+            </main>
+        );
+    }
 }
