@@ -17,52 +17,76 @@ import FakeTriggerState from './ApiFakeData/state.json';
 import FakeTriggerEvents from './ApiFakeData/events.json';
 import FakeNotifications from './ApiFakeData/notifications.json';
 
+const patterns: PatternList = FakePattern;
+const tags: TagList = FakeTag;
+const stats: TagStatList = FakeStats;
+const settings: Settings = FakeSettings;
+const triggers: TriggerList = FakeTriggers;
+const trigger: Trigger = FakeTrigger;
+const state: TriggerState = FakeTriggerState;
+const events: EventList = FakeTriggerEvents;
+const notifications: NotificationList = FakeNotifications;
+
 function sleep<T>(response: T): Promise<T> {
     return new Promise(resolve => setTimeout(() => resolve(response), 500));
 }
 
 export default class ApiFake implements IMoiraApi {
     async getPatternList(): Promise<PatternList> {
-        return await sleep(FakePattern);
+        return await sleep(patterns);
     }
 
     async getTagList(): Promise<TagList> {
-        return await sleep(FakeTag);
+        return await sleep(tags);
     }
 
     async getTagStats(): Promise<TagStatList> {
-        return await sleep(FakeStats);
+        return await sleep(stats);
     }
 
     async getSettings(): Promise<Settings> {
-        return await sleep(FakeSettings);
+        return await sleep(settings);
     }
 
     async getTriggerList(page: number): Promise<TriggerList> {
-        return await sleep(FakeTriggers);
+        const options = {};
+        options.page = page;
+        return await sleep(triggers);
     }
 
     async getTrigger(id: string): Promise<Trigger> {
-        return await sleep(FakeTrigger);
+        const options = {};
+        options.id = id;
+        return await sleep(trigger);
     }
 
     async setMaintenance(triggerId: string, data: { [metric: string]: number }): Promise<number> {
+        const options = {};
+        options.triggerId = triggerId;
+        options.data = data;
         return await sleep(200);
     }
 
     async delMetric(triggerId: string, metric: string): Promise<number> {
+        const options = {};
+        options.triggerId = triggerId;
+        options.metric = metric;
         return await sleep(200);
     }
 
     async getTriggerState(id: string): Promise<TriggerState> {
-        return await sleep(FakeTriggerState);
+        const options = {};
+        options.id = id;
+        return await sleep(state);
     }
 
     async getTriggerEvents(id: string): Promise<EventList> {
-        return await sleep(FakeTriggerEvents);
+        const options = {};
+        options.id = id;
+        return await sleep(events);
     }
 
     async getNotificationList(): Promise<NotificationList> {
-        return await sleep(FakeNotifications);
+        return await sleep(notifications);
     }
 }
