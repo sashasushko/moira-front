@@ -12,7 +12,7 @@ export interface IMoiraApi {
     getTagList(): Promise<TagList>;
     getTagStats(): Promise<TagStatList>;
     getSettings(): Promise<Settings>;
-    getTriggerList(page: number, tags: string): Promise<TriggerList>;
+    getTriggerList(page: number): Promise<TriggerList>;
     getTrigger(id: string): Promise<Trigger>;
     setMaintenance(triggerId: string, data: { [metric: string]: number }): Promise<number>;
     delMetric(triggerId: string, metric: string): Promise<number>;
@@ -28,82 +28,105 @@ export default class Api implements IMoiraApi {
         this.config = config;
     }
 
-    getPatternList(): Promise<PatternList> {
+    async getPatternList(): Promise<PatternList> {
         const url = `${this.config.apiUrl}/pattern`;
-        return fetch(url, {
-            method: 'GET',
-        }).then(response => response.json());
+        const response = await fetch(url, { method: 'GET' });
+        if (response.status === 200) {
+            return response.json();
+        }
+        throw new Error(response);
     }
 
-    getTagList(): Promise<TagList> {
+    async getTagList(): Promise<TagList> {
         const url = `${this.config.apiUrl}/tag`;
-        return fetch(url, {
-            method: 'GET',
-        }).then(response => response.json());
+        const response = await fetch(url, { method: 'GET' });
+        if (response.status === 200) {
+            return response.json();
+        }
+        throw new Error(response);
     }
 
-    getTagStats(): Promise<TagStatList> {
+    async getTagStats(): Promise<TagStatList> {
         const url = `${this.config.apiUrl}/tag/stats`;
-        return fetch(url, {
-            method: 'GET',
-        }).then(response => response.json());
+        const response = await fetch(url, { method: 'GET' });
+        if (response.status === 200) {
+            return response.json();
+        }
+        throw new Error(response);
     }
 
-    getSettings(): Promise<Settings> {
+    async getSettings(): Promise<Settings> {
         const url = `${this.config.apiUrl}/user/settings`;
-        return fetch(url, {
+        const response = await fetch(url, {
             method: 'GET',
             headers: { 'x-webauth-user': 'sushko' },
-        }).then(response => response.json());
+        });
+        if (response.status === 200) {
+            return response.json();
+        }
+        throw new Error(response);
     }
 
-    getTriggerList(page: number, tags: string): Promise<TriggerList> {
-        const url = `${this.config.apiUrl}/trigger/page?p=${page}&size=${this.config.paging.triggerList}&${tags}`;
-        return fetch(url, {
-            method: 'GET',
-        }).then(response => response.json());
+    async getTriggerList(page: number): Promise<TriggerList> {
+        const url = this.config.apiUrl + '/trigger/page?p=' + page + '&size=' + this.config.paging.triggerList;
+        const response = await fetch(url, { method: 'GET' });
+        if (response.status === 200) {
+            return response.json();
+        }
+        throw new Error(response);
     }
 
-    getTrigger(id: string): Promise<Trigger> {
+    async getTrigger(id: string): Promise<Trigger> {
         const url = `${this.config.apiUrl}/trigger/${id}`;
-        return fetch(url, {
-            method: 'GET',
-        }).then(response => response.json());
+        const response = await fetch(url, { method: 'GET' });
+        if (response.status === 200) {
+            return response.json();
+        }
+        throw new Error(response);
     }
 
-    setMaintenance(triggerId: string, data: { [metric: string]: number }): Promise<number> {
+    async setMaintenance(triggerId: string, data: { [metric: string]: number }): Promise<number> {
         const url = `${this.config.apiUrl}/trigger/${triggerId}/maintenance`;
-        return fetch(url, {
-            method: 'PUT',
-            body: JSON.stringify(data),
-        }).then(response => response.status);
+        const response = await fetch(url, { method: 'PUT', body: JSON.stringify(data) });
+        if (response.status === 200) {
+            return response.json();
+        }
+        throw new Error(response);
     }
 
-    delMetric(triggerId: string, metric: string): Promise<number> {
+    async delMetric(triggerId: string, metric: string): Promise<number> {
         const url = `${this.config.apiUrl}/trigger/${triggerId}/metrics?name=${metric}`;
-        return fetch(url, {
-            method: 'DELETE',
-        }).then(response => response.status);
+        const response = await fetch(url, { method: 'DELETE' });
+        if (response.status === 200) {
+            return response.json();
+        }
+        throw new Error(response);
     }
 
-    getTriggerState(id: string): Promise<TriggerState> {
+    async getTriggerState(id: string): Promise<TriggerState> {
         const url = `${this.config.apiUrl}/trigger/${id}/state`;
-        return fetch(url, {
-            method: 'GET',
-        }).then(response => response.json());
+        const response = await fetch(url, { method: 'GET' });
+        if (response.status === 200) {
+            return response.json();
+        }
+        throw new Error(response);
     }
 
-    getTriggerEvents(id: string): Promise<EventList> {
+    async getTriggerEvents(id: string): Promise<EventList> {
         const url = `${this.config.apiUrl}/event/${id}?p=0&size=${this.config.paging.eventHistory}`;
-        return fetch(url, {
-            method: 'GET',
-        }).then(response => response.json());
+        const response = await fetch(url, { method: 'GET' });
+        if (response.status === 200) {
+            return response.json();
+        }
+        throw new Error(response);
     }
 
-    getNotificationList(): Promise<NotificationList> {
+    async getNotificationList(): Promise<NotificationList> {
         const url = `${this.config.apiUrl}/notification?start=0&end=-1`;
-        return fetch(url, {
-            method: 'GET',
-        }).then(response => response.json());
+        const response = await fetch(url, { method: 'GET' });
+        if (response.status === 200) {
+            return response.json();
+        }
+        throw new Error(response);
     }
 }

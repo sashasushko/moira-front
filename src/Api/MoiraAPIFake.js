@@ -38,7 +38,7 @@ export default class ApiFake implements IMoiraApi {
         return await sleep(FakeSettings);
     }
 
-    async getTriggerList(page: number, tags: string): Promise<TriggerList> {
+    async getTriggerList(page: number): Promise<TriggerList> {
         return await sleep(FakeTriggers);
     }
 
