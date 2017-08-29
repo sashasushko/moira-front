@@ -25,7 +25,7 @@ class PatternListContainer extends React.Component {
 
     async getData(): Promise<void> {
         const { moiraApi } = this.props;
-        const patterns = await moiraApi.getTagStats();
+        const patterns = await moiraApi.getPatternList();
         this.setState({ loading: false, ...patterns });
     }
 
