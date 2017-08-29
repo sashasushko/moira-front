@@ -2,7 +2,7 @@
 import React from 'react';
 import Loader from 'retail-ui/components/Loader';
 import cn from './Layout.less';
-type Props = {|
+type LayoutProps = {|
     children: any;
     loading?: boolean;
 |};
@@ -16,7 +16,7 @@ type PagingProps = {|
     children: any;
 |};
 export default class Layout extends React.Component {
-    props: Props;
+    props: LayoutProps;
 
     static GreyPlate = function GreyPlate({ children }: GreyPlateProps): React.Element<*> {
         return (
