@@ -14,9 +14,14 @@ export default function Header(props: Props): React.Element<*> {
                 <Link to='/' className={cn('logo-link')}>
                     <img className={cn('logo-img')} src={logo} alt='Moira' />
                 </Link>
-                <RouterLinkWithIcon to='//moira.readthedocs.org/' className={cn('gapped-link')} icon='help'>
-                    Help
-                </RouterLinkWithIcon>
+                <nav className={cn('menu')}>
+                    <RouterLinkWithIcon to='/settings' className={cn('menu-link')} icon='Settings'>
+                        Sushko Settings
+                    </RouterLinkWithIcon>
+                    <RouterLinkWithIcon to='//moira.readthedocs.org/' className={cn('menu-link')} icon='HelpBook'>
+                        Help
+                    </RouterLinkWithIcon>
+                </nav>
             </div>
         </header>
     );
