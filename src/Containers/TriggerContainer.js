@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import Tabs from 'retail-ui/components/Tabs';
 import type { ContextRouter } from 'react-router-dom';
 import type { IMoiraApi } from '../Api/MoiraAPI';
 import type { Trigger, TriggerState } from '../Domain/Trigger';
@@ -11,7 +10,6 @@ import TriggerCurrentState from '../Components/TriggerCurrentState/TriggerCurren
 import TriggerEvents from '../Components/TriggerEvents/TriggerEvents';
 import Layout from '../Components/Layout/Layout';
 
-const Tab = Tabs.Tab;
 type Props = ContextRouter & { moiraApi: IMoiraApi };
 type State = {|
     loading: boolean;
@@ -48,8 +46,7 @@ class TriggerContainer extends React.Component {
     }
 
     render(): React.Element<*> {
-        const { loading, activeTab, trigger, triggerState, triggerEvents } = this.state;
-        const { total = 0 } = triggerEvents || {};
+        const { loading, trigger, triggerState, triggerEvents } = this.state;
 
         return (
             <Layout loading={loading}>

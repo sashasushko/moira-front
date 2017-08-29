@@ -5,7 +5,6 @@ import RouterLinkWithIcon from '../RouterLink/RouterLink';
 import type { Trigger } from '../../Domain/Trigger';
 import TagList from '../TagList/TagList';
 import getJSONContent from '../../Helpers/getJSONContent';
-import cn from './TriggerInfo.less';
 
 type Props = {|
     data: Trigger;
