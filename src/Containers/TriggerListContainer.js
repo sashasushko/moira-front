@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import Loader from 'retail-ui/components/Loader';
 import Paging from 'retail-ui/components/Paging';
 import type { ContextRouter } from 'react-router-dom';
 import type { IMoiraApi } from '../Api/MoiraAPI';
@@ -13,7 +12,7 @@ import moment from 'moment';
 import { concat, difference, flatten } from 'lodash';
 import TagSelector from '../Components/TagSelector/TagSelector';
 import TriggerList from '../Components/TriggerList/TriggerList';
-import { Container, ColumnStack, StackItem } from '../Components/Layout/Layout';
+import Layout from '../Components/Layout/Layout';
 
 type Props = ContextRouter & { moiraApi: IMoiraApi };
 type State = {|
@@ -45,12 +44,15 @@ class TriggerListContainer extends React.Component {
     async getData(props: Props): Promise<void> {
         const { location, moiraApi } = props;
         const { page, tags } = this.parseSearch(location.search);
+
         const triggerList = await moiraApi.getTriggerList(
             (Number(page) || 1) - 1,
             queryString.stringify({ tags: tags }, { arrayFormat: 'index', encode: true })
         );
+
         const tagList = await moiraApi.getTagList();
         const settings = await moiraApi.getSettings();
+
         const pages = Math.ceil(triggerList.total / triggerList.size);
         const subscribedTags = flatten(settings.subscriptions.map(x => x.tags));
         this.setState({
@@ -65,7 +67,7 @@ class TriggerListContainer extends React.Component {
     async removeTriggerMetric(triggerId: string, metric: string): Promise<void> {
         const { moiraApi } = this.props;
         this.setState({ loading: true });
-        const status = await moiraApi.removeTriggerMetric(triggerId, metric);
+        const status = await moiraApi.delMetric(triggerId, metric);
         if (status === 200) {
             this.getData(this.props);
         }
@@ -82,7 +84,7 @@ class TriggerListContainer extends React.Component {
         else {
             data[metric] = maintenanceTime;
         }
-        const status = await moiraApi.setTriggerMetricMaintenance(triggerId, data);
+        const status = await moiraApi.setMaintenance(triggerId, data);
         if (status === 200) {
             this.getData(this.props);
         }
@@ -112,48 +114,34 @@ class TriggerListContainer extends React.Component {
         const selectedTags = Array.isArray(parsedSelectedTags) ? parsedSelectedTags : [];
 
         return (
-            <Loader active={loading}>
-                {!loading &&
-                    <div>
-                        <div
-                            style={{
-                                paddingTop: '20px',
-                                paddingBottom: '20px',
-                                backgroundColor: '#f3f3f3',
-                            }}>
-                            <Container>
-                                <TagSelector
-                                    selectedTags={selectedTags}
-                                    subscribedTags={difference(subscribedTags, selectedTags)}
-                                    remainedTags={difference(allTags, concat(selectedTags, subscribedTags))}
-                                    onSelect={tag => this.changeSearch({ tags: concat(selectedTags, tag) })}
-                                    onRemove={tag => this.changeSearch({ tags: difference(selectedTags, [tag]) })}
-                                />
-                            </Container>
-                        </div>
-                        <Container>
-                            <ColumnStack gap={5} marginTop={30} marginBottom={40}>
-                                <StackItem>
-                                    <TriggerList
-                                        items={Array.isArray(triggers) ? triggers : []}
-                                        onChange={(triggerId, maintenance, metric) =>
-                                            this.setTriggerMetricMaintenance(triggerId, maintenance, metric)}
-                                        onRemove={(triggerId, metric) => this.removeTriggerMetric(triggerId, metric)}
-                                    />
-                                </StackItem>
-                                {typeof pages === 'number' &&
-                                    pages > 1 &&
-                                    <StackItem>
-                                        <Paging
-                                            activePage={Number(page) || 1}
-                                            pagesCount={pages}
-                                            onPageChange={page => this.changeSearch({ page })}
-                                        />
-                                    </StackItem>}
-                            </ColumnStack>
-                        </Container>
-                    </div>}
-            </Loader>
+            <Layout loading={loading}>
+                <Layout.GreyPlate>
+                    <TagSelector
+                        selectedTags={selectedTags}
+                        subscribedTags={difference(subscribedTags, selectedTags)}
+                        remainedTags={difference(allTags, concat(selectedTags, subscribedTags))}
+                        onSelect={tag => this.changeSearch({ tags: concat(selectedTags, tag) })}
+                        onRemove={tag => this.changeSearch({ tags: difference(selectedTags, [tag]) })}
+                    />
+                </Layout.GreyPlate>
+                <Layout.Content>
+                    <TriggerList
+                        items={Array.isArray(triggers) ? triggers : []}
+                        onChange={(triggerId, maintenance, metric) =>
+                            this.setTriggerMetricMaintenance(triggerId, maintenance, metric)}
+                        onRemove={(triggerId, metric) => this.removeTriggerMetric(triggerId, metric)}
+                    />
+                </Layout.Content>
+                {typeof pages === 'number' &&
+                    pages > 1 &&
+                    <Layout.Paging>
+                        <Paging
+                            activePage={Number(page) || 1}
+                            pagesCount={pages}
+                            onPageChange={page => this.changeSearch({ page })}
+                        />
+                    </Layout.Paging>}
+            </Layout>
         );
     }
 }

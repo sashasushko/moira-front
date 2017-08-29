@@ -2,21 +2,43 @@
 import React from 'react';
 import type { ContextRouter } from 'react-router-dom';
 import type { IMoiraApi } from '../Api/MoiraAPI';
+import type { Pattern } from '../Domain/Pattern';
 import { withMoiraApi } from '../Api/MoiraApiInjection';
-import { Container } from '../Components/Layout/Layout';
+import Layout from '../Components/Layout/Layout';
 
 type Props = ContextRouter & { moiraApi: IMoiraApi };
-type State = {||};
+type State = {|
+    loading: boolean;
+    list: ?Array<Pattern>;
+|};
 
 class PatternListContainer extends React.Component {
     props: Props;
-    state: State;
+    state: State = {
+        loading: true,
+        list: null,
+    };
+
+    componentDidMount() {
+        this.getData();
+    }
+
+    async getData(): Promise<void> {
+        const { moiraApi } = this.props;
+        const patterns = await moiraApi.getTagStats();
+        this.setState({ loading: false, ...patterns });
+    }
 
     render(): React.Element<*> {
+        const { loading, list } = this.state;
         return (
-            <Container>
-                <div style={{ marginTop: '20px', marginBottom: '20px' }}>Coming soon...</div>
-            </Container>
+            <Layout loading={loading}>
+                <Layout.Content>
+                    <pre>
+                        {JSON.stringify(list, null, 2)}
+                    </pre>
+                </Layout.Content>
+            </Layout>
         );
     }
 }

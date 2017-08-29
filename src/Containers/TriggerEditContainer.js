@@ -1,11 +1,10 @@
 // @flow
 import React from 'react';
-import Loader from 'retail-ui/components/Loader';
 import type { ContextRouter } from 'react-router-dom';
 import type { IMoiraApi } from '../Api/MoiraAPI';
 import type { Trigger } from '../Domain/Trigger';
 import { withMoiraApi } from '../Api/MoiraApiInjection';
-import { Container } from '../Components/Layout/Layout';
+import Layout from '../Components/Layout/Layout';
 import TriggerEditForm from '../Components/TriggerEditForm/TriggerEditForm';
 
 type Props = ContextRouter & { moiraApi: IMoiraApi };
@@ -38,11 +37,11 @@ class TriggerEditContainer extends React.Component {
     render(): React.Element<*> {
         const { loading, trigger } = this.state;
         return (
-            <Loader active={loading}>
-                <Container>
+            <Layout loading={loading}>
+                <Layout.Content>
                     {trigger && <TriggerEditForm data={trigger} />}
-                </Container>
-            </Loader>
+                </Layout.Content>
+            </Layout>
         );
     }
 }
