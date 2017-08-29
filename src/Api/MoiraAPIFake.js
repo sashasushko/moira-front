@@ -5,6 +5,7 @@ import type { Trigger, TriggerList, TriggerState } from '../Domain/Trigger';
 import type { Settings } from '../Domain/Settings';
 import type { TagList, TagStatList } from '../Domain/Tag';
 import type { PatternList } from '../Domain/Pattern';
+import type { NotificationList } from '../Domain/Notification';
 
 import FakePattern from './ApiFakeData/pattern.json';
 import FakeTag from './ApiFakeData/tag.json';
@@ -14,6 +15,7 @@ import FakeTriggers from './ApiFakeData/triggers.json';
 import FakeTrigger from './ApiFakeData/trigger.json';
 import FakeTriggerState from './ApiFakeData/state.json';
 import FakeTriggerEvents from './ApiFakeData/events.json';
+import FakeNotifications from './ApiFakeData/notifications.json';
 
 function sleep<T>(response: T): Promise<T> {
     return new Promise(resolve => setTimeout(() => resolve(response), 500));
@@ -36,27 +38,31 @@ export default class ApiFake implements IMoiraApi {
         return await sleep(FakeSettings);
     }
 
-    async getTriggerList(page: number): Promise<TriggerList> {
-        const options = {};
-        options.page = page;
+    async getTriggerList(page: number, tags: string): Promise<TriggerList> {
         return await sleep(FakeTriggers);
     }
 
     async getTrigger(id: string): Promise<Trigger> {
-        const options = {};
-        options.page = id;
         return await sleep(FakeTrigger);
     }
 
+    async setMaintenance(triggerId: string, data: { [metric: string]: number }): Promise<number> {
+        return await sleep(200);
+    }
+
+    async delMetric(triggerId: string, metric: string): Promise<number> {
+        return await sleep(200);
+    }
+
     async getTriggerState(id: string): Promise<TriggerState> {
-        const options = {};
-        options.page = id;
         return await sleep(FakeTriggerState);
     }
 
     async getTriggerEvents(id: string): Promise<EventList> {
-        const options = {};
-        options.page = id;
         return await sleep(FakeTriggerEvents);
+    }
+
+    async getNotificationList(): Promise<NotificationList> {
+        return await sleep(FakeNotifications);
     }
 }

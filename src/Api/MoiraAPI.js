@@ -5,6 +5,7 @@ import type { Trigger, TriggerList, TriggerState } from '../Domain/Trigger';
 import type { Settings } from '../Domain/Settings';
 import type { TagList, TagStatList } from '../Domain/Tag';
 import type { PatternList } from '../Domain/Pattern';
+import type { NotificationList } from '../Domain/Notification';
 
 export interface IMoiraApi {
     getPatternList(): Promise<PatternList>;
@@ -13,10 +14,11 @@ export interface IMoiraApi {
     getSettings(): Promise<Settings>;
     getTriggerList(page: number, tags: string): Promise<TriggerList>;
     getTrigger(id: string): Promise<Trigger>;
-    setTriggerMetricMaintenance(triggerId: string, data: { [metric: string]: number }): Promise<number>;
-    removeTriggerMetric(triggerId: string, metric: string): Promise<number>;
+    setMaintenance(triggerId: string, data: { [metric: string]: number }): Promise<number>;
+    delMetric(triggerId: string, metric: string): Promise<number>;
     getTriggerState(id: string): Promise<TriggerState>;
     getTriggerEvents(id: string): Promise<EventList>;
+    getNotificationList(): Promise<NotificationList>;
 }
 
 export default class Api implements IMoiraApi {
@@ -41,7 +43,7 @@ export default class Api implements IMoiraApi {
     }
 
     getTagStats(): Promise<TagStatList> {
-        const url = `${this.config.apiUrl}/stats`;
+        const url = `${this.config.apiUrl}/tag/stats`;
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
@@ -51,6 +53,7 @@ export default class Api implements IMoiraApi {
         const url = `${this.config.apiUrl}/user/settings`;
         return fetch(url, {
             method: 'GET',
+            headers: { 'x-webauth-user': 'sushko' },
         }).then(response => response.json());
     }
 
@@ -68,7 +71,7 @@ export default class Api implements IMoiraApi {
         }).then(response => response.json());
     }
 
-    setTriggerMetricMaintenance(triggerId: string, data: { [metric: string]: number }): Promise<number> {
+    setMaintenance(triggerId: string, data: { [metric: string]: number }): Promise<number> {
         const url = `${this.config.apiUrl}/trigger/${triggerId}/maintenance`;
         return fetch(url, {
             method: 'PUT',
@@ -76,7 +79,7 @@ export default class Api implements IMoiraApi {
         }).then(response => response.status);
     }
 
-    removeTriggerMetric(triggerId: string, metric: string): Promise<number> {
+    delMetric(triggerId: string, metric: string): Promise<number> {
         const url = `${this.config.apiUrl}/trigger/${triggerId}/metrics?name=${metric}`;
         return fetch(url, {
             method: 'DELETE',
@@ -92,6 +95,13 @@ export default class Api implements IMoiraApi {
 
     getTriggerEvents(id: string): Promise<EventList> {
         const url = `${this.config.apiUrl}/event/${id}?p=0&size=${this.config.paging.eventHistory}`;
+        return fetch(url, {
+            method: 'GET',
+        }).then(response => response.json());
+    }
+
+    getNotificationList(): Promise<NotificationList> {
+        const url = `${this.config.apiUrl}/notification?start=0&end=-1`;
         return fetch(url, {
             method: 'GET',
         }).then(response => response.json());
