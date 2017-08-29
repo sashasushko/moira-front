@@ -4,52 +4,52 @@ import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import TagSelector from '../Components/TagSelector/TagSelector';
 
-const remainedTags = ['abonentsErrors', 'dmitry:ReplicaClusterError.ReplicaClusterWarn', 'build'];
-const selectedTags = ['abonentsErrors', 'dev.test.hdd'];
-const subscribedTags = ['test__'];
+const remained = ['abonentsErrors', 'dmitry:ReplicaClusterError.ReplicaClusterWarn', 'build'];
+const selected = ['abonentsErrors', 'dev.test.hdd'];
+const subscribed = ['test__'];
 
 storiesOf('TagSelector', module)
     .add('Default', () =>
         <TagSelector
-            subscribedTags={[]}
-            selectedTags={[]}
-            remainedTags={[]}
+            subscribed={[]}
+            selected={[]}
+            remained={[]}
             onSelect={action('onSelect')}
             onRemove={action('onRemove')}
         />
     )
     .add('With remained tags', () =>
         <TagSelector
-            subscribedTags={[]}
-            selectedTags={[]}
-            remainedTags={remainedTags}
+            subscribed={[]}
+            selected={[]}
+            remained={remained}
             onSelect={action('onSelect')}
             onRemove={action('onRemove')}
         />
     )
     .add('With selected tags', () =>
         <TagSelector
-            subscribedTags={[]}
-            selectedTags={selectedTags}
-            remainedTags={[]}
+            subscribed={[]}
+            selected={selected}
+            remained={[]}
             onSelect={action('onSelect')}
             onRemove={action('onRemove')}
         />
     )
     .add('With subscribed tags', () =>
         <TagSelector
-            subscribedTags={subscribedTags}
-            selectedTags={[]}
-            remainedTags={[]}
+            subscribed={subscribed}
+            selected={[]}
+            remained={[]}
             onSelect={action('onSelect')}
             onRemove={action('onRemove')}
         />
     )
     .add('With all', () =>
         <TagSelector
-            subscribedTags={subscribedTags}
-            selectedTags={subscribedTags}
-            remainedTags={remainedTags}
+            subscribed={subscribed}
+            selected={subscribed}
+            remained={remained}
             onSelect={action('onSelect')}
             onRemove={action('onRemove')}
         />
