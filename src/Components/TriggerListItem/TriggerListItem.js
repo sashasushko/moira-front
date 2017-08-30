@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import type { Trigger } from '../../Domain/Trigger.js';
 import type { Status } from '../../Domain/Status';
+import type { Maintenance } from '../../Domain/Maintenance';
 import { Statuses, getStatusColor } from '../../Domain/Status';
 import StatusIndicator from '../StatusIndicator/StatusIndicator';
 import TagList from '../TagList/TagList';
@@ -11,7 +12,8 @@ import cn from './TriggerListItem.less';
 
 type Props = {|
     data: Trigger;
-    onRemove: (metric: string) => void;
+    onChange?: (maintenance: Maintenance, metric: string) => void;
+    onRemove?: (metric: string) => void;
 |};
 type State = {|
     showMetrics: boolean;
@@ -60,7 +62,7 @@ export default class TriggerListItem extends React.Component {
     }
 
     render(): React.Element<*> {
-        const { data, onRemove } = this.props;
+        const { data, onChange, onRemove } = this.props;
         const { id, name, targets, tags, last_check: lastCheck } = data;
         const { showMetrics } = this.state;
         const { metrics } = lastCheck || {};
@@ -104,7 +106,11 @@ export default class TriggerListItem extends React.Component {
                     </div>
                     {showMetrics &&
                         <div className={cn('metrics')}>
-                            <MetricListView data={metrics} onRemove={metric => onRemove(metric)} />
+                            <MetricListView
+                                data={metrics}
+                                onChange={onChange && ((maintenance, metric) => onChange(maintenance, metric))}
+                                onRemove={onRemove && (metric => onRemove(metric))}
+                            />
                         </div>}
                 </div>
             </div>

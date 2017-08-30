@@ -1,22 +1,34 @@
 // @flow
+import queryString from 'query-string';
+
 import type { Config } from '../Domain/Config';
 import type { EventList } from '../Domain/Event';
 import type { Trigger, TriggerList, TriggerState } from '../Domain/Trigger';
 import type { Settings } from '../Domain/Settings';
-import type { TagList, TagStatList } from '../Domain/Tag';
+import type { TagStat } from '../Domain/Tag';
 import type { PatternList } from '../Domain/Pattern';
+import type { NotificationList } from '../Domain/Notification';
+
+export type TagList = {|
+    list: Array<string>;
+|};
+
+export type TagStatList = {|
+    list: Array<TagStat>;
+|};
 
 export interface IMoiraApi {
     getPatternList(): Promise<PatternList>;
     getTagList(): Promise<TagList>;
     getTagStats(): Promise<TagStatList>;
     getSettings(): Promise<Settings>;
-    getTriggerList(page: number): Promise<TriggerList>;
+    getTriggerList(page: number, onlyProblems: boolean, tags: Array<string>): Promise<TriggerList>;
     getTrigger(id: string): Promise<Trigger>;
-    setTriggerMetricMainTenance(triggerId: string, data: { [metric: string]: number }): Promise<void>;
-    removeTriggerMetric(triggerId: string, metric: string): Promise<number>;
+    setMaintenance(triggerId: string, data: { [metric: string]: number }): Promise<void>;
+    delMetric(triggerId: string, metric: string): Promise<void>;
     getTriggerState(id: string): Promise<TriggerState>;
     getTriggerEvents(id: string): Promise<EventList>;
+    getNotificationList(): Promise<NotificationList>;
 }
 
 export default class Api implements IMoiraApi {
@@ -26,74 +38,118 @@ export default class Api implements IMoiraApi {
         this.config = config;
     }
 
-    getPatternList(): Promise<PatternList> {
+    async getPatternList(): Promise<PatternList> {
         const url = `${this.config.apiUrl}/pattern`;
-        return fetch(url, {
-            method: 'GET',
-        }).then(response => response.json());
+        const response = await fetch(url, { method: 'GET' });
+        if (response.status === 200) {
+            return response.json();
+        }
+        throw new Error(response);
     }
 
-    getTagList(): Promise<TagList> {
+    async getTagList(): Promise<TagList> {
         const url = `${this.config.apiUrl}/tag`;
-        return fetch(url, {
-            method: 'GET',
-        }).then(response => response.json());
+        const response = await fetch(url, { method: 'GET' });
+        if (response.status === 200) {
+            return response.json();
+        }
+        throw new Error(response);
     }
 
-    getTagStats(): Promise<TagStatList> {
-        const url = `${this.config.apiUrl}/stats`;
-        return fetch(url, {
-            method: 'GET',
-        }).then(response => response.json());
+    async getTagStats(): Promise<TagStatList> {
+        const url = `${this.config.apiUrl}/tag/stats`;
+        const response = await fetch(url, { method: 'GET' });
+        if (response.status === 200) {
+            return response.json();
+        }
+        throw new Error(response);
     }
 
-    getSettings(): Promise<Settings> {
+    async getSettings(): Promise<Settings> {
         const url = `${this.config.apiUrl}/user/settings`;
-        return fetch(url, {
+        const response = await fetch(url, {
             method: 'GET',
-        }).then(response => response.json());
+            headers: { 'x-webauth-user': 'sushko' },
+        });
+        if (response.status === 200) {
+            return response.json();
+        }
+        throw new Error(response);
     }
 
-    getTriggerList(page: number): Promise<TriggerList> {
-        const url = `${this.config.apiUrl}/trigger/page?p=${page}&size=${this.config.paging.triggerList}`;
-        return fetch(url, {
-            method: 'GET',
-        }).then(response => response.json());
+    async getTriggerList(page: number, onlyProblems: boolean, tags: Array<string>): Promise<TriggerList> {
+        const url =
+            this.config.apiUrl +
+            '/trigger/page?' +
+            queryString.stringify(
+                {
+                    /* eslint-disable */
+                    p: page,
+                    /* eslint-enable */
+                    size: this.config.paging.triggerList,
+                    tags,
+                    onlyProblems,
+                },
+                { arrayFormat: 'index', encode: true }
+            );
+        const response = await fetch(url, { method: 'GET' });
+        if (response.status === 200) {
+            return response.json();
+        }
+        throw new Error(response);
     }
 
-    getTrigger(id: string): Promise<Trigger> {
+    async getTrigger(id: string): Promise<Trigger> {
         const url = `${this.config.apiUrl}/trigger/${id}`;
-        return fetch(url, {
-            method: 'GET',
-        }).then(response => response.json());
+        const response = await fetch(url, { method: 'GET' });
+        if (response.status === 200) {
+            return response.json();
+        }
+        throw new Error(response);
     }
 
-    setTriggerMetricMainTenance(triggerId: string, data: { [metric: string]: number }): Promise<void> {
+    async setMaintenance(triggerId: string, data: { [metric: string]: number }): Promise<void> {
         const url = `${this.config.apiUrl}/trigger/${triggerId}/maintenance`;
-        return fetch(url, {
-            method: 'PUT',
-            body: JSON.stringify(data),
-        }).then(response => console.log(response));
+        const response = await fetch(url, { method: 'PUT', body: JSON.stringify(data) });
+        if (response.status === 200) {
+            return;
+        }
+        throw new Error(response);
     }
 
-    removeTriggerMetric(triggerId: string, metric: string): Promise<number> {
+    async delMetric(triggerId: string, metric: string): Promise<void> {
         const url = `${this.config.apiUrl}/trigger/${triggerId}/metrics?name=${metric}`;
-        return fetch(url, {
-            method: 'DELETE',
-        }).then(response => response.status);
+        const response = await fetch(url, { method: 'DELETE' });
+        if (response.status === 200) {
+            return;
+        }
+        throw new Error(response);
     }
 
-    getTriggerState(id: string): Promise<TriggerState> {
+    async getTriggerState(id: string): Promise<TriggerState> {
         const url = `${this.config.apiUrl}/trigger/${id}/state`;
-        return fetch(url, {
-            method: 'GET',
-        }).then(response => response.json());
+        const response = await fetch(url, { method: 'GET' });
+        if (response.status === 200) {
+            return response.json();
+        }
+        throw new Error(response);
     }
 
-    getTriggerEvents(id: string): Promise<EventList> {
+    async getTriggerEvents(id: string): Promise<EventList> {
         const url = `${this.config.apiUrl}/event/${id}?p=0&size=${this.config.paging.eventHistory}`;
-        return fetch(url, {
-            method: 'GET',
-        }).then(response => response.json());
+        const response = await fetch(url, { method: 'GET' });
+        if (response.status === 200) {
+            return response.json();
+        }
+        throw new Error(response);
+    }
+
+    async getNotificationList(): Promise<NotificationList> {
+        const url = `${this.config.apiUrl}/notification?start=0&end=-1`;
+        const response = await fetch(url, { method: 'GET' });
+        if (response.status === 200) {
+            return response.json();
+        }
+        throw new Error(response);
     }
 }

@@ -548,3 +548,12 @@ declare module 'retail-ui/components/Paging' {
     |};
     declare export default class Paging extends React$Component<void, PagingProps, void> {}
 }
+
+declare module 'retail-ui/components/Toggle' {
+    declare type ToggleProps = {|
+        disabled?: boolean,
+        checked: boolean,
+        onChange?: (nextChecked: boolean) => void
+    |};
+    declare export default class Toggle extends React$Component<void, ToggleProps, void> {}
+}

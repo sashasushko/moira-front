@@ -2,9 +2,15 @@
 import React from 'react';
 import Link from 'retail-ui/components/Link';
 import Tabs from 'retail-ui/components/Tabs';
+import Dropdown from 'retail-ui/components/Dropdown';
+import MenuHeader from 'retail-ui/components/MenuHeader';
+import MenuItem from 'retail-ui/components/MenuItem';
 import { Statuses } from '../../Domain/Status';
 import type { Status } from '../../Domain/Status';
 import type { Metric, MetricList } from '../../Domain/Metric';
+import type { Maintenance } from '../../Domain/Maintenance';
+import { Maintenances, getMaintenanceCaption } from '../../Domain/Maintenance';
+import checkMaintenance from '../../Helpers/checkMaintenance';
 import parseTimestamp from '../../Helpers/parseTimestamp';
 import roundValue from '../../Helpers/roundValue';
 import cn from './MetricList.less';
@@ -12,6 +18,7 @@ import cn from './MetricList.less';
 const Tab = Tabs.Tab;
 type Props = {|
     data: MetricList;
+    onChange: (maintenance: Maintenance, metric: string) => void;
     onRemove: (metric: string) => void;
 |};
 type State = {|
@@ -30,7 +37,7 @@ export default class MetricListView extends React.Component {
     }
 
     render(): React.Element<*> {
-        const { data, onRemove } = this.props;
+        const { data, onChange, onRemove } = this.props;
         const metrics = composeMetrics();
         const status = this.state.status || metrics[0].status;
 
@@ -71,7 +78,7 @@ export default class MetricListView extends React.Component {
                         </div>
                         {metrics.filter(x => x.status === status).map(({ items }) =>
                             items.map(({ name, data }) => {
-                                const { value, event_timestamp: eventTimestamp } = data;
+                                const { value, event_timestamp: eventTimestamp, maintenance } = data;
                                 return (
                                     <div className={cn('row')}>
                                         <div className={cn('title')}>
@@ -85,7 +92,34 @@ export default class MetricListView extends React.Component {
                                         </div>
                                         <div className={cn('controls')}>
                                             <div className={cn('maintenance')}>
-                                                <Link icon='Settings'>Off</Link>
+                                                <Dropdown
+                                                    icon='Settings'
+                                                    caption={checkMaintenance(maintenance)}
+                                                    use='link'
+                                                    disablePortal>
+                                                    <MenuHeader>Maintenance</MenuHeader>
+                                                    <MenuItem onClick={() => onChange(Maintenances.off, name)}>
+                                                        {getMaintenanceCaption('off')}
+                                                    </MenuItem>
+                                                    <MenuItem onClick={() => onChange(Maintenances.quarterHour, name)}>
+                                                        {getMaintenanceCaption('quarterHour')}
+                                                    </MenuItem>
+                                                    <MenuItem onClick={() => onChange(Maintenances.oneHour, name)}>
+                                                        {getMaintenanceCaption('oneHour')}
+                                                    </MenuItem>
+                                                    <MenuItem onClick={() => onChange(Maintenances.threeHours, name)}>
+                                                        {getMaintenanceCaption('threeHours')}
+                                                    </MenuItem>
+                                                    <MenuItem onClick={() => onChange(Maintenances.sixHours, name)}>
+                                                        {getMaintenanceCaption('sixHours')}
+                                                    </MenuItem>
+                                                    <MenuItem onClick={() => onChange(Maintenances.oneDay, name)}>
+                                                        {getMaintenanceCaption('oneDay')}
+                                                    </MenuItem>
+                                                    <MenuItem onClick={() => onChange(Maintenances.oneWeek, name)}>
+                                                        {getMaintenanceCaption('oneWeek')}
+                                                    </MenuItem>
+                                                </Dropdown>
                                             </div>
                                             <div>
                                                 <Link icon='Delete' onClick={() => onRemove(name)} />

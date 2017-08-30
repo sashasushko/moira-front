@@ -1,7 +1,9 @@
 // @flow
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { Layout } from './Components/Layout/Layout';
+
+import Header from './Components/Header/Header';
+import Footer from './Components/Footer/Footer';
 import TriggerListContainer from './Containers/TriggerListContainer';
 import TriggerContainer from './Containers/TriggerContainer';
 import TriggerEditContainer from './Containers/TriggerEditContainer';
@@ -10,9 +12,12 @@ import NotificationsContainer from './Containers/NotificationsContainer';
 import TagListContainer from './Containers/TagListContainer';
 import PatternListContainer from './Containers/PatternListContainer';
 
+import cn from './App.less';
+
 export default function App(): React.Element<*> {
     return (
-        <Layout>
+        <div className={cn('layout')}>
+            <Header className={cn('header')} />
             <Switch>
                 <Route exact path='/' component={TriggerListContainer} />
                 <Route exact path='/trigger/:id' component={TriggerContainer} />
@@ -24,6 +29,7 @@ export default function App(): React.Element<*> {
                 <Route exact path='/patterns' component={PatternListContainer} />
                 <Route render={() => <p>404. Page not found</p>} />
             </Switch>
-        </Layout>
+            <Footer className={cn('footer')} />
+        </div>
     );
 }

@@ -6,9 +6,9 @@ import Tag from '../Tag/Tag';
 import cn from './TagSelector.less';
 
 type Props = {|
-    subscribedTags: Array<string>;
-    remainedTags: Array<string>;
-    selectedTags: Array<string>;
+    subscribed: Array<string>;
+    remained: Array<string>;
+    selected: Array<string>;
     onSelect: (tag: string) => void;
     onRemove: (tag: string) => void;
 |};
@@ -42,25 +42,21 @@ export default class TagSelector extends React.Component {
 
     handleKeyDown(key: string, caretPosition: number) {
         const { value, focusedIndex, isFocused } = this.state;
-        const { selectedTags, subscribedTags, remainedTags } = this.props;
-        const filtredTags = this.filterTags(concat(subscribedTags, remainedTags));
+        const { selected, subscribed, remained } = this.props;
+        const filtredTags = this.filterTags(concat(subscribed, remained));
         if (isFocused) {
             switch (key) {
                 case 'Delete':
                     break;
                 case 'Backspace':
-                    if (caretPosition === 0 && selectedTags.length !== 0) {
-                        this.removeTag(selectedTags[selectedTags.length - 1]);
+                    if (caretPosition === 0 && selected.length !== 0) {
+                        this.removeTag(selected[selected.length - 1]);
                     }
                     break;
                 case 'ArrowDown':
                     if (value.length !== 0) {
-                        this.setState(({ focusedIndex }) => {
-                            const newIndex = focusedIndex < filtredTags.length ? focusedIndex + 1 : 0;
-                            return {
-                                focusedIndex: newIndex,
-                            };
-                        });
+                        const newIndex = focusedIndex < filtredTags.length ? focusedIndex + 1 : 0;
+                        this.setState({ focusedIndex: newIndex });
                     }
                     break;
                 case 'Enter':
@@ -78,14 +74,14 @@ export default class TagSelector extends React.Component {
     }
 
     render(): React.Element<*> {
-        const { selectedTags, subscribedTags, remainedTags } = this.props;
+        const { selected, subscribed, remained } = this.props;
         const { value, focusedIndex, isFocused } = this.state;
-        const filtredTags = this.filterTags(concat(subscribedTags, remainedTags));
+        const filtredTags = this.filterTags(concat(subscribed, remained));
         return (
             <div>
                 <div className={cn('input-area', { focused: isFocused })}>
-                    {selectedTags.length !== 0 &&
-                        selectedTags.map((tag, i) =>
+                    {selected.length !== 0 &&
+                        selected.map((tag, i) =>
                             <span className={cn('tag-wrap')} key={i}>
                                 <Tag title={tag} onRemove={() => this.removeTag(tag)} />
                             </span>
@@ -105,17 +101,17 @@ export default class TagSelector extends React.Component {
                         onBlur={() => this.setState({ isFocused: false })}
                     />
                 </div>
-                {subscribedTags.length !== 0 &&
+                {subscribed.length !== 0 &&
                     value.length === 0 &&
                     <div className={cn('group')}>
                         <b className={cn('title')}>Subscribtions</b>
-                        <TagList tags={subscribedTags} onClick={tag => this.selectTag(tag)} />
+                        <TagList tags={subscribed} onClick={tag => this.selectTag(tag)} />
                     </div>}
-                {remainedTags.length !== 0 &&
+                {remained.length !== 0 &&
                     value.length === 0 &&
                     <div className={cn('group')}>
                         <b className={cn('title')}>All tags</b>
-                        <TagList tags={remainedTags} onClick={tag => this.selectTag(tag)} />
+                        <TagList tags={remained} onClick={tag => this.selectTag(tag)} />
                     </div>}
                 {value.length !== 0 &&
                     <div className={cn('group')}>
