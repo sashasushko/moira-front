@@ -3,20 +3,33 @@ import React from 'react';
 import Loader from 'retail-ui/components/Loader';
 import cn from './Layout.less';
 type LayoutProps = {|
-    children: any;
+    children?: any;
     loading?: boolean;
 |};
+type ErrorMessageProps = {|
+    children?: string;
+|};
 type GreyPlateProps = {|
-    children: any;
+    children?: any;
 |};
 type ContentProps = {|
-    children: any;
+    children?: any;
 |};
 type PagingProps = {|
-    children: any;
+    children?: any;
 |};
 export default class Layout extends React.Component {
     props: LayoutProps;
+
+    static ErrorMessage = function ErrorMessage({ children }: ErrorMessageProps): React.Element<*> {
+        return (
+            <div className={cn('error')}>
+                <div className={cn('container')}>
+                    {children}
+                </div>
+            </div>
+        );
+    };
 
     static GreyPlate = function GreyPlate({ children }: GreyPlateProps): React.Element<*> {
         return (
