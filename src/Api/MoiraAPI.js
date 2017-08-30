@@ -1,21 +1,31 @@
 // @flow
+import queryString from 'query-string';
+
 import type { Config } from '../Domain/Config';
 import type { EventList } from '../Domain/Event';
 import type { Trigger, TriggerList, TriggerState } from '../Domain/Trigger';
 import type { Settings } from '../Domain/Settings';
-import type { TagList, TagStatList } from '../Domain/Tag';
+import type { TagStat } from '../Domain/Tag';
 import type { PatternList } from '../Domain/Pattern';
 import type { NotificationList } from '../Domain/Notification';
+
+export type TagList = {|
+    list: Array<string>;
+|};
+
+export type TagStatList = {|
+    list: Array<TagStat>;
+|};
 
 export interface IMoiraApi {
     getPatternList(): Promise<PatternList>;
     getTagList(): Promise<TagList>;
     getTagStats(): Promise<TagStatList>;
     getSettings(): Promise<Settings>;
-    getTriggerList(page: number): Promise<TriggerList>;
+    getTriggerList(page: number, onlyProblems: boolean, tags: Array<string>): Promise<TriggerList>;
     getTrigger(id: string): Promise<Trigger>;
-    setMaintenance(triggerId: string, data: { [metric: string]: number }): Promise<number>;
-    delMetric(triggerId: string, metric: string): Promise<number>;
+    setMaintenance(triggerId: string, data: { [metric: string]: number }): Promise<void>;
+    delMetric(triggerId: string, metric: string): Promise<void>;
     getTriggerState(id: string): Promise<TriggerState>;
     getTriggerEvents(id: string): Promise<EventList>;
     getNotificationList(): Promise<NotificationList>;
@@ -67,8 +77,21 @@ export default class Api implements IMoiraApi {
         throw new Error(response);
     }
 
-    async getTriggerList(page: number): Promise<TriggerList> {
-        const url = this.config.apiUrl + '/trigger/page?p=' + page + '&size=' + this.config.paging.triggerList;
+    async getTriggerList(page: number, onlyProblems: boolean, tags: Array<string>): Promise<TriggerList> {
+        const url =
+            this.config.apiUrl +
+            '/trigger/page?' +
+            queryString.stringify(
+                {
+                    /* eslint-disable */
+                    p: page,
+                    /* eslint-enable */
+                    size: this.config.paging.triggerList,
+                    tags,
+                    onlyProblems,
+                },
+                { arrayFormat: 'index', encode: true }
+            );
         const response = await fetch(url, { method: 'GET' });
         if (response.status === 200) {
             return response.json();
@@ -85,20 +108,20 @@ export default class Api implements IMoiraApi {
         throw new Error(response);
     }
 
-    async setMaintenance(triggerId: string, data: { [metric: string]: number }): Promise<number> {
+    async setMaintenance(triggerId: string, data: { [metric: string]: number }): Promise<void> {
         const url = `${this.config.apiUrl}/trigger/${triggerId}/maintenance`;
         const response = await fetch(url, { method: 'PUT', body: JSON.stringify(data) });
         if (response.status === 200) {
-            return response.json();
+            return;
         }
         throw new Error(response);
     }
 
-    async delMetric(triggerId: string, metric: string): Promise<number> {
+    async delMetric(triggerId: string, metric: string): Promise<void> {
         const url = `${this.config.apiUrl}/trigger/${triggerId}/metrics?name=${metric}`;
         const response = await fetch(url, { method: 'DELETE' });
         if (response.status === 200) {
-            return response.json();
+            return;
         }
         throw new Error(response);
     }

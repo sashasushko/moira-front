@@ -1,35 +1,58 @@
 // @flow
 import React from 'react';
-import Paging from 'retail-ui/components/Paging';
+import queryString from 'query-string';
+import { intersection, concat, difference, flattenDeep } from 'lodash';
+import moment from 'moment';
+import { withMoiraApi } from '../Api/MoiraApiInjection';
+import { getMaintenanceTime } from '../Domain/Maintenance';
+
 import type { ContextRouter } from 'react-router-dom';
 import type { IMoiraApi } from '../Api/MoiraAPI';
 import type { TriggerList } from '../Domain/Trigger';
-import type { TagList } from '../Domain/Tag';
-// import type { Maintenance } from '../Domain/Maintenance';
-// import { getMaintenanceTime } from '../Domain/Maintenance';
-import { withMoiraApi } from '../Api/MoiraApiInjection';
-import queryString from 'query-string';
-// import moment from 'moment';
-import { concat, difference, flatten } from 'lodash';
+import type { Maintenance } from '../Domain/Maintenance';
+
+import ToggleWithLabel from '../Components/Toggle/Toggle';
+import Paging from 'retail-ui/components/Paging';
+import Layout from '../Components/Layout/Layout';
 import TagSelector from '../Components/TagSelector/TagSelector';
 import TriggerListView from '../Components/TriggerList/TriggerList';
-import Layout from '../Components/Layout/Layout';
 
 type Props = ContextRouter & { moiraApi: IMoiraApi };
 type State = {|
     loading: boolean;
+    subscribtions: ?Array<string>;
+    tags: ?Array<string>;
     triggers: ?TriggerList;
-    tags: ?TagList;
-    subscribedTags: ?Array<string>;
 |};
+type LocationSearch = {|
+    page: number;
+    tags: Array<string>;
+    onlyProblems: boolean;
+|};
+
 class TriggerListContainer extends React.Component {
     props: Props;
     state: State = {
         loading: true,
-        triggers: null,
+        subscribtions: null,
         tags: null,
-        subscribedTags: null,
+        triggers: null,
     };
+
+    async getData(props: Props): Promise<void> {
+        const { moiraApi, location } = props;
+        const { page, onlyProblems, tags: parsedTags } = this.parseLocationSearch(location.search);
+        const { subscriptions } = await moiraApi.getSettings();
+        const { list: allTags } = await moiraApi.getTagList();
+        const selectedTags = intersection(parsedTags, allTags);
+        const triggers = await moiraApi.getTriggerList(page - 1, onlyProblems, selectedTags);
+        this.setState({
+            loading: false,
+            subscribtions: flattenDeep(subscriptions.map(x => x.tags)),
+            tags: allTags,
+            triggers,
+        });
+    }
 
     componentDidMount() {
         this.getData(this.props);
@@ -39,111 +62,94 @@ class TriggerListContainer extends React.Component {
         this.getData(nextProps);
     }
 
-    async getData(props: Props): Promise<void> {
-        const { moiraApi, location } = props;
-        const { page } = this.parseLocationSearch(location.search);
-        const triggers = await moiraApi.getTriggerList(page - 1);
-        const tags = await moiraApi.getTagList();
-        const settings = await moiraApi.getSettings();
-        this.setState({
-            loading: false,
-            triggers,
-            tags,
-            subscribedTags: flatten(settings.subscriptions.map(x => x.tags)),
-        });
-    }
-
-    changeTags(tags: Array<string>) {
-        const { location, history } = this.props;
-        const search = {
-            ...this.parseLocationSearch(location.search),
-            tags,
-        };
-        history.push('?' + queryString.stringify(search, { arrayFormat: 'index', encode: true }));
-    }
-
-    changePage(page: number) {
-        const { location, history } = this.props;
-        const search = {
-            ...this.parseLocationSearch(location.search),
+    parseLocationSearch(search: string): LocationSearch {
+        const {
             page,
-        };
-        history.push('?' + queryString.stringify(search, { arrayFormat: 'index', encode: true }));
-    }
-
-    parseLocationSearch(
-        search: string
-    ): {
-        page: number;
-        tags: Array<string>;
-        onlyProblems: boolean;
-    } {
-        const { page, tags, onlyProblems }: { [key: string]: string | Array<string> } = queryString.parse(search, {
-            arrayFormat: 'index',
-        });
+            tags,
+            onlyProblems,
+        }: {
+            [key: string]: string | Array<string>;
+        } = queryString.parse(search, { arrayFormat: 'index' });
         return {
-            page: Number(page) || 1,
+            page: typeof page === 'string' ? Number(page.replace(/\D/g, '')) || 1 : 1,
             tags: Array.isArray(tags) ? tags : [],
             onlyProblems: onlyProblems === 'true' || false,
         };
     }
 
+    changeLocationSearch(update: $Shape<LocationSearch>) {
+        const { location, history } = this.props;
+        const search = {
+            ...this.parseLocationSearch(location.search),
+            ...update,
+        };
+        history.push('?' + queryString.stringify(search, { arrayFormat: 'index', encode: true }));
+    }
+
+    async setMaintenance(triggerId: string, maintenance: Maintenance, metric: string): Promise<void> {
+        this.setState({ loading: true });
+        const maintenanceTime = getMaintenanceTime(maintenance);
+        await this.props.moiraApi.setMaintenance(triggerId, {
+            [metric]: maintenanceTime > 0 ? moment.utc().add(maintenanceTime, 'minutes').unix() : maintenanceTime,
+        });
+        this.getData(this.props);
+    }
+
+    async removeMetric(triggerId: string, metric: string): Promise<void> {
+        this.setState({ loading: true });
+        await this.props.moiraApi.delMetric(triggerId, metric);
+        this.getData(this.props);
+    }
+
     render(): React.Element<*> {
-        const { loading, triggers, tags, subscribedTags = [] } = this.state;
-        const { list: allTags = [] } = tags || {};
-        const { list, size = 1, total = 1 } = triggers || {};
-        const { page, tags: selectedTags } = this.parseLocationSearch(location.search);
+        const { loading, triggers, tags, subscribtions } = this.state;
+        const { page, onlyProblems, tags: parsedTags } = this.parseLocationSearch(location.search);
+        const selectedTags = tags ? intersection(parsedTags, tags) : [];
+        const subscribedTags = subscribtions ? difference(subscribtions, selectedTags) : [];
+        const remainedTags = difference(tags, concat(selectedTags, subscribedTags));
+        const pageCount = triggers ? Math.ceil(triggers.total / triggers.size) : 1;
 
         return (
             <Layout loading={loading}>
                 <Layout.GreyPlate>
                     <TagSelector
                         selected={selectedTags}
-                        subscribed={difference(subscribedTags, selectedTags)}
-                        remained={difference(allTags, concat(selectedTags, subscribedTags))}
-                        onSelect={tag => this.changeTags(concat(selectedTags, tag))}
-                        onRemove={tag => this.changeTags(difference(selectedTags, [tag]))}
+                        subscribed={subscribedTags}
+                        remained={remainedTags}
+                        onSelect={tag => this.changeLocationSearch({ tags: concat(selectedTags, [tag]) })}
+                        onRemove={tag => this.changeLocationSearch({ tags: difference(selectedTags, [tag]) })}
                     />
                 </Layout.GreyPlate>
-                <Layout.Content>
-                    {Array.isArray(list) && <TriggerListView items={list} onChange={() => {}} onRemove={() => {}} />}
-                </Layout.Content>
-                <Layout.Paging>
-                    <Paging
-                        activePage={page}
-                        pagesCount={Math.ceil(total / size)}
-                        onPageChange={page => this.changePage(page)}
-                    />
-                </Layout.Paging>
+                {triggers &&
+                    <Layout.Content>
+                        <div style={{ marginBottom: 20 }}>
+                            <ToggleWithLabel
+                                checked={onlyProblems}
+                                label='Only Problems'
+                                onChange={checked => this.changeLocationSearch({ onlyProblems: checked })}
+                            />
+                        </div>
+                        <TriggerListView
+                            items={triggers.list || []}
+                            onChange={(triggerId, maintenance, metric) => {
+                                this.setMaintenance(triggerId, maintenance, metric);
+                            }}
+                            onRemove={(triggerId, metric) => {
+                                this.removeMetric(triggerId, metric);
+                            }}
+                        />
+                    </Layout.Content>}
+                {pageCount > 1 &&
+                    <Layout.Paging>
+                        <Paging
+                            activePage={page}
+                            pagesCount={pageCount}
+                            onPageChange={page => this.changeLocationSearch({ page: page })}
+                        />
+                    </Layout.Paging>}
             </Layout>
         );
     }
 }
 
 export default withMoiraApi(TriggerListContainer);
-
-// async removeTriggerMetric(triggerId: string, metric: string): Promise<void> {
-//     const { moiraApi } = this.props;
-//     this.setState({ loading: true });
-//     const status = await moiraApi.delMetric(triggerId, metric);
-//     if (status === 200) {
-//         this.getData(this.props);
-//     }
-// }
-
-// async setTriggerMetricMaintenance(triggerId: string, maintenance: Maintenance, metric: string): Promise<void> {
-//     const { moiraApi } = this.props;
-//     const maintenanceTime = getMaintenanceTime(maintenance);
-//     const data = {};
-//     this.setState({ loading: true });
-//     if (maintenanceTime > 0) {
-//         data[metric] = moment.utc().add(maintenanceTime, 'minutes').unix();
-//     }
-//     else {
-//         data[metric] = maintenanceTime;
-//     }
-//     const status = await moiraApi.setMaintenance(triggerId, data);
-//     if (status === 200) {
-//         this.getData(this.props);
-//     }
-// }

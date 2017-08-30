@@ -1,9 +1,9 @@
 // @flow
 import type { IMoiraApi } from './MoiraAPI';
+import type { TagList, TagStatList } from './MoiraAPI';
 import type { EventList } from '../Domain/Event';
 import type { Trigger, TriggerList, TriggerState } from '../Domain/Trigger';
 import type { Settings } from '../Domain/Settings';
-import type { TagList, TagStatList } from '../Domain/Tag';
 import type { PatternList } from '../Domain/Pattern';
 import type { NotificationList } from '../Domain/Notification';
 
@@ -48,9 +48,11 @@ export default class ApiFake implements IMoiraApi {
         return await sleep(settings);
     }
 
-    async getTriggerList(page: number): Promise<TriggerList> {
+    async getTriggerList(page: number, onlyProblems: boolean, tags: Array<string>): Promise<TriggerList> {
         const options = {};
         options.page = page;
+        options.onlyProblems = onlyProblems;
+        options.tags = tags;
         return await sleep(triggers);
     }
 
@@ -60,18 +62,18 @@ export default class ApiFake implements IMoiraApi {
         return await sleep(trigger);
     }
 
-    async setMaintenance(triggerId: string, data: { [metric: string]: number }): Promise<number> {
+    async setMaintenance(triggerId: string, data: { [metric: string]: number }): Promise<void> {
         const options = {};
         options.triggerId = triggerId;
         options.data = data;
-        return await sleep(200);
+        return await sleep();
     }
 
-    async delMetric(triggerId: string, metric: string): Promise<number> {
+    async delMetric(triggerId: string, metric: string): Promise<void> {
         const options = {};
         options.triggerId = triggerId;
         options.metric = metric;
-        return await sleep(200);
+        return await sleep();
     }
 
     async getTriggerState(id: string): Promise<TriggerState> {
