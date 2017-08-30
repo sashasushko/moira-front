@@ -16,7 +16,7 @@ export default function Header(props: Props): React.Element<*> {
                 </Link>
                 <nav className={cn('menu')}>
                     <RouterLinkWithIcon to='/settings' className={cn('menu-link')} icon='Settings'>
-                        Sushko Settings
+                        Settings
                     </RouterLinkWithIcon>
                     <RouterLinkWithIcon to='//moira.readthedocs.org/' className={cn('menu-link')} icon='HelpBook'>
                         Help
