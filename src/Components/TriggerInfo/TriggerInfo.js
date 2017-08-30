@@ -4,7 +4,7 @@ import Button from 'retail-ui/components/Button';
 import RouterLinkWithIcon from '../RouterLink/RouterLink';
 import type { Trigger } from '../../Domain/Trigger';
 import TagList from '../TagList/TagList';
-import getJSONContent from '../../Helpers/getJSONContent';
+import { getJSONContent } from '../../helpers';
 
 type Props = {|
     data: Trigger;

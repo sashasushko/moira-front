@@ -3,10 +3,12 @@ import React from 'react';
 import type { ContextRouter } from 'react-router-dom';
 import type { IMoiraApi } from '../Api/MoiraAPI';
 import type { Trigger, TriggerState } from '../Domain/Trigger';
+import type { Metric } from '../Domain/Metric';
 import type { EventList } from '../Domain/Event';
 import { withMoiraApi } from '../Api/MoiraApiInjection';
 import TriggerInfo from '../Components/TriggerInfo/TriggerInfo';
-import TriggerCurrentState from '../Components/TriggerCurrentState/TriggerCurrentState';
+import MetricList from '../Components/MetricList/MetricList';
+import Tabs from '../Components/Tabs/Tabs';
 import TriggerEvents from '../Components/TriggerEvents/TriggerEvents';
 import Layout from '../Components/Layout/Layout';
 
@@ -45,22 +47,37 @@ class TriggerContainer extends React.Component {
         this.setState({ loading: false, trigger, triggerState, triggerEvents });
     }
 
+    composeMetrics(): Array<{ name: string; data: Metric }> {
+        const { metrics } = this.state.triggerState || {};
+        return metrics ? Object.keys(metrics).map(x => ({ name: x, data: metrics[x] })) : []; // TODO
+    }
+
     render(): React.Element<*> {
         const { loading, trigger, triggerState, triggerEvents } = this.state;
-
         return (
             <Layout loading={loading}>
                 {trigger &&
                     <Layout.GreyPlate>
                         <TriggerInfo data={trigger} />
                     </Layout.GreyPlate>}
-                {triggerState &&
+                {this.composeMetrics().length !== 0 &&
                     <Layout.Content>
-                        <TriggerCurrentState data={triggerState} />
-                    </Layout.Content>}
-                {triggerEvents &&
-                    <Layout.Content>
-                        <TriggerEvents data={triggerEvents} />
+                        <Tabs value='1'>
+                            <Tabs.Tab
+                                id='1'
+                                label='Current state'
+                                component={MetricList}
+                                items={this.composeMetrics()}
+                                status
+                            />
+                            <Tabs.Tab
+                                id='2'
+                                label='Events history'
+                                component={TriggerEvents}
+                                data={triggerEvents}
+                                status
+                            />
+                        </Tabs>
                     </Layout.Content>}
             </Layout>
         );
