@@ -5,16 +5,18 @@ import cn from './Tabs.less';
 
 type Props = {|
     value: string;
-    children: React.Element<*>;
+    children: any;
 |};
-type ItemProps = {|
+type TabProps = {|
     id: string;
     label: string;
-    component: React$Component<*, *, *>;
+    children: any;
 |};
 type State = {|
-    activeId: string;
+    active: string;
 |};
+
+const TabsTab = Tabs.Tab;
 
 export default class TabsCustom extends React.Component {
     props: Props;
@@ -23,33 +25,30 @@ export default class TabsCustom extends React.Component {
     constructor(props: Props) {
         super(props);
         this.state = {
-            activeId: props.value,
+            active: props.value,
         };
     }
 
-    static Tab = function Tab({ id, component: Component, ...rest }: ItemProps): React.Element<any> {
-        return <Component {...rest} />;
+    static Tab = function Tab({ children }: TabProps): React.Element<*> {
+        return <div>{children}</div>;
     };
 
     render(): React.Element<*> {
-        const { activeId } = this.state;
+        const { active } = this.state;
         const { children } = this.props;
-
-        return React.Children.count(children) === 1
-            ? <div>
-                  {children}
-              </div>
-            : <div>
-                  <div className={cn('header')}>
-                      <Tabs value={activeId} onChange={(target, value) => this.setState({ activeId: value })}>
-                          {React.Children.map(children, ({ props }) =>
-                              <Tabs.Tab id={props.id}>
-                                  {props.label}
-                              </Tabs.Tab>
-                          )}
-                      </Tabs>
-                  </div>
-                  {React.Children.toArray(children).filter(({ props }) => props.id === activeId)}
-              </div>;
+        return React.Children.count(children) === 1 ? (
+            <div>{children}</div>
+        ) : (
+            <div>
+                <div className={cn('header')}>
+                    <Tabs value={active} onChange={(target, value) => this.setState({ active: value })}>
+                        {React.Children.map(children, ({ props }) => <TabsTab id={props.id}>{props.label}</TabsTab>)}
+                    </Tabs>
+                </div>
+                {React.Children.toArray(children).filter(({ props }) => props.id === active)}
+            </div>
+        );
     }
 }
+
+export const Tab = TabsCustom.Tab;
