@@ -5,6 +5,7 @@ import RouterLinkWithIcon from '../RouterLink/RouterLink';
 import type { Trigger } from '../../Domain/Trigger';
 import TagList from '../TagList/TagList';
 import { getJSONContent } from '../../helpers';
+import cn from './TriggerInfo.less';
 
 type Props = {|
     data: Trigger;
@@ -25,61 +26,53 @@ export default function TriggerInfo(props: Props): React.Element<*> {
         tags,
     } = props.data;
     return (
-        <div>
-            <h1>
-                {name}
-            </h1>
-            <RouterLinkWithIcon to={'/trigger/' + id + '/edit'} icon='Edit'>
-                Edit
-            </RouterLinkWithIcon>
-            <a
-                href='#download'
-                onClick={(event: Event) =>
-                    event.currentTarget instanceof HTMLAnchorElement
-                        ? (event.currentTarget.href = getJSONContent(props.data))
-                        : null}
-                download={`trigger-${id}.json`}>
-                <Button use='link' icon='Export'>
-                    Export
-                </Button>
-            </a>
-            <dl>
+        <section>
+            <header className={cn('header')}>
+                <h1 className={cn('title')}>{name}</h1>
+                <div className={cn('controls')}>
+                    <RouterLinkWithIcon to={'/trigger/' + id + '/edit'} icon='Edit'>
+                        Edit
+                    </RouterLinkWithIcon>
+                    <a
+                        href='#download'
+                        onClick={(event: Event) =>
+                            event.currentTarget instanceof HTMLAnchorElement
+                                ? (event.currentTarget.href = getJSONContent(props.data))
+                                : null}
+                        download={`trigger-${id}.json`}>
+                        <Button use='link' icon='Export'>
+                            Export
+                        </Button>
+                    </a>
+                </div>
+            </header>
+            <dl className={cn('list')}>
                 <dt>Target</dt>
-                <dd>
-                    {targets.map((target, i) =>
-                        <div key={i}>
-                            {target}
-                        </div>
-                    )}
-                </dd>
+                <dd>{targets.map((target, i) => <div key={i}>{target}</div>)}</dd>
                 <dt>Description</dt>
-                <dd>
-                    {desc}
-                </dd>
+                <dd>{desc}</dd>
                 {!expression && <dt>Value</dt>}
-                {!expression &&
+                {!expression && (
                     <dd>
                         Warning: {warnValue}, Error: {errorValue}, Set {ttlState} if has no value for {ttl} seconds
-                    </dd>}
+                    </dd>
+                )}
                 {expression && <dt>Expression</dt>}
-                {expression &&
-                    <dd>
-                        {expression}
-                    </dd>}
+                {expression && <dd>{expression}</dd>}
                 <dt>Schedule</dt>
                 <dd>
-                    {sched.days.filter(item => item.enabled).map((item, i) =>
+                    {sched.days.filter(item => item.enabled).map((item, i) => (
                         <span key={i}>
                             {i !== 0 && ', '}
                             {item.name}
                         </span>
-                    )}
+                    ))}
                 </dd>
                 <dt>Tags</dt>
                 <dd>
                     <TagList tags={tags} />
                 </dd>
             </dl>
-        </div>
+        </section>
     );
 }
