@@ -13,7 +13,7 @@ import type { Maintenance } from '../Domain/Maintenance';
 
 import ToggleWithLabel from '../Components/Toggle/Toggle';
 import Paging from 'retail-ui/components/Paging';
-import Layout from '../Components/Layout/Layout';
+import Layout, { LayoutPlate, LayoutContent, LayoutPaging } from '../Components/Layout/Layout';
 import TagSelector from '../Components/TagSelector/TagSelector';
 import TriggerListView from '../Components/TriggerList/TriggerList';
 
@@ -90,7 +90,13 @@ class TriggerListContainer extends React.Component {
         this.setState({ loading: true });
         const maintenanceTime = getMaintenanceTime(maintenance);
         await this.props.moiraApi.setMaintenance(triggerId, {
-            [metric]: maintenanceTime > 0 ? moment.utc().add(maintenanceTime, 'minutes').unix() : maintenanceTime,
+            [metric]:
+                maintenanceTime > 0
+                    ? moment
+                          .utc()
+                          .add(maintenanceTime, 'minutes')
+                          .unix()
+                    : maintenanceTime,
         });
         this.getData(this.props);
     }
@@ -111,7 +117,7 @@ class TriggerListContainer extends React.Component {
 
         return (
             <Layout loading={loading}>
-                <Layout.GreyPlate>
+                <LayoutPlate>
                     <TagSelector
                         selected={selectedTags}
                         subscribed={subscribedTags}
@@ -119,9 +125,9 @@ class TriggerListContainer extends React.Component {
                         onSelect={tag => this.changeLocationSearch({ tags: concat(selectedTags, [tag]) })}
                         onRemove={tag => this.changeLocationSearch({ tags: difference(selectedTags, [tag]) })}
                     />
-                </Layout.GreyPlate>
-                {triggers &&
-                    <Layout.Content>
+                </LayoutPlate>
+                {triggers && (
+                    <LayoutContent>
                         <div style={{ marginBottom: 20 }}>
                             <ToggleWithLabel
                                 checked={onlyProblems}
@@ -138,15 +144,17 @@ class TriggerListContainer extends React.Component {
                                 this.removeMetric(triggerId, metric);
                             }}
                         />
-                    </Layout.Content>}
-                {pageCount > 1 &&
-                    <Layout.Paging>
+                    </LayoutContent>
+                )}
+                {pageCount > 1 && (
+                    <LayoutPaging>
                         <Paging
                             activePage={page}
                             pagesCount={pageCount}
                             onPageChange={page => this.changeLocationSearch({ page: page })}
                         />
-                    </Layout.Paging>}
+                    </LayoutPaging>
+                )}
             </Layout>
         );
     }
