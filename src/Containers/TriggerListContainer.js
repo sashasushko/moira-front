@@ -45,7 +45,13 @@ class TriggerListContainer extends React.Component {
         const { subscriptions } = await moiraApi.getSettings();
         const { list: allTags } = await moiraApi.getTagList();
         const selectedTags = intersection(parsedTags, allTags);
-        const triggers = await moiraApi.getTriggerList(page - 1, onlyProblems, selectedTags);
+        let triggers = await moiraApi.getTriggerList(page - 1, onlyProblems, selectedTags);
+
+        if (Math.ceil(triggers.total / triggers.size) > page) {
+            const rightLastPage = Math.ceil(triggers.total / triggers.size);
+            triggers = await moiraApi.getTriggerList(rightLastPage - 1, onlyProblems, selectedTags);
+        }
+
         this.setState({
             loading: false,
             subscribtions: flattenDeep(subscriptions.map(x => x.tags)),
