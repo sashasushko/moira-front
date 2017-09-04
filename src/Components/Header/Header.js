@@ -1,6 +1,7 @@
 // @flow
 import React from 'react';
 import { Link } from 'react-router-dom';
+import LinkUI from 'retail-ui/components/Link';
 import RouterLinkWithIcon from '../RouterLink/RouterLink';
 import cn from './Header.less';
 import logo from '../../logo.png';
@@ -15,12 +16,12 @@ export default function Header(props: Props): React.Element<*> {
                     <img className={cn('logo-img')} src={logo} alt='Moira' />
                 </Link>
                 <nav className={cn('menu')}>
-                    <RouterLinkWithIcon to='/settings' className={cn('menu-link')} icon='Settings'>
+                    <RouterLinkWithIcon to='/settings' icon='Settings'>
                         Settings
                     </RouterLinkWithIcon>
-                    <RouterLinkWithIcon to='//moira.readthedocs.org/' className={cn('menu-link')} icon='HelpBook'>
+                    <LinkUI href='//moira.readthedocs.org/' icon='HelpBook'>
                         Help
-                    </RouterLinkWithIcon>
+                    </LinkUI>
                 </nav>
             </div>
         </header>

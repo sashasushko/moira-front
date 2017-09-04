@@ -5,6 +5,7 @@ import cn from './Layout.less';
 type LayoutProps = {|
     children?: any;
     loading?: boolean;
+    loadingError?: boolean;
 |};
 type ErrorMessageProps = {|
     children?: string;
@@ -54,10 +55,13 @@ export default class Layout extends React.Component {
     };
 
     render(): React.Element<*> {
-        const { loading = false, children } = this.props;
+        const { loading = false, loadingError = false, children } = this.props;
         return (
             <main className={cn('layout')}>
-                <Loader className={cn('loading')} active={loading}>
+                <Loader
+                    className={cn('loading')}
+                    active={loading}
+                    caption={loadingError ? 'Network error. Please, reload page' : 'Loading'}>
                     {children}
                 </Loader>
             </main>

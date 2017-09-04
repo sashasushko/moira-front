@@ -20,6 +20,7 @@ import TriggerListView from '../Components/TriggerList/TriggerList';
 type Props = ContextRouter & { moiraApi: IMoiraApi };
 type State = {|
     loading: boolean;
+    error: boolean;
     subscribtions: ?Array<string>;
     tags: ?Array<string>;
     triggers: ?TriggerList;
@@ -34,6 +35,7 @@ class TriggerListContainer extends React.Component {
     props: Props;
     state: State = {
         loading: true,
+        error: true,
         subscribtions: null,
         tags: null,
         triggers: null,
@@ -42,22 +44,28 @@ class TriggerListContainer extends React.Component {
     async getData(props: Props): Promise<void> {
         const { moiraApi, location } = props;
         const { page, onlyProblems, tags: parsedTags } = this.parseLocationSearch(location.search);
-        const { subscriptions } = await moiraApi.getSettings();
-        const { list: allTags } = await moiraApi.getTagList();
-        const selectedTags = intersection(parsedTags, allTags);
-        let triggers = await moiraApi.getTriggerList(page - 1, onlyProblems, selectedTags);
 
-        if (Math.ceil(triggers.total / triggers.size) > page) {
-            const rightLastPage = Math.ceil(triggers.total / triggers.size);
-            triggers = await moiraApi.getTriggerList(rightLastPage - 1, onlyProblems, selectedTags);
+        try {
+            const { subscriptions } = await moiraApi.getSettings();
+            const { list: allTags } = await moiraApi.getTagList();
+            const selectedTags = intersection(parsedTags, allTags);
+            let triggers = await moiraApi.getTriggerList(page - 1, onlyProblems, selectedTags);
+
+            if (Math.ceil(triggers.total / triggers.size) > page) {
+                const rightLastPage = Math.ceil(triggers.total / triggers.size);
+                triggers = await moiraApi.getTriggerList(rightLastPage - 1, onlyProblems, selectedTags);
+            }
+
+            this.setState({
+                loading: false,
+                subscribtions: flattenDeep(subscriptions.map(x => x.tags)),
+                tags: allTags,
+                triggers,
+            });
         }
-
-        this.setState({
-            loading: false,
-            subscribtions: flattenDeep(subscriptions.map(x => x.tags)),
-            tags: allTags,
-            triggers,
-        });
+        catch (error) {
+            this.setState({ error: true });
+        }
     }
 
     componentDidMount() {
@@ -114,7 +122,7 @@ class TriggerListContainer extends React.Component {
     }
 
     render(): React.Element<*> {
-        const { loading, triggers, tags, subscribtions } = this.state;
+        const { loading, error, triggers, tags, subscribtions } = this.state;
         const { page, onlyProblems, tags: parsedTags } = this.parseLocationSearch(location.search);
         const selectedTags = tags ? intersection(parsedTags, tags) : [];
         const subscribedTags = subscribtions ? difference(subscribtions, selectedTags) : [];
@@ -122,7 +130,7 @@ class TriggerListContainer extends React.Component {
         const pageCount = triggers ? Math.ceil(triggers.total / triggers.size) : 1;
 
         return (
-            <Layout loading={loading}>
+            <Layout loading={loading} loadingError={error}>
                 <LayoutPlate>
                     <div style={{ display: 'flex', alignItems: 'flex-start' }}>
                         <div style={{ flexGrow: 1, width: '100%' }}>

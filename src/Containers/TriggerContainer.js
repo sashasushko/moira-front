@@ -10,11 +10,12 @@ import TriggerInfo from '../Components/TriggerInfo/TriggerInfo';
 import MetricList from '../Components/MetricList/MetricList';
 import Tabs, { Tab } from '../Components/Tabs/Tabs';
 import EventList from '../Components/EventList/EventList';
-import Layout, { LayoutPlate, LayoutContent, LayoutPaging } from '../Components/Layout/Layout';
+import Layout, { LayoutPlate, LayoutContent } from '../Components/Layout/Layout';
 
 type Props = ContextRouter & { moiraApi: IMoiraApi };
 type State = {|
     loading: boolean;
+    error: boolean;
     trigger: ?Trigger;
     triggerState: ?TriggerState;
     triggerEvents: ?{|
@@ -29,6 +30,7 @@ class TriggerContainer extends React.Component {
     props: Props;
     state: State = {
         loading: true,
+        error: true,
         trigger: null,
         triggerState: null,
         triggerEvents: null,
@@ -44,10 +46,15 @@ class TriggerContainer extends React.Component {
         if (typeof id !== 'string') {
             return;
         }
-        const trigger = await moiraApi.getTrigger(id);
-        const triggerState = await moiraApi.getTriggerState(id);
-        const triggerEvents = await moiraApi.getTriggerEvents(id);
-        this.setState({ loading: false, trigger, triggerState, triggerEvents });
+        try {
+            const trigger = await moiraApi.getTrigger(id);
+            const triggerState = await moiraApi.getTriggerState(id);
+            const triggerEvents = await moiraApi.getTriggerEvents(id);
+            this.setState({ loading: false, trigger, triggerState, triggerEvents });
+        }
+        catch (error) {
+            this.setState({ error: true });
+        }
     }
 
     composeMetrics(): Array<{ name: string; data: Metric }> {
@@ -56,9 +63,9 @@ class TriggerContainer extends React.Component {
     }
 
     render(): React.Element<*> {
-        const { loading, trigger, triggerEvents } = this.state;
+        const { loading, error, trigger, triggerEvents } = this.state;
         return (
-            <Layout loading={loading}>
+            <Layout loading={loading} loadingError={error}>
                 {trigger && (
                     <LayoutPlate>
                         <TriggerInfo data={trigger} />

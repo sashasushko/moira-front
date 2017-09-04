@@ -1,6 +1,6 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const config = {
     entry: ['babel-polyfill', 'react-hot-loader/patch', './src/index.js'],
@@ -60,7 +60,7 @@ const config = {
         }),
         new webpack.EnvironmentPlugin({
             NODE_ENV: 'development',
-            API_MODE: 'fake',
+            API_MODE: 'real',
         }),
         new webpack.HotModuleReplacementPlugin(),
     ],

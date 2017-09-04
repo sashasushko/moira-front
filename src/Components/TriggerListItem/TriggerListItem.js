@@ -80,7 +80,7 @@ export default class TriggerListItem extends React.Component {
     }
 
     render(): React.Element<*> {
-        const { data, onChange, onRemove } = this.props;
+        const { data } = this.props;
         const { id, name, targets, tags } = data;
         const { showMetrics } = this.state;
 
