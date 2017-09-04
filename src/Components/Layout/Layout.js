@@ -5,11 +5,12 @@ import cn from './Layout.less';
 type LayoutProps = {|
     children?: any;
     loading?: boolean;
+    loadingError?: boolean;
 |};
 type ErrorMessageProps = {|
     children?: string;
 |};
-type GreyPlateProps = {|
+type PlateProps = {|
     children?: any;
 |};
 type ContentProps = {|
@@ -24,19 +25,15 @@ export default class Layout extends React.Component {
     static ErrorMessage = function ErrorMessage({ children }: ErrorMessageProps): React.Element<*> {
         return (
             <div className={cn('error')}>
-                <div className={cn('container')}>
-                    {children}
-                </div>
+                <div className={cn('container')}>{children}</div>
             </div>
         );
     };
 
-    static GreyPlate = function GreyPlate({ children }: GreyPlateProps): React.Element<*> {
+    static Plate = function Plate({ children }: PlateProps): React.Element<*> {
         return (
             <div className={cn('grey-plate')}>
-                <div className={cn('container')}>
-                    {children}
-                </div>
+                <div className={cn('container')}>{children}</div>
             </div>
         );
     };
@@ -44,9 +41,7 @@ export default class Layout extends React.Component {
     static Content = function Content({ children }: ContentProps): React.Element<*> {
         return (
             <div className={cn('content')}>
-                <div className={cn('container')}>
-                    {children}
-                </div>
+                <div className={cn('container')}>{children}</div>
             </div>
         );
     };
@@ -54,21 +49,27 @@ export default class Layout extends React.Component {
     static Paging = function Paging({ children }: PagingProps): React.Element<*> {
         return (
             <div className={cn('paging')}>
-                <div className={cn('container')}>
-                    {children}
-                </div>
+                <div className={cn('container')}>{children}</div>
             </div>
         );
     };
 
     render(): React.Element<*> {
-        const { loading = false, children } = this.props;
+        const { loading = false, loadingError = false, children } = this.props;
         return (
             <main className={cn('layout')}>
-                <Loader className={cn('loading')} active={loading}>
+                <Loader
+                    className={cn('loading')}
+                    active={loading}
+                    caption={loadingError ? 'Network error. Please, reload page' : 'Loading'}>
                     {children}
                 </Loader>
             </main>
         );
     }
 }
+
+export const LayoutErrorMessage = Layout.ErrorMessage;
+export const LayoutPlate = Layout.Plate;
+export const LayoutContent = Layout.Content;
+export const LayoutPaging = Layout.Paging;

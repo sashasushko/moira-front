@@ -3,11 +3,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import type { Trigger } from '../../Domain/Trigger.js';
 import type { Status } from '../../Domain/Status';
+import type { Metric } from '../../Domain/Metric';
 import type { Maintenance } from '../../Domain/Maintenance';
 import { Statuses, getStatusColor } from '../../Domain/Status';
 import StatusIndicator from '../StatusIndicator/StatusIndicator';
 import TagList from '../TagList/TagList';
-import MetricListView from '../MetricList/MetricList';
+import Tabs, { Tab } from '../Tabs/Tabs';
+import MetricList from '../MetricList/MetricList';
 import cn from './TriggerListItem.less';
 
 type Props = {|
@@ -61,12 +63,29 @@ export default class TriggerListItem extends React.Component {
             .filter(x => x.value !== 0);
     }
 
+    composeMetrics(): Array<{ status: Status; items: Array<{ name: string; data: Metric }> }> {
+        const { metrics } = this.props.data.last_check || {};
+        return Object.keys(Statuses)
+            .map(status => {
+                return {
+                    status,
+                    items: Object.keys(metrics)
+                        .filter(x => metrics[x].state === status)
+                        .map(x => {
+                            return { name: x, data: metrics[x] };
+                        }),
+                };
+            })
+            .filter(x => x.items.length !== 0);
+    }
+
     render(): React.Element<*> {
-        const { data, onChange, onRemove } = this.props;
-        const { id, name, targets, tags, last_check: lastCheck } = data;
+        const { data } = this.props;
+        const { id, name, targets, tags } = data;
         const { showMetrics } = this.state;
-        const { metrics } = lastCheck || {};
-        const isMetrics = Object.keys(metrics).length !== 0;
+
+        const metrics = this.composeMetrics();
+        const isMetrics = metrics.length !== 0;
 
         return (
             <div className={cn({ row: true, active: showMetrics })}>
@@ -77,41 +96,44 @@ export default class TriggerListItem extends React.Component {
                         <StatusIndicator statuses={this.composeStatuses()} />
                     </div>
                     <div className={cn('counters')}>
-                        {isMetrics
-                            ? this.composeCounters().map(({ status, value }) =>
-                                  <div key={status} style={{ color: getStatusColor(status) }}>
-                                      {value}
-                                  </div>
-                              )
-                            : <div className={cn('na-counter')}>N/A</div>}
+                        {isMetrics ? (
+                            this.composeCounters().map(({ status, value }) => (
+                                <div key={status} style={{ color: getStatusColor(status) }}>
+                                    {value}
+                                </div>
+                            ))
+                        ) : (
+                            <div className={cn('na-counter')}>N/A</div>
+                        )}
                     </div>
                 </div>
                 <div className={cn('data')}>
                     <div className={cn('header')}>
                         <Link className={cn('link')} to={'/trigger/' + id}>
-                            <div className={cn('title')}>
-                                {name}
-                            </div>
+                            <div className={cn('title')}>{name}</div>
                             <div className={cn({ targets: true, dark: showMetrics })}>
-                                {targets.map((target, i) =>
+                                {targets.map((target, i) => (
                                     <div key={i} className={cn('target')}>
                                         {target}
                                     </div>
-                                )}
+                                ))}
                             </div>
                         </Link>
                     </div>
                     <div className={cn('tags')}>
                         <TagList tags={tags} />
                     </div>
-                    {showMetrics &&
+                    {showMetrics && (
                         <div className={cn('metrics')}>
-                            <MetricListView
-                                data={metrics}
-                                onChange={onChange && ((maintenance, metric) => onChange(maintenance, metric))}
-                                onRemove={onRemove && (metric => onRemove(metric))}
-                            />
-                        </div>}
+                            <Tabs value={metrics[0].status}>
+                                {metrics.map(({ status, items }) => (
+                                    <Tab key={status} id={status} label={status}>
+                                        <MetricList items={items} />
+                                    </Tab>
+                                ))}
+                            </Tabs>
+                        </div>
+                    )}
                 </div>
             </div>
         );

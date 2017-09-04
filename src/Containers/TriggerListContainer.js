@@ -13,13 +13,14 @@ import type { Maintenance } from '../Domain/Maintenance';
 
 import ToggleWithLabel from '../Components/Toggle/Toggle';
 import Paging from 'retail-ui/components/Paging';
-import Layout from '../Components/Layout/Layout';
+import Layout, { LayoutPlate, LayoutContent, LayoutPaging } from '../Components/Layout/Layout';
 import TagSelector from '../Components/TagSelector/TagSelector';
 import TriggerListView from '../Components/TriggerList/TriggerList';
 
 type Props = ContextRouter & { moiraApi: IMoiraApi };
 type State = {|
     loading: boolean;
+    error: boolean;
     subscribtions: ?Array<string>;
     tags: ?Array<string>;
     triggers: ?TriggerList;
@@ -34,6 +35,7 @@ class TriggerListContainer extends React.Component {
     props: Props;
     state: State = {
         loading: true,
+        error: true,
         subscribtions: null,
         tags: null,
         triggers: null,
@@ -42,16 +44,28 @@ class TriggerListContainer extends React.Component {
     async getData(props: Props): Promise<void> {
         const { moiraApi, location } = props;
         const { page, onlyProblems, tags: parsedTags } = this.parseLocationSearch(location.search);
-        const { subscriptions } = await moiraApi.getSettings();
-        const { list: allTags } = await moiraApi.getTagList();
-        const selectedTags = intersection(parsedTags, allTags);
-        const triggers = await moiraApi.getTriggerList(page - 1, onlyProblems, selectedTags);
-        this.setState({
-            loading: false,
-            subscribtions: flattenDeep(subscriptions.map(x => x.tags)),
-            tags: allTags,
-            triggers,
-        });
+
+        try {
+            const { subscriptions } = await moiraApi.getSettings();
+            const { list: allTags } = await moiraApi.getTagList();
+            const selectedTags = intersection(parsedTags, allTags);
+            let triggers = await moiraApi.getTriggerList(page - 1, onlyProblems, selectedTags);
+
+            if (Math.ceil(triggers.total / triggers.size) > page) {
+                const rightLastPage = Math.ceil(triggers.total / triggers.size);
+                triggers = await moiraApi.getTriggerList(rightLastPage - 1, onlyProblems, selectedTags);
+            }
+
+            this.setState({
+                loading: false,
+                subscribtions: flattenDeep(subscriptions.map(x => x.tags)),
+                tags: allTags,
+                triggers,
+            });
+        }
+        catch (error) {
+            this.setState({ error: true });
+        }
     }
 
     componentDidMount() {
@@ -90,7 +104,13 @@ class TriggerListContainer extends React.Component {
         this.setState({ loading: true });
         const maintenanceTime = getMaintenanceTime(maintenance);
         await this.props.moiraApi.setMaintenance(triggerId, {
-            [metric]: maintenanceTime > 0 ? moment.utc().add(maintenanceTime, 'minutes').unix() : maintenanceTime,
+            [metric]:
+                maintenanceTime > 0
+                    ? moment
+                          .utc()
+                          .add(maintenanceTime, 'minutes')
+                          .unix()
+                    : maintenanceTime,
         });
         this.getData(this.props);
     }
@@ -102,7 +122,7 @@ class TriggerListContainer extends React.Component {
     }
 
     render(): React.Element<*> {
-        const { loading, triggers, tags, subscribtions } = this.state;
+        const { loading, error, triggers, tags, subscribtions } = this.state;
         const { page, onlyProblems, tags: parsedTags } = this.parseLocationSearch(location.search);
         const selectedTags = tags ? intersection(parsedTags, tags) : [];
         const subscribedTags = subscribtions ? difference(subscribtions, selectedTags) : [];
@@ -110,25 +130,29 @@ class TriggerListContainer extends React.Component {
         const pageCount = triggers ? Math.ceil(triggers.total / triggers.size) : 1;
 
         return (
-            <Layout loading={loading}>
-                <Layout.GreyPlate>
-                    <TagSelector
-                        selected={selectedTags}
-                        subscribed={subscribedTags}
-                        remained={remainedTags}
-                        onSelect={tag => this.changeLocationSearch({ tags: concat(selectedTags, [tag]) })}
-                        onRemove={tag => this.changeLocationSearch({ tags: difference(selectedTags, [tag]) })}
-                    />
-                </Layout.GreyPlate>
-                {triggers &&
-                    <Layout.Content>
-                        <div style={{ marginBottom: 20 }}>
+            <Layout loading={loading} loadingError={error}>
+                <LayoutPlate>
+                    <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                        <div style={{ flexGrow: 1, width: '100%' }}>
+                            <TagSelector
+                                selected={selectedTags}
+                                subscribed={subscribedTags}
+                                remained={remainedTags}
+                                onSelect={tag => this.changeLocationSearch({ tags: concat(selectedTags, [tag]) })}
+                                onRemove={tag => this.changeLocationSearch({ tags: difference(selectedTags, [tag]) })}
+                            />
+                        </div>
+                        <div style={{ flexShrink: 0, padding: '5px 0 0 20px' }}>
                             <ToggleWithLabel
                                 checked={onlyProblems}
                                 label='Only Problems'
                                 onChange={checked => this.changeLocationSearch({ onlyProblems: checked })}
                             />
                         </div>
+                    </div>
+                </LayoutPlate>
+                {triggers && (
+                    <LayoutContent>
                         <TriggerListView
                             items={triggers.list || []}
                             onChange={(triggerId, maintenance, metric) => {
@@ -138,15 +162,17 @@ class TriggerListContainer extends React.Component {
                                 this.removeMetric(triggerId, metric);
                             }}
                         />
-                    </Layout.Content>}
-                {pageCount > 1 &&
-                    <Layout.Paging>
+                    </LayoutContent>
+                )}
+                {pageCount > 1 && (
+                    <LayoutPaging>
                         <Paging
                             activePage={page}
                             pagesCount={pageCount}
                             onPageChange={page => this.changeLocationSearch({ page: page })}
                         />
-                    </Layout.Paging>}
+                    </LayoutPaging>
+                )}
             </Layout>
         );
     }

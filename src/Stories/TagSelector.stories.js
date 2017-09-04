@@ -9,7 +9,7 @@ const selected = ['abonentsErrors', 'dev.test.hdd'];
 const subscribed = ['test__'];
 
 storiesOf('TagSelector', module)
-    .add('Default', () =>
+    .add('Default', () => (
         <TagSelector
             subscribed={[]}
             selected={[]}
@@ -17,8 +17,8 @@ storiesOf('TagSelector', module)
             onSelect={action('onSelect')}
             onRemove={action('onRemove')}
         />
-    )
-    .add('With remained tags', () =>
+    ))
+    .add('With remained tags', () => (
         <TagSelector
             subscribed={[]}
             selected={[]}
@@ -26,8 +26,8 @@ storiesOf('TagSelector', module)
             onSelect={action('onSelect')}
             onRemove={action('onRemove')}
         />
-    )
-    .add('With selected tags', () =>
+    ))
+    .add('With selected tags', () => (
         <TagSelector
             subscribed={[]}
             selected={selected}
@@ -35,8 +35,8 @@ storiesOf('TagSelector', module)
             onSelect={action('onSelect')}
             onRemove={action('onRemove')}
         />
-    )
-    .add('With subscribed tags', () =>
+    ))
+    .add('With subscribed tags', () => (
         <TagSelector
             subscribed={subscribed}
             selected={[]}
@@ -44,8 +44,8 @@ storiesOf('TagSelector', module)
             onSelect={action('onSelect')}
             onRemove={action('onRemove')}
         />
-    )
-    .add('With all', () =>
+    ))
+    .add('With all', () => (
         <TagSelector
             subscribed={subscribed}
             selected={subscribed}
@@ -53,4 +53,4 @@ storiesOf('TagSelector', module)
             onSelect={action('onSelect')}
             onRemove={action('onRemove')}
         />
-    );
+    ));

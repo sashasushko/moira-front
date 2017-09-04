@@ -26,24 +26,24 @@ function SpaceFiller(props: { width?: number | string; height?: number | string;
 }
 
 storiesOf('Layout', module)
-    .add('Default', () =>
+    .add('Default', () => (
         <Layout>
             <Layout.Content>
                 <SpaceFiller />
             </Layout.Content>
         </Layout>
-    )
-    .add('With Grey Plate', () =>
+    ))
+    .add('With Plate', () => (
         <Layout>
-            <Layout.GreyPlate>
-                <SpaceFiller height={50} label='Grey plate' />
-            </Layout.GreyPlate>
+            <Layout.Plate>
+                <SpaceFiller height={50} label='Plate' />
+            </Layout.Plate>
             <Layout.Content>
                 <SpaceFiller />
             </Layout.Content>
         </Layout>
-    )
-    .add('With Paging', () =>
+    ))
+    .add('With Paging', () => (
         <Layout>
             <Layout.Content>
                 <SpaceFiller />
@@ -52,12 +52,12 @@ storiesOf('Layout', module)
                 <SpaceFiller height={30} label='Paging' />
             </Layout.Paging>
         </Layout>
-    )
-    .add('With Grey Plate and paging', () =>
+    ))
+    .add('With Plate and paging', () => (
         <Layout>
-            <Layout.GreyPlate>
-                <SpaceFiller height={50} label='Grey plate' />
-            </Layout.GreyPlate>
+            <Layout.Plate>
+                <SpaceFiller height={50} label='Plate' />
+            </Layout.Plate>
             <Layout.Content>
                 <SpaceFiller />
             </Layout.Content>
@@ -65,4 +65,4 @@ storiesOf('Layout', module)
                 <SpaceFiller height={30} label='Paging' />
             </Layout.Paging>
         </Layout>
-    );
+    ));

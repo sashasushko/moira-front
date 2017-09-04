@@ -2,7 +2,6 @@
 import React from 'react';
 import type { TriggerState } from '../../Domain/Trigger';
 import cn from './TriggerCurrentState.less';
-import parseTimestamp from '../../Helpers/parseTimestamp';
 
 type Props = {|
     data: TriggerState;
@@ -34,7 +33,7 @@ export default function TriggerCurrentState(props: Props): React.Element<*> {
                         </div>
                         <div className={cn('time')}>
                             <small>
-                                {typeof eventTimestamp === 'number' && parseTimestamp(eventTimestamp)}
+                                {eventTimestamp}
                             </small>
                         </div>
                     </div>

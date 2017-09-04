@@ -9,6 +9,7 @@ import Layout from '../Components/Layout/Layout';
 type Props = ContextRouter & { moiraApi: IMoiraApi };
 type State = {|
     loading: boolean;
+    error: boolean;
     settings: ?Settings;
 |};
 
@@ -16,6 +17,7 @@ class SettingsContainer extends React.Component {
     props: Props;
     state: State = {
         loading: true,
+        error: true,
         settings: null,
     };
 
@@ -25,18 +27,21 @@ class SettingsContainer extends React.Component {
 
     async getData(): Promise<void> {
         const { moiraApi } = this.props;
-        const settings = await moiraApi.getSettings();
-        this.setState({ loading: false, settings });
+        try {
+            const settings = await moiraApi.getSettings();
+            this.setState({ loading: false, settings });
+        }
+        catch (error) {
+            this.setState({ error: true });
+        }
     }
 
     render(): React.Element<*> {
-        const { loading, settings } = this.state;
+        const { loading, error, settings } = this.state;
         return (
-            <Layout loading={loading}>
+            <Layout loading={loading} loadingError={error}>
                 <Layout.Content>
-                    <pre>
-                        {JSON.stringify(settings, null, 2)}
-                    </pre>
+                    <pre>{JSON.stringify(settings, null, 2)}</pre>
                 </Layout.Content>
             </Layout>
         );

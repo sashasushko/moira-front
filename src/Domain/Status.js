@@ -25,3 +25,7 @@ export type Status = $Keys<typeof Statuses>;
 export function getStatusColor(status: Status): string {
     return StatusesColors[status];
 }
+
+export function getStatusCaption(status: Status): string {
+    return StatusesCaptions[status];
+}

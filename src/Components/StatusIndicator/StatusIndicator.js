@@ -2,16 +2,18 @@
 import React from 'react';
 import type { Status } from '../../Domain/Status';
 import { getStatusColor } from '../../Domain/Status';
+import cn from './StatusIndicator.less';
 
 type Props = {|
     statuses: Array<Status>;
+    size?: number;
 |};
 
 export default function StatusIndicator(props: Props): React.Element<*> {
     const OPTIONS = {
         size: 20,
     };
-    const { statuses } = props;
+    const { statuses, size } = props;
 
     function renderPath(): React.Element<any> {
         const [status1, status2, status3] = statuses;
@@ -51,7 +53,7 @@ export default function StatusIndicator(props: Props): React.Element<*> {
     }
 
     return (
-        <svg viewBox='-1 -1 2 2' width={OPTIONS.size} height={OPTIONS.size} style={{ transform: 'rotate(-90deg)' }}>
+        <svg viewBox='-1 -1 2 2' width={size || OPTIONS.size} height={size || OPTIONS.size} className={cn('svg')}>
             {renderPath()}
         </svg>
     );

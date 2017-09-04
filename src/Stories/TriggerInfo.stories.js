@@ -35,4 +35,6 @@ const data = {
         '\u041c\u0435\u0441\u0442\u043e \u043d\u0430 \u0434\u0438\u0441\u043a\u0430\u0445 \u043d\u0430 \u041a\u0430\u043c\u0447\u0430\u0442\u0441\u043a\u043e\u0439 \u043f\u043b\u043e\u0449\u0430\u0434\u043a\u0435.',
 };
 
-storiesOf('TriggerInfo', module).addDecorator(StoryRouter()).add('Default', () => <TriggerInfo data={data} />);
+storiesOf('TriggerInfo', module)
+    .addDecorator(StoryRouter())
+    .add('Default', () => <TriggerInfo data={data} />);

@@ -1,14 +1,13 @@
 // @flow
 import React from 'react';
 import type { Schedule } from '../../Domain/Schedule';
-import parseTime from '../../Helpers/parseTime';
 
 type Props = {|
     data: Schedule;
 |};
 
 export default function ScheduleForm(props: Props): React.Element<*> {
-    const { endOffset, days, startOffset } = props.data;
+    const { days } = props.data;
     return (
         <div>
             <label htmlFor='descr'>Schedule</label>
@@ -26,8 +25,8 @@ export default function ScheduleForm(props: Props): React.Element<*> {
                 );
             })}
             <div>
-                from <input type='text' defaultValue={parseTime(startOffset)} />
-                till <input type='text' defaultValue={parseTime(endOffset)} />
+                from <input type='text' defaultValue='' />
+                till <input type='text' defaultValue='' />
             </div>
         </div>
     );

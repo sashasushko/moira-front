@@ -1,5 +1,5 @@
 // @flow
-export default function roundValue(value: number | string | void): number | string {
+export function roundValue(value: number | string | void): number | string {
     if (typeof value !== 'number') {
         return '—';
     }
@@ -24,4 +24,8 @@ export default function roundValue(value: number | string | void): number | stri
         tailToCut++;
     }
     return prefix.substring(0, prefix.length - tailToCut) + (sizes[x] || '');
+}
+
+export function getJSONContent(data: { [key: string]: any }): string {
+    return 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(data, null, 2));
 }

@@ -4,7 +4,7 @@
 .input-area {
     display: flex;
     flex-wrap: wrap;
-    align-items: top;
+    align-items: flex-start;
     padding: 3px 8px;
     width: 100%;
     min-height: 32px;
@@ -51,4 +51,17 @@
     font-weight: normal;
     font-size: 12px;
     line-height: 15px;
+}
+
+.tag-list {
+    margin-top: -4px;
+    margin-left: -5px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+
+    & > * {
+        margin-top: 4px;
+        margin-left: 5px;
+    }
 }

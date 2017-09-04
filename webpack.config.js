@@ -1,6 +1,7 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 const config = {
     entry: ['babel-polyfill', 'react-hot-loader/patch', './src/index.js'],
@@ -58,11 +59,20 @@ const config = {
                 collapseWhitespace: true,
             },
         }),
-        new webpack.EnvironmentPlugin({
-            NODE_ENV: 'development',
-            API_MODE: 'real',
+        new webpack.HotModuleReplacementPlugin(),
+        new UglifyJSPlugin({
+            extractComments: {
+                banner: false,
+            },
         }),
     ],
+    devServer: {
+        contentBase: path.join(__dirname, 'dist'),
+        compress: true,
+        port: 9000,
+        hot: true,
+        historyApiFallback: true,
+    },
 };
 
 module.exports = config;
