@@ -124,23 +124,27 @@ class TriggerListContainer extends React.Component {
         return (
             <Layout loading={loading}>
                 <LayoutPlate>
-                    <TagSelector
-                        selected={selectedTags}
-                        subscribed={subscribedTags}
-                        remained={remainedTags}
-                        onSelect={tag => this.changeLocationSearch({ tags: concat(selectedTags, [tag]) })}
-                        onRemove={tag => this.changeLocationSearch({ tags: difference(selectedTags, [tag]) })}
-                    />
-                </LayoutPlate>
-                {triggers && (
-                    <LayoutContent>
-                        <div style={{ marginBottom: 20 }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+                        <div style={{ flexGrow: 1, width: '100%' }}>
+                            <TagSelector
+                                selected={selectedTags}
+                                subscribed={subscribedTags}
+                                remained={remainedTags}
+                                onSelect={tag => this.changeLocationSearch({ tags: concat(selectedTags, [tag]) })}
+                                onRemove={tag => this.changeLocationSearch({ tags: difference(selectedTags, [tag]) })}
+                            />
+                        </div>
+                        <div style={{ flexShrink: 0, padding: '5px 0 0 20px' }}>
                             <ToggleWithLabel
                                 checked={onlyProblems}
                                 label='Only Problems'
                                 onChange={checked => this.changeLocationSearch({ onlyProblems: checked })}
                             />
                         </div>
+                    </div>
+                </LayoutPlate>
+                {triggers && (
+                    <LayoutContent>
                         <TriggerListView
                             items={triggers.list || []}
                             onChange={(triggerId, maintenance, metric) => {
