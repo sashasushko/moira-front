@@ -63,6 +63,13 @@ const config = {
             API_MODE: 'real',
         }),
     ],
+    devServer: {
+        contentBase: path.join(__dirname, 'dist'),
+        compress: true,
+        port: 9000,
+        hot: true,
+        historyApiFallback: true,
+    },
 };
 
 module.exports = config;
