@@ -1,13 +1,17 @@
 .list {
+    .row {
+        margin-top: 5px;
+    }
+}
+
+.header {
+    color: #666;
+    font-style: italic;
 }
 
 .row {
     display: flex;
     align-items: center;
-
-    .list &:not(:first-child) {
-        margin-top: 5px;
-    }
 }
 
 .name {
@@ -21,7 +25,6 @@
 .state-change {
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-shrink: 0;
     width: 200px;
 }
@@ -29,27 +32,6 @@
 .arrow {
     margin-right: 10px;
     margin-left: 10px;
-}
-
-.prev-state,
-.next-state {
-    display: flex;
-    align-items: center;
-}
-
-.state-value {
-    width: 40px;
-    font-size: 12px;
-    color: #666666;
-
-    .prev-state & {
-        margin-right: 8px;
-        text-align: right;
-    }
-
-    .next-state & {
-        margin-left: 8px;
-    }
 }
 
 .date {
