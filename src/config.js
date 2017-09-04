@@ -1,7 +1,7 @@
 // @flow
 import type { Config } from './Domain/Config';
 const config: Config = {
-    apiUrl: 'http://vm-moira-all1:4445/api',
+    apiUrl: '/api',
     contacts: [
         { type: 'email', validation: '^.+@.+\\..+$', icon: 'email' },
         {

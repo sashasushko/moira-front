@@ -60,8 +60,9 @@ const config = {
         }),
         new webpack.EnvironmentPlugin({
             NODE_ENV: 'development',
-            API_MODE: 'real',
+            API_MODE: 'fake',
         }),
+        new webpack.HotModuleReplacementPlugin(),
     ],
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
