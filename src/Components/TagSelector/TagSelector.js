@@ -53,6 +53,12 @@ export default class TagSelector extends React.Component {
                         this.removeTag(selected[selected.length - 1]);
                     }
                     break;
+                case 'ArrowUp':
+                    if (value.length !== 0) {
+                        const newIndex = focusedIndex > 0 ? focusedIndex - 1 : filtredTags.length;
+                        this.setState({ focusedIndex: newIndex });
+                    }
+                    break;
                 case 'ArrowDown':
                     if (value.length !== 0) {
                         const newIndex = focusedIndex < filtredTags.length ? focusedIndex + 1 : 0;
@@ -81,11 +87,11 @@ export default class TagSelector extends React.Component {
             <div>
                 <div className={cn('input-area', { focused: isFocused })}>
                     {selected.length !== 0 &&
-                        selected.map((tag, i) =>
+                        selected.map((tag, i) => (
                             <span className={cn('tag-wrap')} key={i}>
                                 <Tag title={tag} onRemove={() => this.removeTag(tag)} />
                             </span>
-                        )}
+                        ))}
                     <input
                         className={cn('input')}
                         value={value}
@@ -102,29 +108,34 @@ export default class TagSelector extends React.Component {
                     />
                 </div>
                 {subscribed.length !== 0 &&
-                    value.length === 0 &&
+                value.length === 0 && (
                     <div className={cn('group')}>
                         <b className={cn('title')}>Subscribtions</b>
                         <TagList tags={subscribed} onClick={tag => this.selectTag(tag)} />
-                    </div>}
+                    </div>
+                )}
                 {remained.length !== 0 &&
-                    value.length === 0 &&
+                value.length === 0 && (
                     <div className={cn('group')}>
                         <b className={cn('title')}>All tags</b>
                         <TagList tags={remained} onClick={tag => this.selectTag(tag)} />
-                    </div>}
-                {value.length !== 0 &&
+                    </div>
+                )}
+                {value.length !== 0 && (
                     <div className={cn('group')}>
                         <b className={cn('title')}>Search results</b>
-                        {filtredTags.map((tag, i) =>
-                            <Tag
-                                key={i}
-                                focus={i === focusedIndex - 1}
-                                title={tag}
-                                onClick={() => this.selectTag(tag)}
-                            />
-                        )}
-                    </div>}
+                        <div className={cn('tag-list')}>
+                            {filtredTags.map((tag, i) => (
+                                <Tag
+                                    key={i}
+                                    focus={i === focusedIndex - 1}
+                                    title={tag}
+                                    onClick={() => this.selectTag(tag)}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
         );
     }
