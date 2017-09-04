@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import Button from 'retail-ui/components/Button';
-import RouterLinkWithIcon from '../RouterLink/RouterLink';
 import type { Trigger } from '../../Domain/Trigger';
 import TagList from '../TagList/TagList';
 import { getJSONContent } from '../../helpers';
@@ -30,9 +29,6 @@ export default function TriggerInfo(props: Props): React.Element<*> {
             <header className={cn('header')}>
                 <h1 className={cn('title')}>{name}</h1>
                 <div className={cn('controls')}>
-                    <RouterLinkWithIcon to={'/trigger/' + id + '/edit'} icon='Edit'>
-                        Edit
-                    </RouterLinkWithIcon>
                     <a
                         href='#download'
                         onClick={(event: Event) =>
