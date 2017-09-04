@@ -4,28 +4,31 @@ import type { ContextRouter } from 'react-router-dom';
 import type { IMoiraApi } from '../Api/MoiraAPI';
 import type { Trigger, TriggerState } from '../Domain/Trigger';
 import type { Metric } from '../Domain/Metric';
-import type { EventList } from '../Domain/Event';
+import type { Event } from '../Domain/Event';
 import { withMoiraApi } from '../Api/MoiraApiInjection';
 import TriggerInfo from '../Components/TriggerInfo/TriggerInfo';
 import MetricList from '../Components/MetricList/MetricList';
-import Tabs from '../Components/Tabs/Tabs';
-import TriggerEvents from '../Components/TriggerEvents/TriggerEvents';
-import Layout from '../Components/Layout/Layout';
+import Tabs, { Tab } from '../Components/Tabs/Tabs';
+import EventList from '../Components/EventList/EventList';
+import Layout, { LayoutPlate, LayoutContent, LayoutPaging } from '../Components/Layout/Layout';
 
 type Props = ContextRouter & { moiraApi: IMoiraApi };
 type State = {|
     loading: boolean;
-    activeTab: string;
     trigger: ?Trigger;
     triggerState: ?TriggerState;
-    triggerEvents: ?EventList;
+    triggerEvents: ?{|
+        total: number;
+        list: Array<Event>;
+        page: number;
+        size: number;
+    |};
 |};
 
 class TriggerContainer extends React.Component {
     props: Props;
     state: State = {
         loading: true,
-        activeTab: 'current',
         trigger: null,
         triggerState: null,
         triggerEvents: null,
@@ -53,32 +56,26 @@ class TriggerContainer extends React.Component {
     }
 
     render(): React.Element<*> {
-        const { loading, trigger, triggerState, triggerEvents } = this.state;
+        const { loading, trigger, triggerEvents } = this.state;
         return (
             <Layout loading={loading}>
-                {trigger &&
-                    <Layout.GreyPlate>
+                {trigger && (
+                    <LayoutPlate>
                         <TriggerInfo data={trigger} />
-                    </Layout.GreyPlate>}
-                {this.composeMetrics().length !== 0 &&
-                    <Layout.Content>
-                        <Tabs value='1'>
-                            <Tabs.Tab
-                                id='1'
-                                label='Current state'
-                                component={MetricList}
-                                items={this.composeMetrics()}
-                                status
-                            />
-                            <Tabs.Tab
-                                id='2'
-                                label='Events history'
-                                component={TriggerEvents}
-                                data={triggerEvents}
-                                status
-                            />
+                    </LayoutPlate>
+                )}
+                {this.composeMetrics().length !== 0 && (
+                    <LayoutContent>
+                        <Tabs value='state'>
+                            <Tab id='state' label='Current state'>
+                                <MetricList items={this.composeMetrics()} status />
+                            </Tab>
+                            <Tab id='events' label='Events history'>
+                                <EventList items={triggerEvents ? triggerEvents.list : []} />
+                            </Tab>
                         </Tabs>
-                    </Layout.Content>}
+                    </LayoutContent>
+                )}
             </Layout>
         );
     }

@@ -1,12 +1,13 @@
 // @flow
+import type { Status } from './Status';
 
 export type Event = {|
-    state: string;
-    old_state: string;
+    state: Status;
+    old_state: Status;
     timestamp: number;
     value?: number;
     metric: string;
-    msg: string;
+    msg?: string;
     trigger_id: string;
 |};
 
